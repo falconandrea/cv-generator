@@ -1,0 +1,119 @@
+"use client";
+
+/**
+ * Personal Information Form Component
+ *
+ * Form for editing personal information section of the CV.
+ * Uses controlled inputs connected to Zustand store.
+ */
+
+import { useCVStore } from "@/state/store";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
+
+export function PersonalInfoForm() {
+  const { personalInfo, setPersonalInfo } = useCVStore();
+
+  const handleChange = (field: keyof typeof personalInfo, value: string) => {
+    setPersonalInfo({
+      ...personalInfo,
+      [field]: value,
+    });
+  };
+
+  const handleAddLink = () => {
+    setPersonalInfo({
+      ...personalInfo,
+      links: [...personalInfo.links, ""],
+    });
+  };
+
+  const handleLinkChange = (index: number, value: string) => {
+    const newLinks = [...personalInfo.links];
+    newLinks[index] = value;
+    setPersonalInfo({
+      ...personalInfo,
+      links: newLinks,
+    });
+  };
+
+  const handleRemoveLink = (index: number) => {
+    setPersonalInfo({
+      ...personalInfo,
+      links: personalInfo.links.filter((_, i) => i !== index),
+    });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <Label htmlFor="fullName">Full Name</Label>
+        <Input
+          id="fullName"
+          value={personalInfo.fullName}
+          onChange={(e) => handleChange("fullName", e.target.value)}
+          placeholder="John Doe"
+          className="mt-1"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="location">Location</Label>
+        <Input
+          id="location"
+          value={personalInfo.location}
+          onChange={(e) => handleChange("location", e.target.value)}
+          placeholder="Rome, Italy"
+          className="mt-1"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={personalInfo.email}
+          onChange={(e) => handleChange("email", e.target.value)}
+          placeholder="john@example.com"
+          className="mt-1"
+        />
+      </div>
+
+      <div>
+        <Label>Links (GitHub, LinkedIn, Portfolio, etc.)</Label>
+        <div className="mt-1 space-y-2">
+          {personalInfo.links.map((link, index) => (
+            <div key={index} className="flex gap-2">
+              <Input
+                value={link}
+                onChange={(e) => handleLinkChange(index, e.target.value)}
+                placeholder="https://github.com/username"
+                className="flex-1"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                onClick={() => handleRemoveLink(index)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleAddLink}
+            className="w-full"
+          >
+            Add Link
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
