@@ -1,0 +1,213 @@
+# ROADMAP.md
+
+## Project: ATS-Friendly CV Generator
+
+### General Rules (Apply to All Phases)
+
+- Follow the documentation strictly (`README.md`, `ATS_RULES.md`, `DATA_SCHEMA.md`)
+- Do not introduce features not explicitly listed
+- Do not add authentication, database, or backend APIs
+- Prefer simple, explicit code over abstractions
+- Every phase must result in a runnable application
+
+---
+
+## Phase 0 – Project Setup
+
+### Goals
+
+Prepare a clean Next.js project ready for incremental development.
+
+### Tasks
+
+- Initialize Next.js project (App Router)
+- Install and configure:
+  - Tailwind CSS
+  - shadcn/ui
+  - Zustand
+  - @react-pdf/renderer
+
+- Set up base folder structure:
+
+  ```
+  /app
+  /state
+  /lib
+  /docs
+  ```
+
+### Output
+
+- Application runs locally
+- Empty homepage renders correctly
+
+---
+
+## Phase 1 – Data Model & State
+
+### Goals
+
+Create a single source of truth for all CV data.
+
+### Tasks
+
+- Define CV data schema based on `DATA_SCHEMA.md`
+- Create a Zustand store with:
+  - CV state
+  - Update actions per section
+  - Reset action
+
+- Add localStorage persistence
+
+### Output
+
+- CV state updates correctly
+- Data persists across page reloads
+
+---
+
+## Phase 2 – Editor UI (Forms Only)
+
+### Goals
+
+Allow users to input all CV data through structured forms.
+
+### Tasks
+
+- Create Editor page
+- Build form components for each section:
+  - Personal Information
+  - Summary
+  - Experience
+  - Skills
+  - Certifications
+  - Side Projects
+  - Education
+
+- Experience section must support:
+  - Add / remove entries
+  - Reorder entries (drag & drop)
+
+### Constraints
+
+- No live preview yet
+- No PDF generation yet
+
+### Output
+
+- Users can fully input and edit all CV data
+
+---
+
+## Phase 3 – Live Preview (HTML)
+
+### Goals
+
+Provide a live preview that mirrors the final PDF layout.
+
+### Tasks
+
+- Create Preview page
+- Render CV using semantic HTML
+- Enforce:
+  - One-column layout
+  - ATS-safe headings
+  - Minimal, neutral typography
+
+### Output
+
+- Preview updates instantly when data changes
+
+---
+
+## Phase 4 – PDF Generation
+
+### Goals
+
+Generate an ATS-optimized PDF from the CV state.
+
+### Tasks
+
+- Implement `CVDocument` using `@react-pdf/renderer`
+- Use standard fonts:
+  - Helvetica (primary)
+  - Arial (fallback)
+
+- Implement:
+  - Automatic page breaks
+  - Section grouping
+  - Multi-page support
+
+### Constraints
+
+- PDF layout must match the preview layout
+
+### Output
+
+- Downloadable PDF
+- Clickable links
+- Selectable text
+
+---
+
+## Phase 5 – Import / Export JSON
+
+### Goals
+
+Allow users to reuse and duplicate CV data easily.
+
+### Tasks
+
+- Implement Export JSON button
+- Implement Import JSON flow
+- Validate imported data structure
+
+### Output
+
+- Users can export CV data
+- Users can import JSON to restore a CV
+
+---
+
+## Phase 6 – Polish & Guardrails
+
+### Goals
+
+Make the application robust and predictable.
+
+### Tasks
+
+- Prevent empty sections from rendering
+- Normalize date formats
+- Handle "Present" end dates consistently
+- Minor UI cleanup (spacing, alignment)
+
+### Constraints
+
+- No new features
+
+### Output
+
+- Production-ready MVP
+
+---
+
+## Phase 7 – Documentation Check
+
+### Goals
+
+Ensure long-term maintainability.
+
+### Tasks
+
+- Verify code matches documentation
+- Add inline comments where decisions are non-obvious
+- Update documentation if needed (without scope expansion)
+
+---
+
+## Final Notes for Agents
+
+- Correctness > aesthetics
+- ATS compatibility is the primary success metric
+- Avoid creative deviations from the documentation
