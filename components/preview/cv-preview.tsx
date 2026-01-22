@@ -33,17 +33,11 @@ export function CVPreview() {
       {/* Personal Information Section */}
       <header className="mb-6">
         <h1 className="text-2xl font-bold mb-1">{cv.personalInfo.fullName}</h1>
-        <div className="text-sm">
-          {cv.personalInfo.location && (
-            <span className="mr-3">{cv.personalInfo.location}</span>
-          )}
-          {cv.personalInfo.email && (
-            <span className="mr-3">{cv.personalInfo.email}</span>
-          )}
+        <div className="text-xs flex flex-wrap gap-2">
+          {cv.personalInfo.location && <span>{cv.personalInfo.location}</span>}
+          {cv.personalInfo.email && <span>{cv.personalInfo.email}</span>}
           {cv.personalInfo.links.map((link, index) => (
-            <span key={index} className="mr-3">
-              {link}
-            </span>
+            <span key={index}>{link}</span>
           ))}
         </div>
       </header>
@@ -52,7 +46,7 @@ export function CVPreview() {
       {cv.summary && (
         <section className="mb-6">
           <h2 className="text-lg font-bold mb-2">Professional Summary</h2>
-          <p className="text-sm">{cv.summary}</p>
+          <p className="text-sm whitespace-pre-wrap">{cv.summary}</p>
         </section>
       )}
 
@@ -74,7 +68,7 @@ export function CVPreview() {
                 <div className="text-sm mb-1">{entry.location}</div>
               )}
               <div className="text-sm">
-                <p>{entry.description}</p>
+                <p className="whitespace-pre-wrap">{entry.description}</p>
               </div>
             </div>
           ))}
@@ -121,7 +115,7 @@ export function CVPreview() {
               </div>
               <div className="text-sm mb-1">{project.role}</div>
               <div className="text-sm">
-                <p>{project.description}</p>
+                <p className="whitespace-pre-wrap">{project.description}</p>
               </div>
             </div>
           ))}
