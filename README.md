@@ -95,7 +95,8 @@ The `/docs` folder contains the source of truth for the project:
 - `UI_GUIDELINES.md` – website UI rules
 - `ATS_RULES.md` – PDF and layout constraints
 - `DATA_SCHEMA.md` – CV data model
-- `DEVELOPMENT_GUIDELINES.md` - development rules and guidelines.
+- `DEVELOPMENT_GUIDELINES.md` – development rules and guidelines
+- `EDITOR_LAYOUT.md` – editor layout architecture with integrated preview
 
 Implementation must always align with these documents.
 

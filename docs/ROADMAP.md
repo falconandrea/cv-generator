@@ -120,7 +120,42 @@ Provide a live preview that mirrors the final PDF layout.
 
 ---
 
-## Phase 4 – PDF Generation
+## Phase 4 – Live Preview Side-by-Side
+
+### Goals
+
+Integrate the live preview directly into the editor page for real-time feedback while editing.
+
+### Tasks
+
+- Redesign editor layout with three-column structure:
+  - Left: Section navigation (tabs)
+  - Center: Active form section
+  - Right: Live preview panel
+- Implement responsive behavior:
+  - Desktop: Three-column layout with preview always visible
+  - Tablet: Preview collapsible or below forms
+  - Mobile: Preview in separate tab or toggle
+- Ensure preview updates in real-time as user types
+- Add preview visibility toggle for smaller screens
+- Optimize layout for comfortable data entry
+
+### Constraints
+
+- Follow UI_GUIDELINES.md layout recommendations
+- Maintain existing form functionality
+- No changes to data model or state management
+- Preview must remain ATS-compliant
+
+### Output
+
+- Users can see CV preview while editing
+- Smooth real-time updates
+- Responsive design works across devices
+
+---
+
+## Phase 5 – PDF Generation
 
 ### Goals
 
@@ -150,7 +185,7 @@ Generate an ATS-optimized PDF from the CV state.
 
 ---
 
-## Phase 5 – Import / Export JSON
+## Phase 6 – Import / Export JSON
 
 ### Goals
 
@@ -169,7 +204,7 @@ Allow users to reuse and duplicate CV data easily.
 
 ---
 
-## Phase 6 – Polish & Guardrails
+## Phase 7 – Polish & Guardrails
 
 ### Goals
 
@@ -192,7 +227,7 @@ Make the application robust and predictable.
 
 ---
 
-## Phase 7 – Documentation Check
+## Phase 8 – Documentation Check
 
 ### Goals
 
