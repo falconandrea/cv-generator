@@ -14,6 +14,7 @@ import { PreviewContent } from "@/components/editor/preview-content";
 
 export default function EditorPage() {
   const [mode, setMode] = useState<"editor" | "preview">("editor");
+  const [activeTab, setActiveTab] = useState("personal");
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black">
@@ -35,7 +36,7 @@ export default function EditorPage() {
 
         {/* Content based on mode */}
         {mode === "editor" ? (
-          <EditorContent activeTab="personal" onTabChange={() => {}} />
+          <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
         ) : (
           <PreviewContent />
         )}
