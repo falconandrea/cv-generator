@@ -1,36 +1,116 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ATS-Friendly CV Generator
 
-## Getting Started
+A minimal web application to generate **ATS-optimized CVs** using a structured, spec-driven approach and modern frontend tooling.
 
-First, run the development server:
+This project is intentionally built using **vibe coding** principles combined with a **spec-driven development workflow**, leveraging AI agents as implementation partners.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## What This Project Is
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- A browser-based CV editor
+- Focused on **ATS compatibility first**, visuals second
+- No authentication
+- No database
+- No backend business logic
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Users fill structured sections and generate a clean, professional PDF CV.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## What This Project Is NOT
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Not a job board
+- Not a CV marketplace
+- Not a marketing-heavy product
+- Not a design showcase
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This is a **tool**, not a brand.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Core Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Structured CV editor
+- One-column ATS-safe layout
+- Automatic single-page / multi-page PDF generation
+- Clickable links in PDF
+- Local-only state (no persistence server-side)
+- Import / Export CV data as JSON
+
+---
+
+## Tech Stack
+
+- **Next.js** (App Router)
+- **Tailwind CSS**
+- **shadcn/ui**
+- **Zustand** for state management
+- **@react-pdf/renderer** for PDF generation
+
+---
+
+## Development Philosophy
+
+### Vibe Coding
+
+This project is developed incrementally, prioritizing:
+
+- Fast feedback loops
+- Small, verifiable steps
+- Working software at every stage
+
+### Spec-Driven Development
+
+All development is guided by explicit specifications written **before** implementation.
+
+The specs live in the `/docs` directory and define:
+
+- Scope
+- Constraints
+- Architecture
+- UI rules
+- ATS requirements
+
+AI agents are instructed to **follow the specs strictly** and execute one phase at a time.
+
+### Tooling & AI Setup
+
+The project is developed using:
+
+- **Visual Studio Code** as the primary editor
+- **Roo Code** for agent-based development
+- **GLM-4.7** as the primary Large Language Model
+
+The AI is treated as an execution partner, not a source of product decisions. All decisions originate from written specifications.
+
+---
+
+## Documentation-First Workflow
+
+The `/docs` folder contains the source of truth for the project:
+
+- `PROJECT.md` – project goals and constraints
+- `ROADMAP.md` – step-by-step execution plan
+- `UI_GUIDELINES.md` – website UI rules
+- `ATS_RULES.md` – PDF and layout constraints
+- `DATA_SCHEMA.md` – CV data model
+- `DEVELOPMENT_GUIDELINES.md` - development rules and guidelines.
+
+Implementation must always align with these documents.
+
+---
+
+## Project Status
+
+This project is actively developed as an experiment in:
+
+- AI-assisted development
+- Spec-driven workflows
+- Building useful tools with minimal scope
+
+---
+
+## License
+
+MIT
