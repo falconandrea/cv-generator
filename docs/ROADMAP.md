@@ -216,6 +216,14 @@ Make the application robust and predictable.
 - Normalize date formats
 - Handle "Present" end dates consistently
 - Minor UI cleanup (spacing, alignment)
+- UX Improvements (Phase 7b):
+  - Add drag & drop reordering to Education, Projects, and Certifications sections
+  - Add drag & drop reordering to Skills section
+  - Implement tag input for Skills (type and press Enter to add)
+  - Add Reset All Data button to clear localStorage
+  - Replace calendar picker with cascading Year/Month selects
+  - Always show one input field for Links (even when empty)
+  - Set "Present" checkbox as default for new experience entries
 
 ### Constraints
 

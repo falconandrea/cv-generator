@@ -118,6 +118,14 @@ export const useCVStore = create<CVStore>()(
           experience: state.experience.filter((_, i) => i !== index),
         })),
 
+      /**
+       * Reorder experience entries by drag and drop
+       *
+       * Design Decision:
+       * - Uses array splice to remove and insert items
+       * - This is the standard pattern for reordering arrays in React
+       * - Creates a new array reference to trigger state updates
+       */
       reorderExperience: (fromIndex, toIndex) =>
         set((state) => {
           const newExperience = [...state.experience];
@@ -129,6 +137,14 @@ export const useCVStore = create<CVStore>()(
       // Skills actions
       setSkills: (skills) => set({ skills }),
 
+      /**
+       * Reorder skills by drag and drop
+       *
+       * Design Decision:
+       * - Uses array splice to remove and insert items
+       * - This is the standard pattern for reordering arrays in React
+       * - Creates a new array reference to trigger state updates
+       */
       reorderSkills: (fromIndex, toIndex) =>
         set((state) => {
           const newSkills = [...state.skills];
@@ -157,6 +173,14 @@ export const useCVStore = create<CVStore>()(
           certifications: state.certifications.filter((_, i) => i !== index),
         })),
 
+      /**
+       * Reorder certifications by drag and drop
+       *
+       * Design Decision:
+       * - Uses array splice to remove and insert items
+       * - This is the standard pattern for reordering arrays in React
+       * - Creates a new array reference to trigger state updates
+       */
       reorderCertifications: (fromIndex, toIndex) =>
         set((state) => {
           const newCertifications = [...state.certifications];
@@ -183,6 +207,14 @@ export const useCVStore = create<CVStore>()(
           projects: state.projects.filter((_, i) => i !== index),
         })),
 
+      /**
+       * Reorder projects by drag and drop
+       *
+       * Design Decision:
+       * - Uses array splice to remove and insert items
+       * - This is the standard pattern for reordering arrays in React
+       * - Creates a new array reference to trigger state updates
+       */
       reorderProjects: (fromIndex, toIndex) =>
         set((state) => {
           const newProjects = [...state.projects];
@@ -211,6 +243,14 @@ export const useCVStore = create<CVStore>()(
           education: state.education.filter((_, i) => i !== index),
         })),
 
+      /**
+       * Reorder education entries by drag and drop
+       *
+       * Design Decision:
+       * - Uses array splice to remove and insert items
+       * - This is the standard pattern for reordering arrays in React
+       * - Creates a new array reference to trigger state updates
+       */
       reorderEducation: (fromIndex, toIndex) =>
         set((state) => {
           const newEducation = [...state.education];
