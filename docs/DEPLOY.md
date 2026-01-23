@@ -43,8 +43,49 @@ Configure these secrets in your GitHub repository settings (`Settings → Secret
 | `PRODUCTION_SERVER_HOST`    | Server IP address or hostname                            |
 | `PRODUCTION_SERVER_USER`    | SSH username (e.g., `ubuntu`)                            |
 | `PRODUCTION_SERVER_SSH_KEY` | Private SSH key for server authentication                |
-| `GHCR_USERNAME`             | GitHub username                                          |
+| `GHCR_USERNAME`             | GitHub username (e.g., `falconandrea`)                   |
 | `GHCR_TOKEN`                | GitHub Personal Access Token with `write:packages` scope |
+
+#### How to Generate SSH Key
+
+To generate a new SSH key pair for GitHub Actions:
+
+```bash
+# Generate a new SSH key pair
+ssh-keygen -t ed25519 -C "github-actions-cv-generator" -f ~/.ssh/github_actions_cv_generator
+
+# Copy the public key to the server
+ssh-copy-id -i ~/.ssh/github_actions_cv_generator.pub ubuntu@your-server-ip
+
+# Display the private key (copy this to GitHub Secrets)
+cat ~/.ssh/github_actions_cv_generator
+```
+
+The private key (the output of last command) should be copied as the value for `PRODUCTION_SERVER_SSH_KEY`.
+
+Alternatively, if you already have SSH access to the server, you can use your existing private key:
+
+```bash
+# Display your existing private key
+cat ~/.ssh/id_ed25519
+# or
+cat ~/.ssh/id_rsa
+```
+
+#### How to Create GHCR Token
+
+To create a GitHub Personal Access Token for GHCR:
+
+1. Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Click "Generate new token" → "Generate new token (classic)"
+3. Give it a descriptive name (e.g., "CV Generator GHCR")
+4. Select the `write:packages` scope
+5. Click "Generate token"
+6. Copy the token and paste it as the value for `GHCR_TOKEN`
+
+#### GHCR Username
+
+`GHCR_USERNAME` is simply your GitHub username. For this repository, it should be `falconandrea`.
 
 ### Required GitHub Variables
 
