@@ -1,0 +1,69 @@
+name: Build and Deploy CV Generator
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Set image tag
+        id: tag
+        run: |
+          echo "tag=main" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          platforms: linux/arm64
+          tags: ghcr.io/${{ github.repository_owner }}/cv-generator:${{ steps.tag.outputs.tag }}
+          build-args: |
+            NEXT_PUBLIC_API_ENDPOINT=${{ vars.NEXT_PUBLIC_API_ENDPOINT }}
+            NEXT_PUBLIC_ENV=${{ vars.NEXT_PUBLIC_ENV }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          labels: |
+            org.opencontainers.image.source=${{ github.repository }}
+
+      - name: Copy deployment files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USER }}
+          key: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
+          source: "server/docker-compose.yml,server/deploy.sh"
+          target: "/home/ubuntu/apps/cv-generator"
+          strip_components: 1
+
+      - name: Deploy to Production Server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PRODUCTION_SERVER_HOST }}
+          username: ${{ secrets.PRODUCTION_SERVER_USER }}
+          key: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/apps/cv-generator
+            chmod +x deploy.sh
+            ./deploy.sh

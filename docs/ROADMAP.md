@@ -249,6 +249,67 @@ Ensure long-term maintainability.
 
 ---
 
+## Phase 9 – Deploy Automation
+
+### Goals
+
+Automate the deployment process to production server using GitHub Actions and Docker.
+
+### Tasks
+
+- Create Dockerfile optimized for Next.js production builds
+- Create GitHub Actions workflow that:
+  - Triggers on push to `main` branch
+  - Builds Docker image using Docker Buildx
+  - Pushes image to GitHub Container Registry (GHCR)
+  - Connects to production server via SSH
+  - Executes deployment script
+
+- Create `server/docker-compose.yml` for production server:
+  - Configure Traefik labels for routing
+  - Set up HTTPS with Let's Encrypt
+  - Configure HTTP to HTTPS redirect
+  - Set up DNS for `cv-generator.andreafalcon.dev`
+  - Use port 3001 to avoid conflicts with existing containers
+
+- Create `server/deploy.sh` script for server-side deployment:
+  - Pull latest Docker image from GHCR
+  - Restart container using docker-compose
+  - Handle container recreation
+
+### GitHub Secrets Required
+
+Configure in repository settings:
+
+- `PRODUCTION_SERVER_HOST` - Server IP/hostname
+- `PRODUCTION_SERVER_USER` - SSH username
+- `PRODUCTION_SERVER_SSH_KEY` - SSH private key
+- `GHCR_USERNAME` - GitHub username
+- `GHCR_TOKEN` - GitHub PAT with `write:packages` scope
+
+### GitHub Variables Required
+
+- `NEXT_PUBLIC_API_ENDPOINT` - API endpoint (if needed)
+- `NEXT_PUBLIC_ENV` - Environment identifier
+
+### Output
+
+- Automated CI/CD pipeline
+- Application deployed at https://cv-generator.andreafalcon.dev on port 3001
+- HTTPS with Let's Encrypt certificates
+- Zero-downtime deployments
+- Deployment files organized in `server/` directory
+- GitHub Actions automatically copies files to `/home/ubuntu/apps/cv-generator`
+
+### Constraints
+
+- Follow DEPLOY.md documentation
+- No staging environment (production only)
+- No authentication/database to configure
+- Single environment deployment
+
+---
+
 ## Final Notes for Agents
 
 - Correctness > aesthetics

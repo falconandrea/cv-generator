@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  cv-generator:
+    container_name: cv-generator
+    image: ghcr.io/falconandrea/cv-generator:main
+    restart: unless-stopped
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3001
+      - NODE_ENV=production
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+
+      # ======================
+      # HTTP → HTTPS redirect
+      # ======================
+      - "traefik.http.middlewares.cv-generator-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.cv-generator-https-redirect.redirectscheme.permanent=true"
+
+      - "traefik.http.routers.cv-generator-http.entrypoints=http"
+      - "traefik.http.routers.cv-generator-http.rule=Host(`cv-generator.andreafalcon.dev`)"
+      - "traefik.http.routers.cv-generator-http.middlewares=cv-generator-https-redirect"
+
+      # ======================
+      # HTTPS router
+      # ======================
+      - "traefik.http.routers.cv-generator-secure.entrypoints=https"
+      - "traefik.http.routers.cv-generator-secure.rule=Host(`cv-generator.andreafalcon.dev`)"
+      - "traefik.http.routers.cv-generator-secure.tls=true"
+      - "traefik.http.routers.cv-generator-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.cv-generator-secure.service=cv-generator"
+
+      # ======================
+      # Service
+      # ======================
+      - "traefik.http.services.cv-generator.loadbalancer.server.port=3001"
+
+      # rete corretta per Traefik
+      - "traefik.docker.network=web"
+
+networks:
+  web:
+    external: true
