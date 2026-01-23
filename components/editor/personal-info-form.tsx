@@ -11,23 +11,17 @@ import { useCVStore } from "@/state/store";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
+import { useState, KeyboardEvent } from "react";
 
 export function PersonalInfoForm() {
   const { personalInfo, setPersonalInfo } = useCVStore();
+  const [newLink, setNewLink] = useState("");
 
   const handleChange = (field: keyof typeof personalInfo, value: string) => {
     setPersonalInfo({
       ...personalInfo,
       [field]: value,
-    });
-  };
-
-  const handleAddLink = () => {
-    setPersonalInfo({
-      ...personalInfo,
-      links: [...personalInfo.links, ""],
     });
   };
 
@@ -45,6 +39,24 @@ export function PersonalInfoForm() {
       ...personalInfo,
       links: personalInfo.links.filter((_, i) => i !== index),
     });
+  };
+
+  const handleAddLink = () => {
+    const trimmedLink = newLink.trim();
+    if (trimmedLink) {
+      setPersonalInfo({
+        ...personalInfo,
+        links: [...personalInfo.links, trimmedLink],
+      });
+      setNewLink("");
+    }
+  };
+
+  const handleLinkKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddLink();
+    }
   };
 
   return (
@@ -104,14 +116,23 @@ export function PersonalInfoForm() {
               </Button>
             </div>
           ))}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleAddLink}
-            className="w-full"
-          >
-            Add Link
-          </Button>
+          <div className="flex gap-2">
+            <Input
+              value={newLink}
+              onChange={(e) => setNewLink(e.target.value)}
+              onKeyDown={handleLinkKeyDown}
+              placeholder="https://github.com/username"
+              className="flex-1"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleAddLink}
+              disabled={!newLink.trim()}
+            >
+              Add
+            </Button>
+          </div>
         </div>
       </div>
     </div>

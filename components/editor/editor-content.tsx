@@ -9,6 +9,7 @@
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/editor/personal-info-form";
 import { SummaryForm } from "@/components/editor/summary-form";
 import { ExperienceForm } from "@/components/editor/experience-form";
@@ -17,6 +18,9 @@ import { CertificationsForm } from "@/components/editor/certifications-form";
 import { ProjectsForm } from "@/components/editor/projects-form";
 import { EducationForm } from "@/components/editor/education-form";
 import { NavigationTabs } from "@/components/editor/navigation-tabs";
+import { useCVStore } from "@/state/store";
+import { RotateCcw } from "lucide-react";
+import { useState } from "react";
 
 interface EditorContentProps {
   activeTab: string;
@@ -24,6 +28,20 @@ interface EditorContentProps {
 }
 
 export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
+  const { resetCV } = useCVStore();
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
+  const handleReset = () => {
+    if (
+      confirm(
+        "Are you sure you want to reset all data? This action cannot be undone.",
+      )
+    ) {
+      resetCV();
+      setShowResetConfirm(false);
+    }
+  };
+
   return (
     <div className="flex gap-6">
       {/* Left: Navigation - visible on lg and above */}
@@ -33,6 +51,19 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
 
       {/* Center: Forms */}
       <main className="flex-1 min-w-0">
+        {/* Reset Button */}
+        <div className="mb-4 flex justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleReset}
+            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+          >
+            <RotateCcw className="h-4 w-4 mr-2" />
+            Reset All Data
+          </Button>
+        </div>
+
         <Tabs
           value={activeTab}
           onValueChange={onTabChange}

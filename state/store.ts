@@ -40,24 +40,28 @@ interface CVStore extends CVState {
 
   // Skills actions
   setSkills: (skills: string[]) => void;
+  reorderSkills: (fromIndex: number, toIndex: number) => void;
 
   // Certifications actions
   setCertifications: (certifications: Certification[]) => void;
   addCertification: (certification: Certification) => void;
   updateCertification: (index: number, certification: Certification) => void;
   removeCertification: (index: number) => void;
+  reorderCertifications: (fromIndex: number, toIndex: number) => void;
 
   // Projects actions
   setProjects: (projects: Project[]) => void;
   addProject: (project: Project) => void;
   updateProject: (index: number, project: Project) => void;
   removeProject: (index: number) => void;
+  reorderProjects: (fromIndex: number, toIndex: number) => void;
 
   // Education actions
   setEducation: (education: Education[]) => void;
   addEducation: (education: Education) => void;
   updateEducation: (index: number, education: Education) => void;
   removeEducation: (index: number) => void;
+  reorderEducation: (fromIndex: number, toIndex: number) => void;
 
   // Reset action
   resetCV: () => void;
@@ -125,6 +129,14 @@ export const useCVStore = create<CVStore>()(
       // Skills actions
       setSkills: (skills) => set({ skills }),
 
+      reorderSkills: (fromIndex, toIndex) =>
+        set((state) => {
+          const newSkills = [...state.skills];
+          const [removed] = newSkills.splice(fromIndex, 1);
+          newSkills.splice(toIndex, 0, removed);
+          return { skills: newSkills };
+        }),
+
       // Certifications actions
       setCertifications: (certifications) => set({ certifications }),
 
@@ -145,6 +157,14 @@ export const useCVStore = create<CVStore>()(
           certifications: state.certifications.filter((_, i) => i !== index),
         })),
 
+      reorderCertifications: (fromIndex, toIndex) =>
+        set((state) => {
+          const newCertifications = [...state.certifications];
+          const [removed] = newCertifications.splice(fromIndex, 1);
+          newCertifications.splice(toIndex, 0, removed);
+          return { certifications: newCertifications };
+        }),
+
       // Projects actions
       setProjects: (projects) => set({ projects }),
 
@@ -162,6 +182,14 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           projects: state.projects.filter((_, i) => i !== index),
         })),
+
+      reorderProjects: (fromIndex, toIndex) =>
+        set((state) => {
+          const newProjects = [...state.projects];
+          const [removed] = newProjects.splice(fromIndex, 1);
+          newProjects.splice(toIndex, 0, removed);
+          return { projects: newProjects };
+        }),
 
       // Education actions
       setEducation: (education) => set({ education }),
@@ -182,6 +210,14 @@ export const useCVStore = create<CVStore>()(
         set((state) => ({
           education: state.education.filter((_, i) => i !== index),
         })),
+
+      reorderEducation: (fromIndex, toIndex) =>
+        set((state) => {
+          const newEducation = [...state.education];
+          const [removed] = newEducation.splice(fromIndex, 1);
+          newEducation.splice(toIndex, 0, removed);
+          return { education: newEducation };
+        }),
 
       // Reset action
       resetCV: () => set(initialState),

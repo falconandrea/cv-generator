@@ -4,7 +4,7 @@
  * Skills Form Component
  *
  * Form for editing the skills section of the CV.
- * Supports add, remove, and update skills.
+ * Uses a tag input approach with drag-and-drop reordering.
  */
 
 import { useCVStore } from "@/state/store";
@@ -12,55 +12,116 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { X, Plus } from "lucide-react";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "@hello-pangea/dnd";
+import { GripVertical } from "lucide-react";
+import { useState, KeyboardEvent } from "react";
 
 export function SkillsForm() {
-  const { skills, setSkills } = useCVStore();
+  const { skills, setSkills, reorderSkills } = useCVStore();
+  const [inputValue, setInputValue] = useState("");
 
   const handleAddSkill = () => {
-    setSkills([...skills, ""]);
+    const trimmedValue = inputValue.trim();
+    if (trimmedValue && !skills.includes(trimmedValue)) {
+      setSkills([...skills, trimmedValue]);
+      setInputValue("");
+    }
   };
 
-  const handleSkillChange = (index: number, value: string) => {
-    const newSkills = [...skills];
-    newSkills[index] = value;
-    setSkills(newSkills);
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddSkill();
+    } else if (
+      e.key === "Backspace" &&
+      inputValue === "" &&
+      skills.length > 0
+    ) {
+      // Remove the last skill when backspace is pressed on empty input
+      setSkills(skills.slice(0, -1));
+    }
   };
 
   const handleRemoveSkill = (index: number) => {
     setSkills(skills.filter((_, i) => i !== index));
   };
 
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+    reorderSkills(result.source.index, result.destination.index);
+  };
+
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        {skills.map((skill, index) => (
-          <Badge key={index} variant="secondary" className="px-3 py-1">
-            <Input
-              value={skill}
-              onChange={(e) => handleSkillChange(index, e.target.value)}
-              placeholder="Skill"
-              className="bg-transparent border-none p-0 h-auto w-24 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
-            />
-            <button
-              type="button"
-              onClick={() => handleRemoveSkill(index)}
-              className="ml-2 hover:text-red-500"
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <Droppable droppableId="skills" direction="horizontal">
+          {(provided) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="flex flex-wrap gap-2"
             >
-              <X className="h-3 w-3" />
-            </button>
-          </Badge>
-        ))}
-      </div>
+              {skills.map((skill, index) => (
+                <Draggable
+                  key={index}
+                  draggableId={`skill-${index}`}
+                  index={index}
+                >
+                  {(provided, snapshot) => (
+                    <Badge
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      variant="secondary"
+                      className={`px-3 py-1 gap-2 ${
+                        snapshot.isDragging ? "opacity-50" : ""
+                      }`}
+                    >
+                      <div
+                        {...provided.dragHandleProps}
+                        className="cursor-grab text-zinc-400 hover:text-zinc-600"
+                      >
+                        <GripVertical className="h-3 w-3" />
+                      </div>
+                      <span className="text-sm">{skill}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSkill(index)}
+                        className="hover:text-red-500"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </Badge>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
-      <Button
-        type="button"
-        variant="outline"
-        onClick={handleAddSkill}
-        className="w-full"
-      >
-        <Plus className="h-4 w-4 mr-2" />
-        Add Skill
-      </Button>
+      <div className="flex gap-2">
+        <Input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="Type a skill and press Enter"
+          className="flex-1"
+        />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleAddSkill}
+          disabled={!inputValue.trim()}
+        >
+          <Plus className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 }

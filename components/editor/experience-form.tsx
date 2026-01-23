@@ -15,17 +15,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { MonthYearSelect } from "@/components/ui/month-year-select";
 import {
   GripVertical,
   Plus,
   Trash2,
-  Calendar as CalendarIcon,
 } from "lucide-react";
 import {
   DragDropContext,
@@ -34,14 +28,12 @@ import {
   DropResult,
 } from "@hello-pangea/dnd";
 import type { ExperienceEntry } from "@/state/types";
-import { format, parse } from "date-fns";
-import { useState } from "react";
 
 const emptyEntry: ExperienceEntry = {
   company: "",
   role: "",
   startDate: "",
-  endDate: null,
+  endDate: null, // Present by default
   location: "",
   description: "",
 };
@@ -77,16 +69,6 @@ export function ExperienceForm() {
     reorderExperience(result.source.index, result.destination.index);
   };
 
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return "";
-    try {
-      const date = parse(dateString, "yyyy-MM", new Date());
-      return format(date, "MMM yyyy");
-    } catch {
-      return dateString;
-    }
-  };
-
   return (
     <div className="space-y-4">
       <Button
@@ -117,7 +99,7 @@ export function ExperienceForm() {
                     <Card
                       ref={provided.innerRef}
                       {...provided.draggableProps}
-                      className="p-4"
+                      className={`p-4 ${snapshot.isDragging ? "opacity-50" : ""}`}
                     >
                       <div className="flex items-start gap-3">
                         <div
@@ -169,96 +151,26 @@ export function ExperienceForm() {
                               <Label htmlFor={`startDate-${index}`}>
                                 Start Date
                               </Label>
-                              <Popover>
-                                <PopoverTrigger asChild>
-                                  <Button
-                                    variant="outline"
-                                    className="w-full justify-start text-left font-normal mt-1"
-                                  >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {entry.startDate
-                                      ? formatDate(entry.startDate)
-                                      : "Select date"}
-                                  </Button>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                  className="w-auto p-0"
-                                  align="start"
-                                >
-                                  <Calendar
-                                    mode="single"
-                                    selected={
-                                      entry.startDate
-                                        ? parse(
-                                            entry.startDate,
-                                            "yyyy-MM",
-                                            new Date(),
-                                          )
-                                        : undefined
-                                    }
-                                    onSelect={(date) => {
-                                      if (date) {
-                                        handleUpdateEntry(
-                                          index,
-                                          "startDate",
-                                          format(date, "yyyy-MM"),
-                                        );
-                                      }
-                                    }}
-                                    initialFocus
-                                  />
-                                </PopoverContent>
-                              </Popover>
+                              <MonthYearSelect
+                                value={entry.startDate || null}
+                                onChange={(value) =>
+                                  handleUpdateEntry(index, "startDate", value)
+                                }
+                              />
                             </div>
 
                             <div>
                               <Label htmlFor={`endDate-${index}`}>
                                 End Date
                               </Label>
-                              <div className="flex items-center gap-2 mt-1">
-                                <Popover>
-                                  <PopoverTrigger asChild>
-                                    <Button
-                                      variant="outline"
-                                      className="flex-1 justify-start text-left font-normal"
-                                      disabled={entry.endDate === null}
-                                    >
-                                      <CalendarIcon className="mr-2 h-4 w-4" />
-                                      {entry.endDate === null
-                                        ? "Present"
-                                        : entry.endDate
-                                          ? formatDate(entry.endDate)
-                                          : "Select date"}
-                                    </Button>
-                                  </PopoverTrigger>
-                                  <PopoverContent
-                                    className="w-auto p-0"
-                                    align="start"
-                                  >
-                                    <Calendar
-                                      mode="single"
-                                      selected={
-                                        entry.endDate
-                                          ? parse(
-                                              entry.endDate,
-                                              "yyyy-MM",
-                                              new Date(),
-                                            )
-                                          : undefined
-                                      }
-                                      onSelect={(date) => {
-                                        if (date) {
-                                          handleUpdateEntry(
-                                            index,
-                                            "endDate",
-                                            format(date, "yyyy-MM"),
-                                          );
-                                        }
-                                      }}
-                                      initialFocus
-                                    />
-                                  </PopoverContent>
-                                </Popover>
+                              <div className="flex items-center gap-2">
+                                <MonthYearSelect
+                                  value={entry.endDate || null}
+                                  onChange={(value) =>
+                                    handleUpdateEntry(index, "endDate", value)
+                                  }
+                                  disabled={entry.endDate === null}
+                                />
                                 <div className="flex items-center gap-2 whitespace-nowrap">
                                   <Checkbox
                                     id={`present-${index}`}
