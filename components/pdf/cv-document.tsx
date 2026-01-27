@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   page: {
     padding: 40, // Reduced margins (was 96px, now ~40px)
     fontFamily: "Helvetica",
-    fontSize: 11, // Reduced from 12 to 11
+    fontSize: 10, // Reduced from 12 to 10
     lineHeight: 1.5,
     color: "#000000",
   },
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   name: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 8,
   },
@@ -66,16 +66,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    gap: 8,
+    gap: 2,
   },
   contactItem: {
     color: "#000000",
   },
   section: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   sectionTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "bold",
     marginBottom: 8,
     textTransform: "uppercase",
@@ -86,18 +86,18 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   entry: {
-    marginBottom: 12,
+    marginBottom: 8,
   },
   entryHeader: {
     marginBottom: 2,
   },
   entryTitle: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: "bold",
     marginBottom: 1,
   },
   entryCompany: {
-    fontSize: 13,
+    fontSize: 11,
     fontStyle: "italic",
     marginBottom: 1,
   },
@@ -117,20 +117,21 @@ const styles = StyleSheet.create({
     color: "#666666",
   },
   entryDescription: {
-    fontSize: 11,
-    lineHeight: 1.5,
+    fontSize: 10,
+    lineHeight: 1.3,
+    textAlign: "justify",
   },
   bulletList: {
     marginLeft: 0,
   },
   bulletItem: {
-    fontSize: 11,
+    fontSize: 10,
     marginBottom: 1,
-    lineHeight: 1.5,
+    lineHeight: 1.3,
   },
   skillsList: {
-    fontSize: 11,
-    lineHeight: 1.5,
+    fontSize: 10,
+    lineHeight: 1.3,
   },
   link: {
     color: "#000000",

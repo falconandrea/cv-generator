@@ -49,6 +49,17 @@ function validateCVData(data: unknown): data is CVState {
 }
 
 /**
+ * Clean text by normalizing line breaks
+ * Replaces literal \n with actual line breaks and removes extra whitespace
+ */
+function cleanTextForJSON(text: string): string {
+  return text
+    .replace(/\\n/g, "\n") // Replace literal \n with actual line breaks
+    .replace(/\n\s*\n/g, "\n") // Remove empty lines
+    .trim();
+}
+
+/**
  * Export CV data as JSON file
  *
  * @param cv - The CV state to export
@@ -59,8 +70,49 @@ export function exportCVAsJSON(
   filename: string = "cv-data.json",
 ): void {
   try {
+    // Clean text fields before exporting
+    const cleanedCV = {
+      ...cv,
+      personalInfo: {
+        ...cv.personalInfo,
+        fullName: cleanTextForJSON(cv.personalInfo.fullName),
+        location: cleanTextForJSON(cv.personalInfo.location),
+        email: cleanTextForJSON(cv.personalInfo.email),
+        links: cv.personalInfo.links.map((link) => cleanTextForJSON(link)),
+      },
+      summary: cleanTextForJSON(cv.summary),
+      experience: cv.experience.map((entry) => ({
+        ...entry,
+        company: cleanTextForJSON(entry.company),
+        role: cleanTextForJSON(entry.role),
+        location: entry.location ? cleanTextForJSON(entry.location) : undefined,
+        description: cleanTextForJSON(entry.description),
+      })),
+      skills: cv.skills.map((skill) => cleanTextForJSON(skill)),
+      certifications: cv.certifications.map((cert) => ({
+        ...cert,
+        title: cleanTextForJSON(cert.title),
+        issuer: cleanTextForJSON(cert.issuer),
+        year: cert.year ? cleanTextForJSON(cert.year) : undefined,
+      })),
+      projects: cv.projects.map((project) => ({
+        ...project,
+        name: cleanTextForJSON(project.name),
+        role: cleanTextForJSON(project.role),
+        link: cleanTextForJSON(project.link),
+        description: cleanTextForJSON(project.description),
+      })),
+      education: cv.education.map((edu) => ({
+        ...edu,
+        degree: cleanTextForJSON(edu.degree),
+        institution: cleanTextForJSON(edu.institution),
+        location: cleanTextForJSON(edu.location),
+        year: cleanTextForJSON(edu.year),
+      })),
+    };
+
     // Convert CV data to JSON string
-    const jsonString = JSON.stringify(cv, null, 2);
+    const jsonString = JSON.stringify(cleanedCV, null, 2);
 
     // Create a blob
     const blob = new Blob([jsonString], { type: "application/json" });
