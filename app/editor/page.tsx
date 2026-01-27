@@ -13,7 +13,7 @@ import { ModeToggle } from "@/components/editor/mode-toggle";
 import { EditorContent } from "@/components/editor/editor-content";
 import { PreviewContent } from "@/components/editor/preview-content";
 import { Button } from "@/components/ui/button";
-import { Download, FileDown, FileUp } from "lucide-react";
+import { Download, FileDown, FileUp, Github } from "lucide-react";
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
@@ -87,42 +87,47 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black">
-      <div className="container mx-auto py-8 px-4">
+    <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
+      <div className="container mx-auto py-8 px-4 flex-1">
         {/* Header */}
-        <div className="mb-8 flex justify-between items-start">
+        <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-50">
               CV Editor
             </h1>
-            <p className="text-zinc-600 dark:text-zinc-400 mt-2">
+            <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 mt-1 sm:mt-2">
               Fill in your details to create your CV
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <Button
               onClick={handleExportJSON}
               variant="outline"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
             >
               <FileDown className="w-4 h-4" />
-              Export JSON
+              <span className="hidden sm:inline">Export JSON</span>
+              <span className="sm:hidden">Export</span>
             </Button>
             <Button
               onClick={handleImportJSONClick}
               variant="outline"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
             >
               <FileUp className="w-4 h-4" />
-              Import JSON
+              <span className="hidden sm:inline">Import JSON</span>
+              <span className="sm:hidden">Import</span>
             </Button>
             <Button
               onClick={handleGeneratePDF}
               disabled={isGenerating}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
             >
               <Download className="w-4 h-4" />
-              {isGenerating ? "Generating..." : "Generate PDF"}
+              <span className="hidden sm:inline">
+                {isGenerating ? "Generating..." : "Generate PDF"}
+              </span>
+              <span className="sm:hidden">{isGenerating ? "..." : "PDF"}</span>
             </Button>
           </div>
         </div>
@@ -148,6 +153,22 @@ export default function EditorPage() {
           <PreviewContent />
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-8 py-6 px-4">
+        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
+          <p>Built in video coding</p>
+          <a
+            href="https://github.com/falconandrea/cv-generator"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+          >
+            <Github className="w-4 h-4" />
+            <span>Source on GitHub</span>
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
