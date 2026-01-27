@@ -310,6 +310,63 @@ Configure in repository settings:
 
 ---
 
+## Phase 10 – PDF Layout Enhancement
+
+### Goals
+
+Improve the visual design and layout of the generated PDF to match a professional, clean CV template while maintaining ATS compatibility.
+
+### Tasks
+
+- Redesign PDF layout with enhanced typography and spacing:
+  - **Header**: Large bold name (≈24pt) with contact info aligned left below
+  - **Section headings**: Bold uppercase (SUMMARY, EXPERIENCE, PROJECT, EDUCATION, SKILLS)
+  - **Experience entries**:
+    - Job title in bold (≈16pt)
+    - Company name in italic (≈14pt)
+    - Dates right-aligned in lighter gray (≈10pt)
+    - Location below company
+    - Bullet points for responsibilities
+  - **Project entries**:
+    - Project name in bold
+    - Link underlined/clickable
+    - Dates in lighter gray
+    - Bullet points for contributions
+  - **Education entry**:
+    - Degree in bold
+    - University in italic
+    - Dates in lighter gray
+  - **Skills**: Comma-separated list (no bullet points)
+
+- Add horizontal divider lines between sections for clear visual separation
+- Improve spacing:
+  - 1.5x line height for body text
+  - Consistent vertical spacing between sections
+  - 1-inch margins on all sides
+
+- Ensure typography hierarchy:
+  - Name: largest, boldest
+  - Section headings: bold, uppercase
+  - Job/Project titles: bold
+  - Company/University: italic
+  - Dates: lighter gray, smaller
+  - Body text: regular weight
+
+### Constraints
+
+- Maintain ATS compatibility (no images, icons, tables, multi-column grids)
+- Use standard fonts only (Helvetica → Arial → sans-serif)
+- Keep clickable links for email, LinkedIn, GitHub, project URLs
+- Preserve existing data model and state management
+
+### Output
+
+- PDF with professional, clean layout matching reference design
+- Improved readability and visual hierarchy
+- Maintained ATS compatibility
+
+---
+
 ## Final Notes for Agents
 
 - Correctness > aesthetics
