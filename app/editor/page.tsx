@@ -157,7 +157,7 @@ export default function EditorPage() {
       {/* Footer */}
       <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-8 py-6 px-4">
         <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
-          <p>Built in video coding</p>
+          <p>Built in vibe coding</p>
           <a
             href="https://github.com/falconandrea/cv-generator"
             target="_blank"
