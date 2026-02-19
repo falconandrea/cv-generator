@@ -1,117 +1,88 @@
 # ATS-Friendly CV Generator
 
-A minimal web application to generate **ATS-optimized CVs** using a structured, spec-driven approach and modern frontend tooling.
+A modern, fast, and privacy-focused web application to generate **ATS-optimized CVs**. Built with Next.js, optimized for speed and simplicity.
 
-This project is intentionally built using **vibe coding** principles combined with a **spec-driven development workflow**, leveraging AI agents as implementation partners.
-
----
-
-## What This Project Is
-
-- A browser-based CV editor
-- Focused on **ATS compatibility first**, visuals second
-- No authentication
-- No database
-- No backend business logic
-
-Users fill structured sections and generate a clean, professional PDF CV.
+> **Status**: In Active Development
+> **Privacy**: Local-first. Your data stays in your browser (unless you opt-in for AI features).
 
 ---
 
-## What This Project Is NOT
+## 🚀 Features
 
-- Not a job board
-- Not a CV marketplace
-- Not a marketing-heavy product
-- Not a design showcase
-
-This is a **tool**, not a brand.
-
----
-
-## Core Features
-
-- Structured CV editor
-- One-column ATS-safe layout
-- Automatic single-page / multi-page PDF generation
-- Clickable links in PDF
-- Local-only state (no persistence server-side)
-- Import / Export CV data as JSON
+- **ATS-Ready**: Single-column layout optimized for Applicant Tracking Systems.
+- **Real-time Preview**: See changes as you type.
+- **Privacy First**: No database. Data is stored in your browser or exported as JSON.
+- **Export/Import**: Save your progress as a JSON file and resume anytime.
+- **PDF Generation**: High-quality, selectable text PDF output.
+- **Mobile Friendly**: Responsive design for editing on the go.
+- **AI-Powered (Coming Soon)**:
+  - Optimize your CV based on a Job Description (using LLMs like DeepSeek).
+  - Get actionable advice to improve your content.
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 
-- **Next.js** (App Router)
-- **Tailwind CSS**
-- **shadcn/ui**
-- **Zustand** for state management
-- **@react-pdf/renderer** for PDF generation
-
----
-
-## Development Philosophy
-
-### Vibe Coding
-
-This project is developed incrementally, prioritizing:
-
-- Fast feedback loops
-- Small, verifiable steps
-- Working software at every stage
-
-### Spec-Driven Development
-
-All development is guided by explicit specifications written **before** implementation.
-
-The specs live in the `/docs` directory and define:
-
-- Scope
-- Constraints
-- Architecture
-- UI rules
-- ATS requirements
-
-AI agents are instructed to **follow the specs strictly** and execute one phase at a time.
-
-### Tooling & AI Setup
-
-The project is developed using:
-
-- **Visual Studio Code** as the primary editor
-- **Roo Code** for agent-based development
-- **GLM-4.7** as the primary Large Language Model
-
-The AI is treated as an execution partner, not a source of product decisions. All decisions originate from written specifications.
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+- **PDF Engine**: [@react-pdf/renderer](https://react-pdf.org/)
+- **Icons**: [Lucide React](https://lucide.dev/)
 
 ---
 
-## Documentation-First Workflow
+## 🏃‍♂️ Getting Started
 
-The `/docs` folder contains the source of truth for the project:
+### Prerequisites
 
-- `PROJECT.md` – project goals and constraints
-- `ROADMAP.md` – step-by-step execution plan
-- `UI_GUIDELINES.md` – website UI rules
-- `ATS_RULES.md` – PDF and layout constraints
-- `DATA_SCHEMA.md` – CV data model
-- `DEVELOPMENT_GUIDELINES.md` – development rules and guidelines
-- `EDITOR_LAYOUT.md` – editor layout architecture with integrated preview
+- Node.js 18+
+- npm / yarn / pnpm
 
-Implementation must always align with these documents.
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/falconandrea/cv-generator.git
+   cd cv-generator
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+4. Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ---
 
-## Project Status
+## 🐳 Docker Deployment
 
-This project is actively developed as an experiment in:
+The project includes a multi-stage Dockerfile for production deployment.
 
-- AI-assisted development
-- Spec-driven workflows
-- Building useful tools with minimal scope
+```bash
+# Build and run with Docker Compose
+docker compose up -d --build
+```
 
 ---
 
-## License
+## 🧘 Vibe Coding & Spec-Driven Development
+
+This project embraces the **Vibe Coding** philosophy, combined with a **Spec-Driven** approach.
+
+-   **Spec-Driven**: We define clear, detailed specifications (PRD, Tech Stack, App Flow) *before* writing code. This ensures the AI agent has perfect context.
+-   **Vibe Coding**: We iterate fast, focusing on the "feel" and user experience, letting the AI handle the heavy lifting of implementation while we direct the flow.
+-   **Cursor & Rules**: We use `.cursorrules` (or `.agents` instructions) to enforce coding standards and project structure automatically.
+
+---
+
+## 📝 License
 
 MIT
