@@ -10,7 +10,7 @@ I want to refactor some code to improve it. The functionality should stay exactl
 REFACTORING TARGET: [What needs to be refactored]
 
 Examples:
-- "Extract UserService from UserController in Laravel"
+- "Extract UserService from UserController"
 - "Split Dashboard component into smaller pieces"
 - "Improve type safety in API routes"
 - "Remove code duplication in form components"
@@ -95,9 +95,6 @@ Propose a refactoring approach:
 ### Design Patterns to Apply
 
 Which patterns will improve this?
-- [ ] Service Layer (Laravel)
-- [ ] Repository Pattern (Laravel)
-- [ ] Form Request Validation (Laravel)
 - [ ] Custom Hook (React)
 - [ ] Context API (React)
 - [ ] Composition (React)

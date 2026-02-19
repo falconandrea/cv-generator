@@ -9,7 +9,7 @@ Hello! You just received a complete system for working with AI agents profession
 A **repository template** with:
 - ✅ AI operating system (PLANNING/ACTING/REVIEW/DEBUG modes)
 - ✅ Persistent memory across sessions
-- ✅ Best practices for Laravel 12 and Next.js 15+
+- ✅ Best practices for Next.js 15+
 - ✅ 7 ready-to-use workflow prompts
 - ✅ Complete documentation templates
 - ✅ Real examples of errors and solutions
@@ -48,7 +48,6 @@ cp ~/templates/ai-agent-template/agents.md .
 # Choose your stack
 cp .agents/templates/TECH_STACK_nextjs.md .agents/context/TECH_STACK.md
 # or
-cp .agents/templates/TECH_STACK_laravel.md .agents/context/TECH_STACK.md
 
 # Initialize git
 git init
@@ -408,7 +407,7 @@ Most AI-powered IDEs support a rules file. Check your IDE documentation and crea
 5. **All .agents/prompts/** - 30 minutes
 
 ### Stack-Specific
-6. **Laravel**: `.agents/guidelines/laravel/sail-guidelines.md`
+6. **General**: `.agents/guidelines/nextjs/app-router-guidelines.md`
 7. **Next.js**: `.agents/guidelines/nextjs/app-router-guidelines.md`
 
 ---
@@ -422,7 +421,7 @@ Most AI-powered IDEs support a rules file. Check your IDE documentation and crea
 - [ ] Read this file (HOW_TO_USE.md)
 - [ ] Chose a test project
 - [ ] Copied template to project
-- [ ] Chose stack (Laravel or Next.js)
+- [ ] Chose stack (Next.js)
 - [ ] Ready to run setup prompt
 
 ### Next Step

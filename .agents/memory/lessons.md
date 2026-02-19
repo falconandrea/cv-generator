@@ -103,39 +103,6 @@ const [formData, setFormData] = useState(() =>
 
 ---
 
-### 2024-02-02 - Database - N+1 Query Problem
-
-**What went wrong**: User list page was making 50+ database queries for 50 users.
-
-**Root cause**: Forgot to eager load relationships in Eloquent.
-
-**Impact**: Page load time: 100ms → 5000ms
-
-**Solution**:
-```php
-// ❌ Before - N+1 queries
-$users = User::all();
-foreach ($users as $user) {
-    echo $user->profile->bio; // Query per user!
-}
-
-// ✅ After - Single query
-$users = User::with('profile')->get();
-foreach ($users as $user) {
-    echo $user->profile->bio; // No extra queries
-}
-```
-
-**Prevention**:
-- ALWAYS use eager loading with `->with()` in Laravel
-- Check query count in debug bar before deployment
-- Added to sail-guidelines.md: "Common pitfall - N+1 queries"
-
-**Files involved**:
-- `app/Http/Controllers/UserController.php`
-- `.agents/laravel/sail-guidelines.md` (updated)
-
----
 
 ### 2024-02-01 - TypeScript - Using 'any' Type
 
@@ -212,47 +179,6 @@ fetch('/api/payment', { method: 'POST', ... })
 
 ---
 
-### 2024-01-30 - Laravel - Raw Query SQL Injection Risk
-
-**What went wrong**: Used `DB::raw()` with user input, potential SQL injection.
-
-**Root cause**: Tried to optimize complex query with raw SQL.
-
-**Impact**: Security vulnerability (caught in review, not exploited).
-
-**Solution**:
-```php
-// ❌ DANGEROUS - SQL Injection risk
-$results = DB::select(
-    "SELECT * FROM users WHERE name = '$request->name'"
-);
-
-// ✅ SAFE - Parameterized query
-$results = DB::select(
-    "SELECT * FROM users WHERE name = ?",
-    [$request->name]
-);
-
-// ✅ BETTER - Use Query Builder
-$results = DB::table('users')
-    ->where('name', $request->name)
-    ->get();
-
-// ✅ BEST - Use Eloquent
-$results = User::where('name', $request->name)->get();
-```
-
-**Prevention**:
-- NEVER concatenate user input in SQL queries
-- Always use parameterized queries or ORM
-- Avoid `DB::raw()` unless absolutely necessary
-- If using `DB::raw()`, always use parameter binding
-
-**Files involved**:
-- `app/Http/Controllers/SearchController.php`
-- `.agents/laravel/sail-guidelines.md` (added warning)
-
----
 
 ### 2024-01-29 - Performance - Unoptimized Images
 
@@ -338,7 +264,6 @@ Keep track of lesson types to identify patterns:
 
 1. **Always paginate list endpoints** - Saved us from major refactor
 2. **Never use `any` in TypeScript** - Prevents runtime errors
-3. **Always eager load in Laravel** - Critical for performance
 4. **Never expose secrets in frontend** - Security critical
 5. **Always use `next/image`** - Performance critical
 

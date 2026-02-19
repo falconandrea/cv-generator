@@ -9,7 +9,7 @@ I'm preparing to deploy to production. Help me create a complete deployment chec
 
 DEPLOYMENT TARGET: [Staging / Production / Both]
 
-PLATFORM: [VPS with Docker / Vercel / Laravel Forge / AWS / Other]
+PLATFORM: [VPS with Docker / Vercel / AWS / Other]
 
 ---
 
@@ -33,7 +33,6 @@ Go through this systematically and report status for each item:
   - Status: [Yes / No / N/A]
 
 - [ ] **TypeScript/PHP checks passing**
-  - Laravel: `./vendor/bin/pint --test`
   - Next.js: `npm run type-check`
   - Status: [Pass / Fail]
 
@@ -52,9 +51,6 @@ Review and verify all environment variables:
   - [ ] Error tracking - [Set / N/A]
 
 #### Environment-Specific Settings
-- [ ] `APP_ENV=production` (Laravel)
-- [ ] `NODE_ENV=production` (Next.js)
-- [ ] `APP_DEBUG=false` (Laravel)
 - [ ] Rate limiting configured
 - [ ] CORS configured properly
 - [ ] Allowed hosts/origins set
@@ -68,7 +64,6 @@ Review and verify all environment variables:
 ### 3. Database 🗄️
 
 - [ ] **Migrations up to date**
-  - Laravel: `php artisan migrate:status`
   - Prisma: `npx prisma migrate status`
   - Status: [Up to date / Missing migrations]
 
@@ -85,14 +80,6 @@ Review and verify all environment variables:
 
 ### 4. Performance 🚀
 
-#### Laravel
-- [ ] **Config cached**: `php artisan config:cache`
-- [ ] **Routes cached**: `php artisan route:cache`
-- [ ] **Views cached**: `php artisan view:cache`
-- [ ] **Opcache enabled** in php.ini
-- [ ] **Queue workers running** (if using queues)
-  - Command: [specify]
-  - Process manager: [Supervisor / systemd / None]
 
 #### Next.js
 - [ ] **Build successful**: `npm run build`
@@ -146,7 +133,6 @@ Review and verify all environment variables:
   - Test error sent: [Yes / No]
 
 - [ ] **Logging configured**
-  - Laravel: Check `config/logging.php`
   - Next.js: Vercel logs / Custom logging
   - Log rotation: [Configured / Manual]
 
@@ -255,33 +241,6 @@ Test critical user flows in production-like environment:
 - [ ] Preview deployments tested
   - Last preview: [Passed / Failed]
 
-### If Deploying to Laravel Forge
-
-- [ ] Server provisioned
-  - PHP version: [8.3]
-  - Database: [MySQL 8.0]
-  - Redis: [Configured / N/A]
-
-- [ ] Deployment script configured
-  ```bash
-  cd /home/forge/example.com
-  git pull origin main
-  composer install --no-dev --optimize-autoloader
-  php artisan migrate --force
-  php artisan config:cache
-  php artisan route:cache
-  php artisan view:cache
-  php artisan queue:restart
-  ```
-
-- [ ] Environment file uploaded to server
-
-- [ ] SSL certificate installed
-  - Let's Encrypt: [Active]
-
-- [ ] Queue workers configured in Supervisor
-
----
 
 ## Final Go/No-Go Decision
 
@@ -305,8 +264,6 @@ Test critical user flows in production-like environment:
 
 When ready, execute:
 
-### Laravel Forge
-[Auto-deploy on git push or click "Deploy Now" in Forge dashboard]
 
 ### Vercel
 ```bash

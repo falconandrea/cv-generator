@@ -1,6 +1,6 @@
 # Development Best Practices & Patterns
 
-> These patterns apply to BOTH Laravel and Next.js projects unless specified otherwise.
+> These patterns apply to Next.js projects unless specified otherwise.
 
 ---
 
@@ -95,50 +95,6 @@ async function fetchUserData(id: string) {
 }
 ```
 
-### Laravel Error Handling
-
-```php
-// ✅ Good - Custom exceptions
-namespace App\Exceptions;
-
-class PaymentFailedException extends \Exception
-{
-    public function render($request)
-    {
-        return response()->json([
-            'error' => 'Payment processing failed',
-            'message' => $this->getMessage()
-        ], 402);
-    }
-}
-
-// In controller
-public function processPayment(Request $request)
-{
-    try {
-        $payment = $this->paymentService->process($request->all());
-        return response()->json($payment);
-    } catch (PaymentFailedException $e) {
-        throw $e; // Let exception handler deal with it
-    } catch (\Exception $e) {
-        Log::error('Unexpected payment error', [
-            'error' => $e->getMessage(),
-            'user_id' => auth()->id()
-        ]);
-        throw new PaymentFailedException('Payment failed');
-    }
-}
-
-// ❌ Bad - Generic catch-all
-public function processPayment(Request $request)
-{
-    try {
-        return $this->paymentService->process($request->all());
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Something went wrong'], 500);
-    }
-}
-```
 
 ---
 
@@ -260,116 +216,6 @@ function LoginForm() {
 
 ---
 
-## 🏗️ Laravel-Specific Patterns
-
-### Controller Actions (Keep Thin)
-
-```php
-// ✅ Good - Thin controller, service does work
-class UserController extends Controller
-{
-    public function store(StoreUserRequest $request, UserService $service)
-    {
-        $user = $service->createUser($request->validated());
-        return response()->json($user, 201);
-    }
-}
-
-// Business logic in service
-class UserService
-{
-    public function createUser(array $data): User
-    {
-        $user = User::create($data);
-        $this->sendWelcomeEmail($user);
-        $this->assignDefaultRole($user);
-        return $user;
-    }
-}
-
-// ❌ Bad - Fat controller
-class UserController extends Controller
-{
-    public function store(Request $request)
-    {
-        $user = User::create($request->all()); // No validation!
-        Mail::to($user)->send(new WelcomeEmail());
-        $user->assignRole('user');
-        // 50 more lines...
-        return response()->json($user);
-    }
-}
-```
-
-### Eloquent Relationships
-
-```php
-// ✅ Good - Eager loading to prevent N+1
-$posts = Post::with(['author', 'comments.user'])->get();
-
-// ❌ Bad - N+1 queries
-$posts = Post::all();
-foreach ($posts as $post) {
-    echo $post->author->name; // Query per post!
-}
-```
-
-### Form Requests for Validation
-
-```php
-// ✅ Good - Dedicated Form Request
-namespace App\Http\Requests;
-
-class StorePostRequest extends FormRequest
-{
-    public function rules(): array
-    {
-        return [
-            'title' => ['required', 'string', 'max:255'],
-            'content' => ['required', 'string'],
-            'status' => ['required', Rule::in(['draft', 'published'])],
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'title.required' => 'Please provide a title for your post',
-        ];
-    }
-}
-
-// In controller
-public function store(StorePostRequest $request) // Auto-validates!
-{
-    $post = Post::create($request->validated());
-    return response()->json($post);
-}
-```
-
-### Resource Classes for API Responses
-
-```php
-// ✅ Good - Consistent API responses
-namespace App\Http\Resources;
-
-class UserResource extends JsonResource
-{
-    public function toArray($request): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'created_at' => $this->created_at->toISOString(),
-            'posts_count' => $this->whenLoaded('posts', fn() => $this->posts->count()),
-        ];
-    }
-}
-
-// In controller
-return UserResource::collection($users);
-```
 
 ---
 
@@ -524,20 +370,6 @@ CREATE TABLE UserProfile (
 );
 ```
 
-### Laravel Migrations
-
-```php
-// ✅ Good - Descriptive, follows conventions
-Schema::create('blog_posts', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    $table->string('title');
-    $table->text('content');
-    $table->enum('status', ['draft', 'published'])->default('draft');
-    $table->timestamp('published_at')->nullable();
-    $table->timestamps();
-});
-```
 
 ---
 
@@ -630,30 +462,16 @@ changes
 - Debounce search inputs (300ms minimum)
 - Virtualize long lists (>100 items)
 
-### Laravel Performance
-
-- Always eager load relationships to prevent N+1
-- Use database indexing for frequently queried columns
-- Cache expensive queries: `Cache::remember('users', 3600, fn() => User::all())`
-- Use chunking for large datasets: `User::chunk(100, function($users) {...})`
-- Queue heavy operations: `ProcessVideo::dispatch($video)`
 
 ---
 
 ## ⚠️ Common Pitfalls to Avoid
 
-### Both Laravel & Next.js
+### General
 - ❌ Committing `.env` files
 - ❌ Hardcoding API keys or secrets
 - ❌ Not handling edge cases (empty states, errors, loading)
-- ❌ Ignoring TypeScript errors (Next.js)
-- ❌ Ignoring PHPStan/Pint warnings (Laravel)
-
-### Laravel Specific
-- ❌ Using `DB::raw()` without parameter binding (SQL injection risk)
-- ❌ Not using Form Requests for validation
-- ❌ Forgetting `fillable` or `guarded` in models
-- ❌ Not running migrations in production properly
+- ❌ Ignoring TypeScript errors
 
 ### Next.js Specific
 - ❌ Using `use client` everywhere

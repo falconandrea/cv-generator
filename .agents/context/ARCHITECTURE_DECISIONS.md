@@ -34,7 +34,7 @@ Each decision follows this format:
 
 **Status:** Accepted
 
-**Context:** Need to choose between Laravel and Next.js for the project.
+**Context:** Selected Next.js for the project.
 
 **Decision:** [Chosen framework and why]
 

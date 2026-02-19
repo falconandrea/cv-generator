@@ -49,14 +49,14 @@ Check against `.agents/context/` files:
 ### 4. Security
 
 - [ ] **Input Validation**: All user inputs validated?
-- [ ] **SQL Injection**: Using parameterized queries / ORM? (Laravel/Prisma)
+- [ ] **SQL Injection**: Using parameterized queries / ORM?
 - [ ] **XSS Protection**: User content sanitized?
 - [ ] **Secrets**: No API keys or passwords in code?
 - [ ] **Authentication**: Protected routes actually protected?
 
 ### 5. Performance
 
-- [ ] **N+1 Queries**: Using eager loading? (Laravel)
+- [ ] **N+1 Queries**: Using eager loading?
 - [ ] **Unnecessary Re-renders**: React components optimized? (Next.js)
 - [ ] **Image Optimization**: Using next/image? (Next.js)
 - [ ] **Database Indexes**: Frequently queried fields indexed? (if applicable)

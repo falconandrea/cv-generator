@@ -18,10 +18,6 @@ cp /path/to/ai-agent-template/agents.md .
 
 ### 2. Choose Your Stack
 
-**For Laravel:**
-```bash
-cp .agents/templates/TECH_STACK_laravel.md .agents/context/TECH_STACK.md
-```
 
 **For Next.js:**
 ```bash

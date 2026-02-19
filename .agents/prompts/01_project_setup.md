@@ -31,23 +31,13 @@ Wait for my response, then summarize and move to Phase 2.
 
 ---
 
-## PHASE 2: Technical Stack Choice
+## PHASE 2: Technical Stack Confirmation
 
-Ask me:
-- Backend: Laravel or Next.js (full-stack)?
-- Why this choice?
-- Any constraints (hosting, budget, team expertise)?
-
-If Laravel:
-- Using Laravel Sail for local dev?
-- MySQL version preference?
-- Need API (Sanctum) or web app (Breeze/Blade)?
-
-If Next.js:
-- Using TypeScript? (recommended: yes)
-- Using shadcn/ui for components?
-- Database: Supabase, Prisma + PostgreSQL, or other?
-- Auth: NextAuth.js, Clerk, Supabase Auth?
+Ask me to confirm:
+- We are using Next.js 15 (App Router)?
+- We are using TypeScript?
+- We are using Tailwind CSS + shadcn/ui?
+- We are using local-first storage (JSON) or a specific database?
 
 Wait for my response, then summarize and move to Phase 3.
 
@@ -127,7 +117,7 @@ Wait for my response, then summarize and move to Phase 8.
 ## PHASE 8: Deployment & DevOps
 
 Ask me:
-- Deployment platform: Vercel/Laravel Forge/AWS/Railway/other?
+- Deployment platform: Vercel/Docker/AWS/Railway/other?
 - CI/CD requirements?
 - Monitoring/logging needs?
 - Environment strategy (dev/staging/production)?
