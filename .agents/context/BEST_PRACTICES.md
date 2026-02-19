@@ -4,6 +4,12 @@
 
 ---
 
+## 🌐 Language Rule
+
+**The entire application is in English.** ALL UI text, labels, loading messages, error messages, button text, and any string visible to the user MUST be written in English. Never write Italian (or any other language) in source code UI strings.
+
+---
+
 ## 🎯 General Principles
 
 ### Single Responsibility

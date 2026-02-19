@@ -3,18 +3,16 @@
 /**
  * Preview Content Component
  *
- * Contains full-width CV preview for Preview mode.
- * Displays the CV preview centered with max-width constraint.
+ * Contains full-width Live PDF preview for Preview mode.
+ * Displays the exact PDF output using @react-pdf/renderer dynamically.
  */
 
-import { CVPreview } from "@/components/preview/cv-preview";
+import { LivePDFPreview } from "@/components/preview/live-pdf-preview";
 
 export function PreviewContent() {
   return (
-    <div className="flex justify-center">
-      <div className="w-full max-w-[210mm]">
-        <CVPreview />
-      </div>
+    <div className="w-full h-[calc(100vh-200px)] min-h-[600px] bg-zinc-100 dark:bg-zinc-900">
+      <LivePDFPreview />
     </div>
   );
 }
