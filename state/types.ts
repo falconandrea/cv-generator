@@ -57,6 +57,14 @@ export interface Education {
 }
 
 /**
+ * Language Entry
+ */
+export interface Language {
+  language: string;
+  proficiency: string;
+}
+
+/**
  * Complete CV State
  */
 export interface CVState {
@@ -67,6 +75,7 @@ export interface CVState {
   certifications: Certification[];
   projects: Project[];
   education: Education[];
+  languages: Language[];
 }
 
 /**
@@ -85,4 +94,5 @@ export const defaultCVState: CVState = {
   certifications: [],
   projects: [],
   education: [],
+  languages: [],
 };

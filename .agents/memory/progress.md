@@ -9,6 +9,7 @@
 - [x] **Foundation**: Removed Laravel refs, refactored store.
 - [x] **Frontend Redesign**: Created Landing Page, Editor Sidebar, Split View.
 - [x] **Core Features**: Added Languages support to Store, Form, and PDF.
+- [x] **Bug Fixes**: Fixed layout, mobile menu, alerts (Toasts/Modals), PDF preview.
 
 ## Current Context
 - **Goal**: Implement AI Integration (Phase 4).

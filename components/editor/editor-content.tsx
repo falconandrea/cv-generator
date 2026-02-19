@@ -17,10 +17,22 @@ import { SkillsForm } from "@/components/editor/skills-form";
 import { CertificationsForm } from "@/components/editor/certifications-form";
 import { ProjectsForm } from "@/components/editor/projects-form";
 import { EducationForm } from "@/components/editor/education-form";
+import { LanguagesForm } from "@/components/editor/languages-form";
 import { NavigationTabs } from "@/components/editor/navigation-tabs";
 import { useCVStore } from "@/state/store";
 import { RotateCcw } from "lucide-react";
 import { useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 interface EditorContentProps {
   activeTab: string;
@@ -43,25 +55,39 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
   };
 
   return (
-    <div className="flex gap-6">
-      {/* Left: Navigation - visible on lg and above */}
-      <aside className="w-[200px] flex-shrink-0 hidden lg:block">
-        <NavigationTabs value={activeTab} onValueChange={onTabChange} />
-      </aside>
+    <div className="flex flex-col gap-6">
 
       {/* Center: Forms */}
       <main className="flex-1 min-w-0">
         {/* Reset Button */}
         <div className="mb-4 flex justify-end">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleReset}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50"
-          >
-            <RotateCcw className="h-4 w-4 mr-2" />
-            Reset All Data
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                <RotateCcw className="h-4 w-4 mr-2" />
+                Reset All Data
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete all
+                  data you have entered into the CV generator.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => resetCV()} className="bg-red-600 hover:bg-red-700">
+                  Reset Data
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         <Tabs
@@ -69,18 +95,6 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
           onValueChange={onTabChange}
           className="space-y-6"
         >
-          {/* Mobile Tabs - visible only on mobile */}
-          <div className="lg:hidden">
-            <TabsList className="grid w-full grid-cols-4 lg:grid-cols-7">
-              <TabsTrigger value="personal">Personal</TabsTrigger>
-              <TabsTrigger value="summary">Summary</TabsTrigger>
-              <TabsTrigger value="experience">Experience</TabsTrigger>
-              <TabsTrigger value="skills">Skills</TabsTrigger>
-              <TabsTrigger value="certifications">Certs</TabsTrigger>
-              <TabsTrigger value="projects">Projects</TabsTrigger>
-              <TabsTrigger value="education">Education</TabsTrigger>
-            </TabsList>
-          </div>
 
           {/* Form Contents */}
           <TabsContent value="personal">
@@ -156,6 +170,17 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
               </CardHeader>
               <CardContent>
                 <EducationForm />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="languages">
+            <Card>
+              <CardHeader>
+                <CardTitle>Languages</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <LanguagesForm />
               </CardContent>
             </Card>
           </TabsContent>

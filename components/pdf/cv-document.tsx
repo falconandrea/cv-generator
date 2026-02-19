@@ -331,7 +331,27 @@ export function CVDocument({ cv }: CVDocumentProps) {
         )}
 
         {/* Divider */}
-        {cv.education.length > 0 && cv.skills.length > 0 && (
+        {cv.education.length > 0 && cv.languages.length > 0 && (
+          <View style={styles.divider} />
+        )}
+
+        {/* Languages Section */}
+        {cv.languages.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Languages</Text>
+            {cv.languages.map((lang, index) => (
+              <View key={index} style={styles.entry}>
+                <Text style={styles.entryTitle}>
+                  {lang.language}
+                  <Text style={{ fontWeight: "normal" }}> — {lang.proficiency}</Text>
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Divider */}
+        {cv.languages.length > 0 && cv.skills.length > 0 && (
           <View style={styles.divider} />
         )}
 
@@ -344,7 +364,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         )}
 
         {/* Divider */}
-        {cv.skills.length > 0 && cv.certifications.length > 0 && (
+        {(cv.skills.length > 0 || cv.languages.length > 0) && cv.certifications.length > 0 && (
           <View style={styles.divider} />
         )}
 

@@ -18,6 +18,7 @@ import type {
   Certification,
   Project,
   Education,
+  Language,
   defaultCVState,
 } from "./types";
 
@@ -63,6 +64,13 @@ interface CVStore extends CVState {
   removeEducation: (index: number) => void;
   reorderEducation: (fromIndex: number, toIndex: number) => void;
 
+  // Language actions
+  setLanguages: (languages: Language[]) => void;
+  addLanguage: (language: Language) => void;
+  updateLanguage: (index: number, language: Language) => void;
+  removeLanguage: (index: number) => void;
+  reorderLanguages: (fromIndex: number, toIndex: number) => void;
+
   // Reset action
   resetCV: () => void;
 }
@@ -83,6 +91,7 @@ const initialState: CVState = {
   certifications: [],
   projects: [],
   education: [],
+  languages: [],
 };
 
 /**
@@ -259,6 +268,34 @@ export const useCVStore = create<CVStore>()(
           return { education: newEducation };
         }),
 
+      // Language actions
+      setLanguages: (languages) => set({ languages }),
+
+      addLanguage: (language) =>
+        set((state) => ({
+          languages: [...state.languages, language],
+        })),
+
+      updateLanguage: (index, language) =>
+        set((state) => ({
+          languages: state.languages.map((l, i) =>
+            i === index ? language : l,
+          ),
+        })),
+
+      removeLanguage: (index) =>
+        set((state) => ({
+          languages: state.languages.filter((_, i) => i !== index),
+        })),
+
+      reorderLanguages: (fromIndex, toIndex) =>
+        set((state) => {
+          const newLanguages = [...state.languages];
+          const [removed] = newLanguages.splice(fromIndex, 1);
+          newLanguages.splice(toIndex, 0, removed);
+          return { languages: newLanguages };
+        }),
+
       // Reset action
       resetCV: () => set(initialState),
     }),
@@ -273,6 +310,7 @@ export const useCVStore = create<CVStore>()(
         certifications: state.certifications,
         projects: state.projects,
         education: state.education,
+        languages: state.languages,
       }),
     },
   ),

@@ -1,29 +1,25 @@
 "use client";
 
-/**
- * Editor Page
- *
- * Main editor page with integrated live preview and mode toggle.
- * Features a mode toggle to switch between Editor and Preview modes.
- * Includes PDF generation and JSON import/export functionality.
- */
-
-import { useState, useRef } from "react";
-import { ModeToggle } from "@/components/editor/mode-toggle";
+import { useState } from "react";
+import { EditorSidebar } from "@/components/editor/EditorSidebar";
 import { EditorContent } from "@/components/editor/editor-content";
 import { PreviewContent } from "@/components/editor/preview-content";
 import { Button } from "@/components/ui/button";
-import { Download, FileDown, FileUp, Github } from "lucide-react";
+import { Download, FileDown, FileUp, Menu, Eye, EyeOff } from "lucide-react";
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
+import { Header } from "@/components/layout/Header";
+import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { toast } from "sonner";
 
 export default function EditorPage() {
-  const [mode, setMode] = useState<"editor" | "preview">("editor");
   const [activeTab, setActiveTab] = useState("personal");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showPreview, setShowPreview] = useState(true); // Toggle for desktop/mobile
   const [isGenerating, setIsGenerating] = useState(false);
   const cv = useCVStore();
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
@@ -33,13 +29,14 @@ export default function EditorPage() {
       await generateAndDownloadPDF(cv, filename);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
-      alert("Failed to generate PDF. Please try again.");
+      toast.error("Failed to generate PDF. Please try again.");
     } finally {
       setIsGenerating(false);
     }
   };
 
   const handleExportJSON = () => {
+    // ... same implementation ...
     try {
       const filename =
         `${cv.personalInfo.fullName.replace(/\s+/g, "-")}-cv-data.json` ||
@@ -47,21 +44,21 @@ export default function EditorPage() {
       exportCVAsJSON(cv, filename);
     } catch (error) {
       console.error("Failed to export JSON:", error);
-      alert("Failed to export CV data. Please try again.");
+      toast.error("Failed to export CV data. Please try again.");
     }
   };
 
   const handleImportJSONClick = () => {
-    fileInputRef.current?.click();
+    document.getElementById("json-import-input")?.click();
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // ... same implementation ...
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
       await importCVFromJSON(file, (data) => {
-        // Update all CV data
         cv.setPersonalInfo(data.personalInfo);
         cv.setSummary(data.summary);
         cv.setExperience(data.experience);
@@ -69,106 +66,115 @@ export default function EditorPage() {
         cv.setCertifications(data.certifications);
         cv.setProjects(data.projects);
         cv.setEducation(data.education);
+        if (data.languages) cv.setLanguages(data.languages);
       });
-      alert("CV data imported successfully!");
+      toast.success("CV data imported successfully!");
     } catch (error) {
       console.error("Failed to import JSON:", error);
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("Failed to import CV data. Please try again.");
-      }
+      toast.error("Failed to import CV data.");
     }
-
-    // Reset file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    e.target.value = "";
   };
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
-      <div className="container mx-auto py-8 px-4 flex-1">
-        {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-              CV Editor
-            </h1>
-            <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 mt-1 sm:mt-2">
-              Fill in your details to create your CV
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-            <Button
-              onClick={handleExportJSON}
-              variant="outline"
-              className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
-            >
-              <FileDown className="w-4 h-4" />
-              <span className="hidden sm:inline">Export JSON</span>
-              <span className="sm:hidden">Export</span>
-            </Button>
-            <Button
-              onClick={handleImportJSONClick}
-              variant="outline"
-              className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
-            >
-              <FileUp className="w-4 h-4" />
-              <span className="hidden sm:inline">Import JSON</span>
-              <span className="sm:hidden">Import</span>
-            </Button>
-            <Button
-              onClick={handleGeneratePDF}
-              disabled={isGenerating}
-              className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
-            >
-              <Download className="w-4 h-4" />
-              <span className="hidden sm:inline">
-                {isGenerating ? "Generating..." : "Generate PDF"}
-              </span>
-              <span className="sm:hidden">{isGenerating ? "..." : "PDF"}</span>
-            </Button>
-          </div>
-        </div>
+      <Header />
 
-        {/* Hidden file input for JSON import */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".json"
-          onChange={handleFileChange}
-          className="hidden"
-        />
+      {/* Hidden Input */}
+      <input
+        id="json-import-input"
+        type="file"
+        accept=".json"
+        onChange={handleFileChange}
+        className="hidden"
+      />
 
-        {/* Mode Toggle */}
-        <div className="mb-6">
-          <ModeToggle mode={mode} onModeChange={setMode} />
-        </div>
+      <div className="container mx-auto py-6 px-4 flex-1 flex flex-col lg:flex-row gap-6">
 
-        {/* Content based on mode */}
-        {mode === "editor" ? (
-          <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
-        ) : (
-          <PreviewContent />
-        )}
-      </div>
+        {/* Mobile Sidebar (Drawer) */}
+        <div className="lg:hidden flex justify-between items-center mb-4">
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Menu className="w-4 h-4" /> Sections
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              <SheetDescription className="sr-only">Select a section to edit</SheetDescription>
+              <div className="mt-6">
+                <EditorSidebar
+                  activeTab={activeTab}
+                  onTabChange={(tab) => {
+                    setActiveTab(tab);
+                    setIsMobileMenuOpen(false);
+                  }}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-8 py-6 px-4">
-        <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-zinc-600 dark:text-zinc-400">
-          <p>Built in vibe coding</p>
-          <a
-            href="https://github.com/falconandrea/cv-generator"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowPreview(!showPreview)}
+            className="gap-2"
           >
-            <Github className="w-4 h-4" />
-            <span>Source on GitHub</span>
-          </a>
+            {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            {showPreview ? "Edit" : "Preview"}
+          </Button>
         </div>
-      </footer>
+
+        {/* Desktop Sidebar (Left) */}
+        <aside className="hidden lg:block w-64 flex-shrink-0">
+          <div className="sticky top-24">
+            <EditorSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+            <div className="mt-6 flex flex-col gap-2">
+              <Button onClick={handleExportJSON} variant="outline" className="w-full justify-start gap-2">
+                <FileDown className="w-4 h-4" /> Export JSON
+              </Button>
+              <Button onClick={handleImportJSONClick} variant="outline" className="w-full justify-start gap-2">
+                <FileUp className="w-4 h-4" /> Import JSON
+              </Button>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Editor (Center) */}
+        <main className={cn(
+          "flex-1 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm min-h-[500px]",
+          // On mobile: hidden if preview is ON. On desktop: always visible.
+          showPreview ? "hidden lg:block lg:max-w-xl xl:max-w-2xl" : "block w-full"
+        )}>
+          <div className="lg:hidden mb-4 font-semibold">Editing: {activeTab}</div>
+          <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
+        </main>
+
+        {/* Live Preview (Right - Desktop) & Mobile Preview (Center - when toggled) */}
+        {/* Mobile Preview Container */}
+        <div className={cn(
+          "flex-1 bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg",
+          showPreview ? "block lg:hidden" : "hidden"
+        )}>
+          <PreviewContent />
+        </div>
+
+        {/* Live Preview (Right) */}
+        <aside className="hidden lg:block w-[450px] xl:w-[500px] flex-shrink-0">
+          <div className="sticky top-24">
+            <div className="mb-4 flex flex-col gap-2">
+              <Button onClick={handleGeneratePDF} disabled={isGenerating} className="w-full gap-2" size="lg">
+                <Download className="w-4 h-4" />
+                {isGenerating ? "Generating..." : "Download PDF"}
+              </Button>
+            </div>
+            <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-y-auto shadow-lg bg-white dark:bg-zinc-900 h-[800px]">
+              <PreviewContent />
+            </div>
+          </div>
+        </aside>
+
+      </div>
     </div>
   );
 }

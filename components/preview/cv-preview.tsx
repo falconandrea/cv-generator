@@ -219,6 +219,26 @@ export function CVPreview() {
           </section>
 
           {/* Divider */}
+          {(cv.languages.length > 0 || cv.certifications.length > 0) && (
+            <div className="border-b border-gray-200 mb-3" />
+          )}
+        </>
+      )}
+
+      {/* Languages Section */}
+      {cv.languages.length > 0 && (
+        <>
+          <section className="mb-3">
+            <h2 className="text-[14px] font-bold uppercase mb-2">Languages</h2>
+            {cv.languages.map((lang, index) => (
+              <div key={index} className="mb-1">
+                <span className="text-[14px] font-bold">{lang.language}</span>
+                <span className="text-[12px]"> — {lang.proficiency}</span>
+              </div>
+            ))}
+          </section>
+
+          {/* Divider */}
           {cv.certifications.length > 0 && (
             <div className="border-b border-gray-200 mb-3" />
           )}
