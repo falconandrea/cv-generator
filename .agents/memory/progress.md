@@ -13,5 +13,8 @@
 - [x] **Preview Update**: Implemented exact paginated Live PDF preview replacing HTML preview for matching output.
 
 ## Current Context
-- **Goal**: Implement AI Integration (Phase 4).
-- **Next Up**: Setup API route and AI client.
+- **Goal**: Layout Redesign (next session).
+- **Next Up**: Rework editor desktop layout — current 3-column (menu | form | preview) is too cramped. Proposed: top navigation tabs (section menu), left = form, right = PDF preview (wider). Discuss exact breakpoints and tab style before implementing.
+
+## Backlog
+- Implement AI Integration (Phase 4): setup API route and AI client.
