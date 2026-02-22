@@ -41,7 +41,7 @@ export function EditorTopNav({ activeTab, onTabChange, className }: EditorTopNav
                         key={section.id}
                         onClick={() => onTabChange(section.id)}
                         className={cn(
-                            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-all",
+                            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-all cursor-pointer",
                             isActive
                                 ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 shadow-sm"
                                 : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"

@@ -35,7 +35,7 @@ export function NavigationTabs({ value, onValueChange }: NavigationTabsProps) {
               key={section.value}
               value={section.value}
               className={cn(
-                "w-full justify-start text-left h-10 px-3 rounded-md",
+                "w-full justify-start text-left h-10 px-3 rounded-md cursor-pointer",
                 "data-[state=active]:bg-zinc-200 dark:data-[state=active]:bg-zinc-800",
                 "data-[state=active]:text-zinc-900 dark:data-[state=active]:text-zinc-50",
                 "text-zinc-600 dark:text-zinc-400",
