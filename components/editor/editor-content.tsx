@@ -1,7 +1,6 @@
 "use client";
 
 import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PersonalInfoForm } from "@/components/editor/personal-info-form";
 import { SummaryForm } from "@/components/editor/summary-form";
@@ -36,100 +35,86 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Section navigation tabs */}
-      <EditorTopNav activeTab={activeTab} onTabChange={onTabChange} />
+      {/* Sticky nav: tabs + reset button */}
+      <div className="sticky top-12 z-10 -mx-6 px-6 py-3 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
+        <EditorTopNav activeTab={activeTab} onTabChange={onTabChange} className="flex-1" />
 
-      {/* Reset button */}
-      <div className="flex justify-end">
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
-            >
-              <RotateCcw className="h-4 w-4 mr-2" />
-              Reset All Data
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete all
-                data you have entered into the CV generator.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => resetCV()}
-                className="bg-red-600 hover:bg-red-700"
+        {/* Reset button */}
+        <div className="flex shrink-0">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50"
               >
-                Reset Data
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+                <RotateCcw className="h-4 w-4 mr-2" />
+                Reset All Data
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete all
+                  data you have entered into the CV generator.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => resetCV()}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Reset Data
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
 
       {/* Form tabs — driven by activeTab from parent */}
       <Tabs value={activeTab} onValueChange={onTabChange} className="space-y-6">
-        <TabsContent value="personal">
-          <Card>
-            <CardHeader><CardTitle>Personal Information</CardTitle></CardHeader>
-            <CardContent><PersonalInfoForm /></CardContent>
-          </Card>
+        <TabsContent value="personal" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Personal Information</h2>
+          <PersonalInfoForm />
         </TabsContent>
 
-        <TabsContent value="summary">
-          <Card>
-            <CardHeader><CardTitle>Professional Summary</CardTitle></CardHeader>
-            <CardContent><SummaryForm /></CardContent>
-          </Card>
+        <TabsContent value="summary" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Professional Summary</h2>
+          <SummaryForm />
         </TabsContent>
 
-        <TabsContent value="experience">
-          <Card>
-            <CardHeader><CardTitle>Work Experience</CardTitle></CardHeader>
-            <CardContent><ExperienceForm /></CardContent>
-          </Card>
+        <TabsContent value="experience" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Work Experience</h2>
+          <ExperienceForm />
         </TabsContent>
 
-        <TabsContent value="education">
-          <Card>
-            <CardHeader><CardTitle>Education</CardTitle></CardHeader>
-            <CardContent><EducationForm /></CardContent>
-          </Card>
+        <TabsContent value="education" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Education</h2>
+          <EducationForm />
         </TabsContent>
 
-        <TabsContent value="languages">
-          <Card>
-            <CardHeader><CardTitle>Languages</CardTitle></CardHeader>
-            <CardContent><LanguagesForm /></CardContent>
-          </Card>
+        <TabsContent value="languages" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Languages</h2>
+          <LanguagesForm />
         </TabsContent>
 
-        <TabsContent value="skills">
-          <Card>
-            <CardHeader><CardTitle>Skills</CardTitle></CardHeader>
-            <CardContent><SkillsForm /></CardContent>
-          </Card>
+        <TabsContent value="skills" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Skills</h2>
+          <SkillsForm />
         </TabsContent>
 
-        <TabsContent value="projects">
-          <Card>
-            <CardHeader><CardTitle>Side Projects</CardTitle></CardHeader>
-            <CardContent><ProjectsForm /></CardContent>
-          </Card>
+        <TabsContent value="projects" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Side Projects</h2>
+          <ProjectsForm />
         </TabsContent>
 
-        <TabsContent value="certifications">
-          <Card>
-            <CardHeader><CardTitle>Certifications</CardTitle></CardHeader>
-            <CardContent><CertificationsForm /></CardContent>
-          </Card>
+        <TabsContent value="certifications" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Certifications</h2>
+          <CertificationsForm />
         </TabsContent>
       </Tabs>
     </div>

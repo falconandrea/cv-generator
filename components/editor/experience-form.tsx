@@ -110,7 +110,8 @@ export function ExperienceForm() {
                         </div>
 
                         <div className="flex-1 space-y-3">
-                          <div className="grid grid-cols-2 gap-3">
+                          {/* Company & Role — full width stacked */}
+                          <div className="grid grid-cols-1 gap-3">
                             <div>
                               <Label htmlFor={`company-${index}`}>
                                 Company
@@ -146,9 +147,12 @@ export function ExperienceForm() {
                                 className="mt-1"
                               />
                             </div>
+                          </div>
 
+                          {/* Start & End Date — stacked */}
+                          <div className="grid grid-cols-1 gap-3">
                             <div>
-                              <Label htmlFor={`startDate-${index}`}>
+                              <Label htmlFor={`startDate-${index}`} className='mb-1'>
                                 Start Date
                               </Label>
                               <MonthYearSelect
@@ -160,7 +164,7 @@ export function ExperienceForm() {
                             </div>
 
                             <div>
-                              <Label htmlFor={`endDate-${index}`}>
+                              <Label htmlFor={`endDate-${index}`} className='mb-1'>
                                 End Date
                               </Label>
                               <div className="flex items-center gap-2">
@@ -192,45 +196,47 @@ export function ExperienceForm() {
                                 </div>
                               </div>
                             </div>
+                          </div>
 
-                            <div className="col-span-2">
-                              <Label htmlFor={`location-${index}`}>
-                                Location
-                              </Label>
-                              <Input
-                                id={`location-${index}`}
-                                value={entry.location || ""}
-                                onChange={(e) =>
-                                  handleUpdateEntry(
-                                    index,
-                                    "location",
-                                    e.target.value,
-                                  )
-                                }
-                                placeholder="City, Country"
-                                className="mt-1"
-                              />
-                            </div>
+                          {/* Location — full width */}
+                          <div>
+                            <Label htmlFor={`location-${index}`}>
+                              Location
+                            </Label>
+                            <Input
+                              id={`location-${index}`}
+                              value={entry.location || ""}
+                              onChange={(e) =>
+                                handleUpdateEntry(
+                                  index,
+                                  "location",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="City, Country"
+                              className="mt-1"
+                            />
+                          </div>
 
-                            <div className="col-span-2">
-                              <Label htmlFor={`description-${index}`}>
-                                Description
-                              </Label>
-                              <Textarea
-                                id={`description-${index}`}
-                                value={entry.description}
-                                onChange={(e) =>
-                                  handleUpdateEntry(
-                                    index,
-                                    "description",
-                                    e.target.value,
-                                  )
-                                }
-                                placeholder="Describe your responsibilities and achievements..."
-                                rows={4}
-                                className="mt-1"
-                              />
-                            </div>
+                          {/* Description — full width */}
+                          <div>
+                            <Label htmlFor={`description-${index}`}>
+                              Description
+                            </Label>
+                            <Textarea
+                              id={`description-${index}`}
+                              value={entry.description}
+                              onChange={(e) =>
+                                handleUpdateEntry(
+                                  index,
+                                  "description",
+                                  e.target.value,
+                                )
+                              }
+                              placeholder="Describe your responsibilities and achievements..."
+                              rows={4}
+                              className="mt-1"
+                            />
                           </div>
 
                           <Separator />
