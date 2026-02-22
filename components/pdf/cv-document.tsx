@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   entry: {
-    marginBottom: 5,
+    marginBottom: 10,
   },
   entryHeader: {
     marginBottom: 1,
@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     marginBottom: 1,
   },
   entryCompany: {
-    fontSize: 10,
-    fontWeight: "bold",
+    fontSize: 9.5,
+    color: "#444444",
     marginBottom: 1,
   },
   entryHeaderRow: {
@@ -123,8 +123,7 @@ const styles = StyleSheet.create({
   },
   entryDate: {
     fontSize: 9.5,
-    fontWeight: "bold",
-    color: "#333333",
+    color: "#666666",
   },
   entryLocation: {
     fontSize: 9.5,
@@ -415,14 +414,11 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {cv.languages.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Languages</Text>
-            {cv.languages.map((lang, index) => (
-              <View key={index} style={styles.entry}>
-                <Text style={styles.entryTitle}>
-                  {lang.language}
-                  <Text style={{ fontWeight: "normal" }}> — {lang.proficiency}</Text>
-                </Text>
-              </View>
-            ))}
+            <Text style={styles.entryDescription}>
+              {cv.languages
+                .map((lang) => `${lang.language} (${lang.proficiency})`)
+                .join(", ")}
+            </Text>
           </View>
         )}
 
