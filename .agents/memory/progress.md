@@ -1,7 +1,7 @@
 # 📊 Progress Logic
 
 > **Current Status**: 🚀 Executing Phase 4 (AI Integration next)
-> **Last Update**: 2026-02-19
+> **Last Update**: 2026-02-22
 
 ## Recent Achievements
 - [x] **Project Setup**: Documentation generated (PRD, Tech Stack, Flows).
@@ -11,10 +11,11 @@
 - [x] **Core Features**: Added Languages support to Store, Form, and PDF.
 - [x] **Bug Fixes**: Fixed layout, mobile menu, alerts (Toasts/Modals), PDF preview.
 - [x] **Preview Update**: Implemented exact paginated Live PDF preview replacing HTML preview for matching output.
+- [x] **Layout Redesign**: Replaced 3-column layout with sticky horizontal tab bar (`EditorTopNav`) + 2-column split (form 55% left, PDF preview 45% right). Action buttons moved into the tab bar row. Mobile: horizontal scrollable tabs + form/preview toggle.
 
 ## Current Context
-- **Goal**: Layout Redesign (next session).
-- **Next Up**: Rework editor desktop layout — current 3-column (menu | form | preview) is too cramped. Proposed: top navigation tabs (section menu), left = form, right = PDF preview (wider). Discuss exact breakpoints and tab style before implementing.
+- **Goal**: AI Integration (Phase 4).
+- **Next Up**: Setup Next.js API route and AI client (DeepSeek/GLM) for CV suggestions or auto-fill features.
 
 ## Backlog
 - Implement AI Integration (Phase 4): setup API route and AI client.

@@ -1,23 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { EditorSidebar } from "@/components/editor/EditorSidebar";
 import { EditorContent } from "@/components/editor/editor-content";
 import { PreviewContent } from "@/components/editor/preview-content";
 import { Button } from "@/components/ui/button";
-import { Download, FileDown, FileUp, Menu, Eye, EyeOff } from "lucide-react";
+import { Download, FileDown, FileUp, Eye, EyeOff } from "lucide-react";
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
 import { Header } from "@/components/layout/Header";
 import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { toast } from "sonner";
 
 export default function EditorPage() {
   const [activeTab, setActiveTab] = useState("personal");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showPreview, setShowPreview] = useState(true); // Toggle for desktop/mobile
+  const [showPreview, setShowPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const cv = useCVStore();
 
@@ -36,7 +33,6 @@ export default function EditorPage() {
   };
 
   const handleExportJSON = () => {
-    // ... same implementation ...
     try {
       const filename =
         `${cv.personalInfo.fullName.replace(/\s+/g, "-")}-cv-data.json` ||
@@ -53,10 +49,8 @@ export default function EditorPage() {
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // ... same implementation ...
     const file = e.target.files?.[0];
     if (!file) return;
-
     try {
       await importCVFromJSON(file, (data) => {
         cv.setPersonalInfo(data.personalInfo);
@@ -80,7 +74,7 @@ export default function EditorPage() {
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
       <Header />
 
-      {/* Hidden Input */}
+      {/* Hidden file input */}
       <input
         id="json-import-input"
         type="file"
@@ -89,86 +83,81 @@ export default function EditorPage() {
         className="hidden"
       />
 
-      <div className="container mx-auto py-6 px-4 flex-1 flex flex-col lg:flex-row gap-6">
+      {/* ── Sticky sub-header: action buttons only ── */}
+      <div className="sticky top-0 z-20 border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-end gap-2 py-2">
 
-        {/* Mobile Sidebar (Drawer) */}
-        <div className="lg:hidden flex justify-between items-center mb-4">
-          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
-                <Menu className="w-4 h-4" /> Sections
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <SheetDescription className="sr-only">Select a section to edit</SheetDescription>
-              <div className="mt-6">
-                <EditorSidebar
-                  activeTab={activeTab}
-                  onTabChange={(tab) => {
-                    setActiveTab(tab);
-                    setIsMobileMenuOpen(false);
-                  }}
-                />
-              </div>
-            </SheetContent>
-          </Sheet>
+            {/* Mobile: toggle form/preview */}
+            <Button
+              variant="outline"
+              size="sm"
+              className="lg:hidden gap-1.5"
+              onClick={() => setShowPreview(!showPreview)}
+            >
+              {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              {showPreview ? "Edit" : "Preview"}
+            </Button>
 
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowPreview(!showPreview)}
-            className="gap-2"
-          >
-            {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-            {showPreview ? "Edit" : "Preview"}
-          </Button>
-        </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportJSON}
+              className="gap-1.5 hidden sm:flex"
+            >
+              <FileDown className="w-4 h-4" />
+              <span className="hidden md:inline">Export</span>
+            </Button>
 
-        {/* Desktop Sidebar (Left) */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
-          <div className="sticky top-24">
-            <EditorSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-            <div className="mt-6 flex flex-col gap-2">
-              <Button onClick={handleExportJSON} variant="outline" className="w-full justify-start gap-2">
-                <FileDown className="w-4 h-4" /> Export JSON
-              </Button>
-              <Button onClick={handleImportJSONClick} variant="outline" className="w-full justify-start gap-2">
-                <FileUp className="w-4 h-4" /> Import JSON
-              </Button>
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleImportJSONClick}
+              className="gap-1.5 hidden sm:flex"
+            >
+              <FileUp className="w-4 h-4" />
+              <span className="hidden md:inline">Import</span>
+            </Button>
+
+            <Button
+              size="sm"
+              onClick={handleGeneratePDF}
+              disabled={isGenerating}
+              className="gap-1.5"
+            >
+              <Download className="w-4 h-4" />
+              {isGenerating ? "Generating..." : "Download PDF"}
+            </Button>
           </div>
-        </aside>
+        </div>
+      </div>
 
-        {/* Main Editor (Center) */}
-        <main className={cn(
-          "flex-1 bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm min-h-[500px]",
-          // On mobile: hidden if preview is ON. On desktop: always visible.
-          showPreview ? "hidden lg:block lg:max-w-xl xl:max-w-2xl" : "block w-full"
-        )}>
-          <div className="lg:hidden mb-4 font-semibold">Editing: {activeTab}</div>
-          <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
+      {/* ── Main 2-column split ── */}
+      <div className="container mx-auto px-4 py-6 flex-1 flex gap-6">
+
+        {/* Left: Form (55%) */}
+        <main
+          className={cn(
+            "w-full lg:w-[55%] lg:flex-shrink-0",
+            // Mobile: hide when preview is shown
+            showPreview ? "hidden lg:block" : "block"
+          )}
+        >
+          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 min-h-[500px]">
+            <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
         </main>
 
-        {/* Live Preview (Right - Desktop) & Mobile Preview (Center - when toggled) */}
-        {/* Mobile Preview Container */}
-        <div className={cn(
-          "flex-1 bg-zinc-100 dark:bg-zinc-900 p-4 rounded-lg",
-          showPreview ? "block lg:hidden" : "hidden"
-        )}>
-          <PreviewContent />
-        </div>
-
-        {/* Live Preview (Right) */}
-        <aside className="hidden lg:block w-[450px] xl:w-[500px] flex-shrink-0">
-          <div className="sticky top-24">
-            <div className="mb-4 flex flex-col gap-2">
-              <Button onClick={handleGeneratePDF} disabled={isGenerating} className="w-full gap-2" size="lg">
-                <Download className="w-4 h-4" />
-                {isGenerating ? "Generating..." : "Download PDF"}
-              </Button>
-            </div>
-            <div className="border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-y-auto shadow-lg bg-white dark:bg-zinc-900 h-[800px]">
+        {/* Right: PDF Preview (45%) */}
+        <aside
+          className={cn(
+            "lg:flex-1 lg:block",
+            // Mobile: only shown when toggled on
+            showPreview ? "block w-full" : "hidden lg:block"
+          )}
+        >
+          <div className="sticky top-[57px]">
+            <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-lg bg-white dark:bg-zinc-900 h-[calc(100vh-120px)]">
               <PreviewContent />
             </div>
           </div>
