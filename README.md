@@ -62,14 +62,27 @@ A modern, fast, and privacy-focused web application to generate **ATS-optimized 
 
 ---
 
-## 🐳 Docker Deployment
+## 🐳 Docker
 
-The project includes a multi-stage Dockerfile for production deployment.
+The project includes a multi-stage `Dockerfile` for production-ready builds.
+
+### Run locally with Docker
 
 ```bash
-# Build and run with Docker Compose
-docker compose up -d --build
+# 1. Build the image
+docker build -t cv-generator .
+
+# 2. Run the container
+docker run -p 3000:3000 cv-generator
 ```
+
+Then open [http://localhost:3000](http://localhost:3000).
+
+### Deploy on a VPS (with Traefik)
+
+The `server/docker-compose.yml` file is provided as a reference for self-hosting on a VPS behind a [Traefik](https://traefik.io/) reverse proxy with automatic HTTPS (Let's Encrypt).
+
+> **Note**: The file is pre-configured for the domain `cv-generator.andreafalcon.dev` and pulls the image from GHCR (`ghcr.io/falconandrea/cv-generator:main`). You'll need to edit it to match your own domain and image registry before using it.
 
 ---
 
