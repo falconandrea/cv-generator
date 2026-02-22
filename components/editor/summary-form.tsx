@@ -16,7 +16,7 @@ export function SummaryForm() {
 
   return (
     <div>
-      <Label htmlFor="summary">Professional Summary</Label>
+      <Label htmlFor="summary">Intro</Label>
       <Textarea
         id="summary"
         value={summary}
