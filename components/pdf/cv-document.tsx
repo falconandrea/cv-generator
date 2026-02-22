@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * CV Document Component
  *
@@ -27,6 +28,8 @@ import {
   Font,
   StyleSheet,
   Link,
+  Svg,
+  Path,
 } from "@react-pdf/renderer";
 import type { CVState } from "@/state/types";
 
@@ -46,14 +49,14 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 40, // Reduced margins (was 96px, now ~40px)
+    padding: 30,
     fontFamily: "Helvetica",
-    fontSize: 10, // Reduced from 12 to 10
-    lineHeight: 1.5,
+    fontSize: 9.5,
+    lineHeight: 1.3,
     color: "#000000",
   },
   header: {
-    marginBottom: 12,
+    marginBottom: 8,
     textAlign: "center",
   },
   name: {
@@ -62,43 +65,54 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   contactInfo: {
-    fontSize: 10,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
+    alignItems: "center",
+    gap: 4,
+  },
+  contactInfoItem: {
+    flexDirection: "row",
+    alignItems: "center",
     gap: 2,
   },
   contactItem: {
-    color: "#000000",
+    fontSize: 9.5,
+    color: "#333333",
+  },
+  contactSeparator: {
+    fontSize: 9.5,
+    color: "#999999",
+    marginHorizontal: 2,
   },
   section: {
-    marginBottom: 8,
+    marginBottom: 6,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "bold",
-    marginBottom: 8,
+    marginBottom: 4,
     textTransform: "uppercase",
   },
   divider: {
     borderBottomWidth: 1,
     borderBottomColor: "#E5E7EB",
-    marginBottom: 12,
+    marginBottom: 6,
   },
   entry: {
-    marginBottom: 8,
+    marginBottom: 5,
   },
   entryHeader: {
-    marginBottom: 2,
+    marginBottom: 1,
   },
   entryTitle: {
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "bold",
     marginBottom: 1,
   },
   entryCompany: {
-    fontSize: 11,
-    fontStyle: "italic",
+    fontSize: 10,
+    fontWeight: "bold",
     marginBottom: 1,
   },
   entryHeaderRow: {
@@ -108,16 +122,17 @@ const styles = StyleSheet.create({
     marginBottom: 1,
   },
   entryDate: {
-    fontSize: 10,
-    color: "#666666",
+    fontSize: 9.5,
+    fontWeight: "bold",
+    color: "#333333",
   },
   entryLocation: {
-    fontSize: 10,
-    marginBottom: 3,
+    fontSize: 9.5,
+    marginBottom: 1,
     color: "#666666",
   },
   entryDescription: {
-    fontSize: 10,
+    fontSize: 9.5,
     lineHeight: 1.3,
     textAlign: "justify",
   },
@@ -125,12 +140,12 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
   bulletItem: {
-    fontSize: 10,
-    marginBottom: 1,
+    fontSize: 9.5,
+    marginBottom: 0,
     lineHeight: 1.3,
   },
   skillsList: {
-    fontSize: 10,
+    fontSize: 9.5,
     lineHeight: 1.3,
   },
   link: {
@@ -193,6 +208,55 @@ function cleanUrl(url: string): string {
   return url.replace(/^https?:\/\//, "");
 }
 
+// ── Contact Icons (SVG, 8×8pt, ATS-safe) ──────────────────────────────────
+const IconPin = () => (
+  <Svg width={8} height={8} viewBox="0 0 24 24">
+    <Path
+      fill="#555555"
+      d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+    />
+  </Svg>
+);
+
+const IconEmail = () => (
+  <Svg width={9} height={7} viewBox="0 0 24 18">
+    <Path
+      fill="#555555"
+      d="M20 0H4C2.9 0 2 .9 2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V2l8 5 8-5v2z"
+    />
+  </Svg>
+);
+
+const IconGitHub = () => (
+  <Svg width={8} height={8} viewBox="0 0 24 24">
+    <Path
+      fill="#555555"
+      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+    />
+  </Svg>
+);
+
+const IconLinkedIn = () => (
+  <Svg width={8} height={8} viewBox="0 0 24 24">
+    <Path
+      fill="#555555"
+      d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+    />
+  </Svg>
+);
+
+function getLinkDisplay(url: string): { icon: React.ReactElement | null; text: string } {
+  if (url.includes("github.com")) {
+    const username = url.replace(/https?:\/\/(www\.)?github\.com\//, "").replace(/\/$/, "");
+    return { icon: <IconGitHub />, text: username };
+  }
+  if (url.includes("linkedin.com")) {
+    const path = url.replace(/https?:\/\/(www\.)?linkedin\.com/, "").replace(/\/$/, "");
+    return { icon: <IconLinkedIn />, text: path };
+  }
+  return { icon: null, text: cleanUrl(url) };
+}
+
 /**
  * CV Document Component
  *
@@ -209,23 +273,35 @@ export function CVDocument({ cv }: CVDocumentProps) {
           <Text style={styles.name}>{cv.personalInfo.fullName}</Text>
           <View style={styles.contactInfo}>
             {cv.personalInfo.location && (
-              <Text style={styles.contactItem}>{cv.personalInfo.location}</Text>
+              <View style={styles.contactInfoItem}>
+                <IconPin />
+                <Text style={styles.contactItem}>{cv.personalInfo.location}</Text>
+              </View>
             )}
             {cv.personalInfo.location &&
               (cv.personalInfo.email || cv.personalInfo.links.length > 0) && (
-                <Text style={styles.contactItem}>•</Text>
+                <Text style={styles.contactSeparator}>•</Text>
               )}
             {cv.personalInfo.email && (
-              <Text style={styles.contactItem}>{cv.personalInfo.email}</Text>
+              <View style={styles.contactInfoItem}>
+                <IconEmail />
+                <Text style={styles.contactItem}>{cv.personalInfo.email}</Text>
+              </View>
             )}
-            {cv.personalInfo.email && cv.personalInfo.links.length > 0 && (
-              <Text style={styles.contactItem}>•</Text>
-            )}
-            {cv.personalInfo.links.map((link, index) => (
-              <Link key={index} src={link} style={styles.contactItem}>
-                {link}
-              </Link>
-            ))}
+            {cv.personalInfo.links.map((link, index) => {
+              const { icon, text } = getLinkDisplay(link);
+              return (
+                <>
+                  <Text key={`sep-${index}`} style={styles.contactSeparator}>•</Text>
+                  <View key={index} style={styles.contactInfoItem}>
+                    {icon}
+                    <Link src={link} style={styles.contactItem}>
+                      {text}
+                    </Link>
+                  </View>
+                </>
+              );
+            })}
           </View>
         </View>
 
