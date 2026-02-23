@@ -198,7 +198,7 @@ export default function EditorPage() {
             showPreview ? "hidden lg:block" : "block"
           )}
         >
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 min-h-[500px] h-[calc(100vh-140px)] flex flex-col">
+          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 pt-0 min-h-[500px] h-[calc(100vh-140px)] flex flex-col overflow-y-auto">
             {isAiMode ? (
               <AiOptimizePanel messages={chatMessages} onMessagesChange={setChatMessages} onLoadingChange={setIsAiLoading} />
             ) : (

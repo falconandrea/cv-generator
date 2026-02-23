@@ -34,9 +34,9 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
   const { resetCV } = useCVStore();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 pb-6">
       {/* Sticky nav: tabs + reset button */}
-      <div className="sticky top-12 z-10 -mx-6 px-6 py-3 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
+      <div className="sticky top-0 z-10 -mx-6 px-6 py-3 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
         <EditorTopNav activeTab={activeTab} onTabChange={onTabChange} className="flex-1" />
 
         {/* Reset button */}
