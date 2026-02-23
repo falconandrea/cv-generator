@@ -5,10 +5,16 @@ services:
     container_name: cv-generator
     image: ghcr.io/falconandrea/cv-generator:main
     restart: unless-stopped
+    env_file:
+      - .env          # file sul server con le variabili sensibili (non committato)
     environment:
       - HOST=0.0.0.0
       - PORT=3001
       - NODE_ENV=production
+      # Le variabili AI vengono dal .env file
+      # AI_PROVIDER_BASE_URL
+      # AI_PROVIDER_API_KEY
+      # AI_PROVIDER_MODEL
     networks:
       - web
     labels:
