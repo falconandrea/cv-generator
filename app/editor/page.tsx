@@ -3,8 +3,18 @@
 import { useState } from "react";
 import { EditorContent } from "@/components/editor/editor-content";
 import { PreviewContent } from "@/components/editor/preview-content";
+import { AiOptimizePanel, INITIAL_AI_MESSAGE } from "@/components/ai/AiOptimizePanel";
+import type { AiMessage } from "@/state/types";
 import { Button } from "@/components/ui/button";
-import { Download, FileDown, FileUp, Eye, EyeOff } from "lucide-react";
+import {
+  Download,
+  FileDown,
+  FileUp,
+  Eye,
+  EyeOff,
+  Sparkles,
+  ArrowLeft,
+} from "lucide-react";
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
@@ -16,7 +26,15 @@ export default function EditorPage() {
   const [activeTab, setActiveTab] = useState("personal");
   const [showPreview, setShowPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isAiMode, setIsAiMode] = useState(false);
+  const [isAiLoading, setIsAiLoading] = useState(false);
+  const [chatMessages, setChatMessages] = useState<AiMessage[]>([INITIAL_AI_MESSAGE]);
   const cv = useCVStore();
+
+  // AI Optimize is enabled when the user has at least some personal info filled in
+  const isAiEnabled =
+    cv.personalInfo.fullName.trim().length > 0 ||
+    cv.personalInfo.email.trim().length > 0;
 
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
@@ -119,6 +137,44 @@ export default function EditorPage() {
               <span className="hidden md:inline">Import</span>
             </Button>
 
+            {/* AI Optimize / Back to Editor toggle */}
+            {isAiMode ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsAiMode(false)}
+                disabled={isAiLoading}
+                title={isAiLoading ? "Wait for the AI to finish" : undefined}
+                className="gap-1.5"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Back to Editor</span>
+              </Button>
+            ) : (
+              <div
+                title={
+                  !isAiEnabled
+                    ? "Fill in your personal info to unlock AI Optimize"
+                    : undefined
+                }
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsAiMode(true)}
+                  disabled={!isAiEnabled}
+                  className={cn(
+                    "gap-1.5 border-indigo-300 text-indigo-600 dark:border-indigo-700 dark:text-indigo-400",
+                    "hover:bg-indigo-50 dark:hover:bg-indigo-950/40",
+                    "disabled:opacity-50 disabled:cursor-not-allowed"
+                  )}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span className="hidden sm:inline">AI Optimize</span>
+                </Button>
+              </div>
+            )}
+
             <Button
               size="sm"
               onClick={handleGeneratePDF}
@@ -135,16 +191,19 @@ export default function EditorPage() {
       {/* ── Main 2-column split ── */}
       <div className="container mx-auto px-4 py-6 flex-1 flex gap-6">
 
-        {/* Left: Form (55%) */}
+        {/* Left: Form or AI Chat (55%) */}
         <main
           className={cn(
             "w-full lg:w-[55%] lg:flex-shrink-0",
-            // Mobile: hide when preview is shown
             showPreview ? "hidden lg:block" : "block"
           )}
         >
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 min-h-[500px]">
-            <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
+          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 min-h-[500px] h-[calc(100vh-140px)] flex flex-col">
+            {isAiMode ? (
+              <AiOptimizePanel messages={chatMessages} onMessagesChange={setChatMessages} onLoadingChange={setIsAiLoading} />
+            ) : (
+              <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
+            )}
           </div>
         </main>
 
@@ -152,7 +211,6 @@ export default function EditorPage() {
         <aside
           className={cn(
             "lg:flex-1 lg:block",
-            // Mobile: only shown when toggled on
             showPreview ? "block w-full" : "hidden lg:block"
           )}
         >

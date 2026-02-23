@@ -96,3 +96,23 @@ export const defaultCVState: CVState = {
   education: [],
   languages: [],
 };
+
+/**
+ * Partial CV update from AI — any subset of CVState fields.
+ * Personal Info is intentionally excluded from AI edits.
+ */
+export type CVPatch = Partial<Omit<CVState, "personalInfo">>;
+
+/**
+ * AI Chat Message
+ */
+export interface AiMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  /** Structured patch the AI proposes to apply to the CV */
+  proposedChanges?: CVPatch;
+  /** Whether the user has acted on the proposed changes */
+  changeStatus?: "pending" | "applied" | "skipped";
+}
+

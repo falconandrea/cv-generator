@@ -13,6 +13,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type {
   CVState,
+  CVPatch,
   PersonalInfo,
   ExperienceEntry,
   Certification,
@@ -73,6 +74,9 @@ interface CVStore extends CVState {
 
   // Reset action
   resetCV: () => void;
+
+  // AI patch action
+  applyAiPatch: (patch: CVPatch) => void;
 }
 
 /**
@@ -298,6 +302,18 @@ export const useCVStore = create<CVStore>()(
 
       // Reset action
       resetCV: () => set(initialState),
+
+      // AI patch action — merges partial CV data from AI into the store
+      applyAiPatch: (patch) =>
+        set((state) => ({
+          summary: patch.summary !== undefined ? patch.summary : state.summary,
+          experience: patch.experience !== undefined ? patch.experience : state.experience,
+          skills: patch.skills !== undefined ? patch.skills : state.skills,
+          certifications: patch.certifications !== undefined ? patch.certifications : state.certifications,
+          projects: patch.projects !== undefined ? patch.projects : state.projects,
+          education: patch.education !== undefined ? patch.education : state.education,
+          languages: patch.languages !== undefined ? patch.languages : state.languages,
+        })),
     }),
     {
       name: "cv-storage", // localStorage key
