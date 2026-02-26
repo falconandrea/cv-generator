@@ -305,15 +305,40 @@ export const useCVStore = create<CVStore>()(
 
       // AI patch action — merges partial CV data from AI into the store
       applyAiPatch: (patch) =>
-        set((state) => ({
-          summary: patch.summary !== undefined ? patch.summary : state.summary,
-          experience: patch.experience !== undefined ? patch.experience : state.experience,
-          skills: patch.skills !== undefined ? patch.skills : state.skills,
-          certifications: patch.certifications !== undefined ? patch.certifications : state.certifications,
-          projects: patch.projects !== undefined ? patch.projects : state.projects,
-          education: patch.education !== undefined ? patch.education : state.education,
-          languages: patch.languages !== undefined ? patch.languages : state.languages,
-        })),
+        set((state) => {
+          // Helper to merge arrays based on a composite key or a single key function
+          const mergeArray = <T>(current: T[], proposed: T[] | undefined, keyFn: (item: T) => string): T[] => {
+            if (!proposed || proposed.length === 0) return current;
+
+            // Start with a copy of current items
+            const result = [...current];
+
+            proposed.forEach(proposedItem => {
+              const proposedKey = keyFn(proposedItem);
+              const existingIndex = result.findIndex(item => keyFn(item) === proposedKey);
+
+              if (existingIndex >= 0) {
+                // Update existing item
+                result[existingIndex] = { ...result[existingIndex], ...proposedItem };
+              } else {
+                // Add new item
+                result.push(proposedItem);
+              }
+            });
+
+            return result;
+          };
+
+          return {
+            summary: patch.summary !== undefined ? patch.summary : state.summary,
+            skills: patch.skills !== undefined ? Array.from(new Set([...state.skills, ...patch.skills])) : state.skills,
+            experience: mergeArray(state.experience, patch.experience, e => `${e.company}-${e.role}`.toLowerCase()),
+            certifications: mergeArray(state.certifications, patch.certifications, c => `${c.title}-${c.issuer}`.toLowerCase()),
+            projects: mergeArray(state.projects, patch.projects, p => p.name.toLowerCase()),
+            education: mergeArray(state.education, patch.education, e => `${e.degree}-${e.institution}`.toLowerCase()),
+            languages: mergeArray(state.languages, patch.languages, l => l.language.toLowerCase()),
+          };
+        }),
     }),
     {
       name: "cv-storage", // localStorage key
