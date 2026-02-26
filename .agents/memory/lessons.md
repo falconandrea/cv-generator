@@ -22,6 +22,22 @@
 
 ## 📚 Lessons Log
 
+### 2026-02-26 - AI Integration - False Positive Changes
+
+**What went wrong**: The AI proposed changes that were identical to the current CV data, but the UI showed them as "modifications" and the diff view showed identical before/after states.
+**Root cause**: The system prompt provided a JSON schema which implicitly encouraged returning the entire CV object instead of only the modified fields. Also, the frontend didn't perform a deep equality check before treating a field as "changed".
+**Impact**: Confusing UX where the AI says it made changes, but the diff view shows identical before/after states.
+**Solution**:
+1. Updated the System Prompt to say: "Only include fields in 'proposedChanges' that you are ACTUALLY modifying. Omit fields that remain unchanged."
+2. Added a deep comparison function (`getEffectivePatch`) in the frontend (`ChatMessage.tsx`) to filter out `patch` fields that strictly equal the `currentCV` fields.
+**Prevention**:
+- Always sanitize and diff LLM outputs against current state before presenting them as "changes" to users.
+**Files involved**:
+- `app/api/ai/optimize/route.ts`
+- `components/ai/ChatMessage.tsx`
+
+---
+
 ### 2024-02-04 - API Design - Missing Pagination
 
 **What went wrong**: Created `/api/posts` endpoint without pagination. When dataset grew to 500+ posts, API became slow and returned huge responses.
@@ -250,6 +266,7 @@ import Image from 'next/image'
 
 Keep track of lesson types to identify patterns:
 
+- **AI Integration**: 1 lesson
 - **API Design**: 1 lesson
 - **State Management**: 1 lesson
 - **Database**: 1 lesson
