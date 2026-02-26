@@ -2,7 +2,7 @@
 
 import { CheckCheck, X, Bot, User, Pencil, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { AiMessage, CVPatch } from "@/state/types";
+import type { AiMessage, CVPatch, CVState } from "@/state/types";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { AiDiffModal } from "./AiDiffModal";
@@ -53,15 +53,50 @@ function summarizeChanges(patch: CVPatch): string[] {
     return lines;
 }
 
+function getEffectivePatch(patch: CVPatch, currentCV: CVState): CVPatch {
+    const effectivePatch: CVPatch = {};
+    const isDifferent = (a: any, b: any) => JSON.stringify(a) !== JSON.stringify(b);
+
+    if (patch.summary !== undefined && isDifferent(patch.summary, currentCV.summary)) {
+        effectivePatch.summary = patch.summary;
+    }
+    if (patch.skills !== undefined && isDifferent(patch.skills, currentCV.skills)) {
+        effectivePatch.skills = patch.skills;
+    }
+    if (patch.experience !== undefined && isDifferent(patch.experience, currentCV.experience)) {
+        effectivePatch.experience = patch.experience;
+    }
+    if (patch.education !== undefined && isDifferent(patch.education, currentCV.education)) {
+        effectivePatch.education = patch.education;
+    }
+    if (patch.projects !== undefined && isDifferent(patch.projects, currentCV.projects)) {
+        effectivePatch.projects = patch.projects;
+    }
+    if (patch.certifications !== undefined && isDifferent(patch.certifications, currentCV.certifications)) {
+        effectivePatch.certifications = patch.certifications;
+    }
+    if (patch.languages !== undefined && isDifferent(patch.languages, currentCV.languages)) {
+        effectivePatch.languages = patch.languages;
+    }
+
+    return effectivePatch;
+}
+
 export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
     const isUser = message.role === "user";
+    const cv = useCVStore();
+
+    const effectivePatch = message.proposedChanges
+        ? getEffectivePatch(message.proposedChanges, cv)
+        : undefined;
+
     const hasPendingChanges =
-        message.proposedChanges && message.changeStatus === "pending";
+        effectivePatch && Object.keys(effectivePatch).length > 0 && message.changeStatus === "pending";
+
     const changeSummary = hasPendingChanges
-        ? summarizeChanges(message.proposedChanges as CVPatch)
+        ? summarizeChanges(effectivePatch)
         : [];
 
-    const cv = useCVStore();
     const [isDiffOpen, setIsDiffOpen] = useState(false);
 
     return (
@@ -117,7 +152,7 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
                                 size="sm"
                                 variant="default"
                                 className="h-7 gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3"
-                                onClick={() => onApply?.(message.proposedChanges!)}
+                                onClick={() => onApply?.(effectivePatch!)}
                             >
                                 <CheckCheck className="h-3.5 w-3.5" />
                                 Apply
@@ -155,13 +190,13 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
                 )}
             </div>
 
-            {hasPendingChanges && message.proposedChanges && (
+            {hasPendingChanges && effectivePatch && (
                 <AiDiffModal
                     open={isDiffOpen}
                     onOpenChange={setIsDiffOpen}
                     currentCV={cv}
-                    patch={message.proposedChanges}
-                    onApply={() => onApply?.(message.proposedChanges!)}
+                    patch={effectivePatch}
+                    onApply={() => onApply?.(effectivePatch!)}
                 />
             )}
         </div>
