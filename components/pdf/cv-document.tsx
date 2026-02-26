@@ -194,9 +194,11 @@ function formatDate(date: string | null): string {
  * Removes "-", "•", "*" at the beginning of lines
  */
 function cleanDescription(description: string): string {
+  if (!description) return "";
   return description
     .split("\n")
     .map((line) => line.replace(/^[-•*]\s*/, "").trim())
+    .filter((line) => line.length > 0)
     .join("\n");
 }
 
@@ -322,7 +324,13 @@ export function CVDocument({ cv }: CVDocumentProps) {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Experience</Text>
             {cv.experience.map((entry, index) => (
-              <View key={index} style={styles.entry}>
+              <View
+                key={index}
+                style={[
+                  styles.entry,
+                  index === cv.experience.length - 1 ? { marginBottom: 0 } : {}
+                ]}
+              >
                 <View style={styles.entryHeaderRow}>
                   <Text style={styles.entryTitle}>{entry.role}</Text>
                   <View
@@ -365,7 +373,13 @@ export function CVDocument({ cv }: CVDocumentProps) {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Projects</Text>
             {cv.projects.map((project, index) => (
-              <View key={index} style={styles.entry}>
+              <View
+                key={index}
+                style={[
+                  styles.entry,
+                  index === cv.projects.length - 1 ? { marginBottom: 0 } : {}
+                ]}
+              >
                 <Text style={styles.entryTitle}>{project.name}</Text>
                 <Text style={styles.entryLocation}>
                   {project.role}
@@ -395,7 +409,13 @@ export function CVDocument({ cv }: CVDocumentProps) {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Education</Text>
             {cv.education.map((edu, index) => (
-              <View key={index} style={styles.entry}>
+              <View
+                key={index}
+                style={[
+                  styles.entry,
+                  index === cv.education.length - 1 ? { marginBottom: 0 } : {}
+                ]}
+              >
                 <Text style={styles.entryTitle}>{edu.degree}</Text>
                 <Text style={styles.entryDescription}>
                   {edu.institution} • {edu.location} • {edu.year}
@@ -445,7 +465,13 @@ export function CVDocument({ cv }: CVDocumentProps) {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Certifications</Text>
             {cv.certifications.map((cert, index) => (
-              <View key={index} style={styles.entry}>
+              <View
+                key={index}
+                style={[
+                  styles.entry,
+                  index === cv.certifications.length - 1 ? { marginBottom: 0 } : {}
+                ]}
+              >
                 <Text style={styles.entryTitle}>{cert.title}</Text>
                 <Text style={styles.entryDescription}>
                   {cert.issuer}
