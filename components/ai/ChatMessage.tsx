@@ -1,9 +1,12 @@
 "use client";
 
-import { CheckCheck, X, Bot, User, Pencil } from "lucide-react";
+import { CheckCheck, X, Bot, User, Pencil, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AiMessage, CVPatch } from "@/state/types";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { AiDiffModal } from "./AiDiffModal";
+import { useCVStore } from "@/state/store";
 
 interface ChatMessageProps {
     message: AiMessage;
@@ -57,6 +60,9 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
     const changeSummary = hasPendingChanges
         ? summarizeChanges(message.proposedChanges as CVPatch)
         : [];
+
+    const cv = useCVStore();
+    const [isDiffOpen, setIsDiffOpen] = useState(false);
 
     return (
         <div className={cn("flex gap-2.5", isUser ? "flex-row-reverse" : "flex-row")}>
@@ -120,6 +126,15 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
                                 size="sm"
                                 variant="outline"
                                 className="h-7 gap-1.5 text-xs px-3"
+                                onClick={() => setIsDiffOpen(true)}
+                            >
+                                <Eye className="h-3.5 w-3.5" />
+                                View Details
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="h-7 gap-1.5 text-xs px-3 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
                                 onClick={() => onSkip?.(message.id)}
                             >
                                 <X className="h-3.5 w-3.5" />
@@ -139,6 +154,16 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
                     <span className="text-xs text-zinc-400">Changes skipped</span>
                 )}
             </div>
+
+            {hasPendingChanges && message.proposedChanges && (
+                <AiDiffModal
+                    open={isDiffOpen}
+                    onOpenChange={setIsDiffOpen}
+                    currentCV={cv}
+                    patch={message.proposedChanges}
+                    onApply={() => onApply?.(message.proposedChanges!)}
+                />
+            )}
         </div>
     );
 }

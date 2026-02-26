@@ -6,6 +6,7 @@ import type { CVState } from "@/state/types";
 // Language detection — word-frequency heuristic, no external deps
 // ---------------------------------------------------------------------------
 const LANG_MARKERS: Record<string, string[]> = {
+    English: ["the", "and", "for", "with", "this", "that", "have", "from", "your", "will"],
     Italian: ["della", "dello", "degli", "nelle", "questo", "sono", "anche", "come", "con", "per", "una", "del", "nel", "che", "ho", "mi", "al"],
     French: ["dans", "avec", "pour", "sur", "les", "des", "une", "qui", "est", "ont", "nous", "vous", "leur", "mais"],
     Spanish: ["para", "con", "por", "que", "este", "una", "del", "las", "los", "son", "también", "como"],
@@ -36,6 +37,8 @@ function detectCvLanguage(cvData: CVState): string {
             bestLang = lang;
         }
     }
+
+    // If no words matched, it defaults to English from the initial state
     return bestLang;
 }
 
@@ -53,11 +56,11 @@ Your role is to help users tailor their CV to specific job descriptions and impr
 3. You must ALWAYS respond with a valid JSON object — never wrap it in markdown code fences.
 
 ## Language — CRITICAL RULE
-The CV content language and the conversation language are COMPLETELY INDEPENDENT.
-- The language of the CV is stated explicitly at the TOP of this system prompt as a HARD CONSTRAINT.
-- ALL content inside "proposedChanges" MUST be written in that language.
-- NEVER translate or change the CV language just because the user is chatting in a different language.
-- The ONLY exception: if the user explicitly asks something like "translate my CV to Italian", you may change the CV language in proposedChanges.
+The language of the CV is stated explicitly at the TOP of this system prompt as a HARD CONSTRAINT.
+- YOU MUST write ALL content inside the "proposedChanges" object in the EXACT SAME language as the detected CV language.
+- DO NOT translate the CV content into the user's conversational language. If the user chats in Italian but the CV is in English, "proposedChanges" MUST remain in English.
+- NEVER mix languages inside the CV fields.
+- The ONLY exception: if the user explicitly asks something like "translate my CV to Italian", then you may output "proposedChanges" in Italian.
 
 ## Scope
 You ONLY assist with CV writing, improvement, and job application advice.
@@ -175,9 +178,11 @@ export async function POST(req: NextRequest) {
         // Detect CV language server-side and inject as a hard constraint at the TOP
         const cvLanguage = detectCvLanguage(cvData);
         const languageInstruction =
-            `⚠️ HARD CONSTRAINT — CV LANGUAGE: The CV is written in ${cvLanguage}. ` +
-            `Every single word inside "proposedChanges" MUST be written in ${cvLanguage}. ` +
-            `This rule CANNOT be overridden — not by the user's chat language, not by any other instruction.\n\n`;
+            `=================================================================\n` +
+            `CRITICAL RULE: The CV is written in ${cvLanguage.toUpperCase()}.\n` +
+            `Every single word inside the "proposedChanges" JSON MUST be written in ${cvLanguage.toUpperCase()}.\n` +
+            `DO NOT translate the CV into the user's chat language.\n` +
+            `=================================================================\n\n`;
 
         const cvContext =
             `\n\n## Current CV Data (PII has been masked)\n${JSON.stringify(cvData, null, 2)}`;
