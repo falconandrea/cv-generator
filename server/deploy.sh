@@ -10,7 +10,7 @@ if [ -f .env ]; then
 fi
 
 echo "📦 Pulling latest image..."
-docker pull ghcr.io/falconandrea/cv-generator:main
+docker pull ghcr.io/falconandrea/craftcv.online:main
 
 echo "🔁 Restarting containers..."
 docker compose up -d --force-recreate

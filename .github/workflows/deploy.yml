@@ -38,7 +38,7 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/arm64
-          tags: ghcr.io/${{ github.repository_owner }}/cv-generator:${{ steps.tag.outputs.tag }}
+          tags: ghcr.io/${{ github.repository_owner }}/craftcv.online:${{ steps.tag.outputs.tag }}
           build-args: |
             NEXT_PUBLIC_API_ENDPOINT=${{ vars.NEXT_PUBLIC_API_ENDPOINT }}
             NEXT_PUBLIC_ENV=${{ vars.NEXT_PUBLIC_ENV }}
@@ -54,7 +54,7 @@ jobs:
           username: ${{ secrets.PRODUCTION_SERVER_USER }}
           key: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
           source: "server/docker-compose.yml,server/deploy.sh"
-          target: "/home/ubuntu/apps/cv-generator"
+          target: "/home/ubuntu/apps/craftcv.online"
           strip_components: 1
 
       - name: Deploy to Production Server
@@ -64,6 +64,6 @@ jobs:
           username: ${{ secrets.PRODUCTION_SERVER_USER }}
           key: ${{ secrets.PRODUCTION_SERVER_SSH_KEY }}
           script: |
-            cd /home/ubuntu/apps/cv-generator
+            cd /home/ubuntu/apps/craftcv.online
             chmod +x deploy.sh
             ./deploy.sh

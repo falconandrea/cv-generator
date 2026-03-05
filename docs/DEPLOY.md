@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the deployment strategy for the CV Generator application. The deployment is fully automated via GitHub Actions and uses Docker containers with Traefik as reverse proxy.
+This document describes the deployment strategy for the Craft CV application. The deployment is fully automated via GitHub Actions and uses Docker containers with Traefik as reverse proxy.
 
 ---
 
@@ -17,7 +17,7 @@ graph LR
     E --> F[Pull Image]
     F --> G[docker-compose up -d]
     G --> H[Traefik Routes Traffic]
-    H --> I[https://cv-generator.andreafalcon.dev]
+    H --> I[https://craftcv.online]
 ```
 
 ---
@@ -31,7 +31,7 @@ The deployment is triggered automatically when code is pushed to the `main` bran
 1. **Checkout Code**: Retrieves the repository code
 2. **Setup Docker Buildx**: Prepares Docker build environment
 3. **Login to GHCR**: Authenticates with GitHub Container Registry
-4. **Build & Push**: Creates and pushes Docker image to `ghcr.io/falconandrea/cv-generator:main`
+4. **Build & Push**: Creates and pushes Docker image to `ghcr.io/falconandrea/craftcv.online:main`
 5. **Deploy**: Connects to production server via SSH and executes deploy script
 
 ### Required GitHub Secrets
@@ -52,7 +52,7 @@ To generate a new SSH key pair for GitHub Actions:
 
 ```bash
 # Generate a new SSH key pair
-ssh-keygen -t ed25519 -C "github-actions-cv-generator" -f ~/.ssh/github_actions_cv_generator
+ssh-keygen -t ed25519 -C "github-actions-craftcv.online" -f ~/.ssh/github_actions_cv_generator
 
 # Copy the public key to the server
 ssh-copy-id -i ~/.ssh/github_actions_cv_generator.pub ubuntu@your-server-ip
@@ -78,7 +78,7 @@ To create a GitHub Personal Access Token for GHCR:
 
 1. Go to GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
 2. Click "Generate new token" → "Generate new token (classic)"
-3. Give it a descriptive name (e.g., "CV Generator GHCR")
+3. Give it a descriptive name (e.g., "Craft CV GHCR")
 4. Select the `write:packages` scope
 5. Click "Generate token"
 6. Copy the token and paste it as the value for `GHCR_TOKEN`
@@ -134,8 +134,8 @@ Follow these steps to set up the production server:
 1. **Create the application directory**:
 
    ```bash
-   mkdir -p /home/ubuntu/apps/cv-generator
-   cd /home/ubuntu/apps/cv-generator
+   mkdir -p /home/ubuntu/apps/craftcv.online
+   cd /home/ubuntu/apps/craftcv.online
    ```
 
 2. **Copy deployment files** (or let GitHub Actions do it automatically):
@@ -148,17 +148,17 @@ Follow these steps to set up the production server:
 
    ```bash
    # From your local machine
-   scp server/docker-compose.yml ubuntu@your-server:/home/ubuntu/apps/cv-generator/
-   scp server/deploy.sh ubuntu@your-server:/home/ubuntu/apps/cv-generator/
+   scp server/docker-compose.yml ubuntu@your-server:/home/ubuntu/apps/craftcv.online/
+   scp server/deploy.sh ubuntu@your-server:/home/ubuntu/apps/craftcv.online/
 
    # On the server
-   chmod +x /home/ubuntu/apps/cv-generator/deploy.sh
+   chmod +x /home/ubuntu/apps/craftcv.online/deploy.sh
    ```
 
 3. **Verify the setup**:
 
    ```bash
-   cd /home/ubuntu/apps/cv-generator
+   cd /home/ubuntu/apps/craftcv.online
    ls -la
    # You should see: docker-compose.yml and deploy.sh
    ```
@@ -167,13 +167,13 @@ Follow these steps to set up the production server:
 
    ```bash
    # Pull the image manually to test
-   docker pull ghcr.io/falconandrea/cv-generator:main
+   docker pull ghcr.io/falconandrea/craftcv.online:main
 
    # Start the container
    docker compose up -d
 
    # Check logs
-   docker logs -f cv-generator
+   docker logs -f craftcv.online
    ```
 
 ### Directory Structure
@@ -182,7 +182,7 @@ On the production server, the files are organized as follows:
 
 ```
 /home/ubuntu/apps/
-├── cv-generator/           # CV Generator application
+├── craftcv.online/           # Craft CV application
 │   ├── docker-compose.yml   # Docker Compose configuration
 │   ├── deploy.sh            # Deployment script
 │   └── .env                # Optional environment variables
@@ -211,7 +211,7 @@ In the repository, the deployment files are organized as:
 
 ### Image Details
 
-- **Registry**: `ghcr.io/falconandrea/cv-generator`
+- **Registry**: `ghcr.io/falconandrea/craftcv.online`
 - **Tag**: `main` (for production)
 - **Platform**: `linux/arm64` (adjust as needed for your server)
 
@@ -232,8 +232,8 @@ The `docker-compose.yml` file defines the service configuration:
 
 ### Service Configuration
 
-- **Container Name**: `cv-generator`
-- **Image**: `ghcr.io/falconandrea/cv-generator:main`
+- **Container Name**: `craftcv.online`
+- **Image**: `ghcr.io/falconandrea/craftcv.online:main`
 - **Restart Policy**: `unless-stopped`
 - **Network**: `web` (Traefik network)
 
@@ -244,7 +244,7 @@ Labels configure routing and SSL:
 - HTTP to HTTPS redirect
 - HTTPS router with Let's Encrypt certificates
 - Service definition on port 3001
-- DNS resolution for `cv-generator.andreafalcon.dev`
+- DNS resolution for `craftcv.online`
 
 ---
 
@@ -296,17 +296,17 @@ The following environment variables can be configured:
 docker login ghcr.io
 
 # Verify image exists
-docker pull ghcr.io/falconandrea/cv-generator:main
+docker pull ghcr.io/falconandrea/craftcv.online:main
 ```
 
 #### Container Won't Start
 
 ```bash
 # Check container logs
-docker logs cv-generator
+docker logs craftcv.online
 
 # Inspect container status
-docker ps -a | grep cv-generator
+docker ps -a | grep craftcv.online
 ```
 
 #### Traefik Not Routing
@@ -369,13 +369,13 @@ The application can be monitored via:
 
 ```bash
 # View container logs
-docker logs -f cv-generator
+docker logs -f craftcv.online
 
 # View last 100 lines
-docker logs --tail 100 cv-generator
+docker logs --tail 100 craftcv.online
 
 # View logs with timestamps
-docker logs -t cv-generator
+docker logs -t craftcv.online
 ```
 
 ---
@@ -390,7 +390,7 @@ To rollback to a previous version:
 
 ```bash
 # Example rollback
-docker pull ghcr.io/falconandrea/cv-generator:previous-tag
+docker pull ghcr.io/falconandrea/craftcv.online:previous-tag
 # Update docker-compose.yml tag
 docker compose up -d --force-recreate
 ```
@@ -418,7 +418,7 @@ docker compose up -d --force-recreate
 
 ```
 /home/ubuntu/apps/
-├── cv-generator/               # CV Generator application directory
+├── craftcv.online/               # Craft CV application directory
 │   ├── docker-compose.yml       # Copied from server/ directory
 │   ├── deploy.sh                # Copied from server/ directory
 │   └── .env                    # Optional environment variables

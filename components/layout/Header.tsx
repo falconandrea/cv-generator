@@ -18,7 +18,7 @@ export function Header() {
                         Features
                     </Link>
                     <a
-                        href="https://github.com/falconandrea/cv-generator"
+                        href="https://github.com/falconandrea/craftcv.online"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors flex items-center gap-1"

@@ -35,7 +35,7 @@ export default function Home() {
                 </Button>
               </Link>
               <a
-                href="https://github.com/falconandrea/cv-generator"
+                href="https://github.com/falconandrea/craftcv.online"
                 target="_blank"
                 rel="noopener noreferrer"
               >

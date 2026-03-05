@@ -44,8 +44,8 @@ A modern, fast, and privacy-focused web application to generate **ATS-optimized 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/falconandrea/cv-generator.git
-   cd cv-generator
+   git clone https://github.com/falconandrea/craftcv.online.git
+   cd craftcv.online
    ```
 
 2. Install dependencies:
@@ -82,7 +82,7 @@ Then open [http://localhost:3000](http://localhost:3000).
 
 The `server/docker-compose.yml` file is provided as a reference for self-hosting on a VPS behind a [Traefik](https://traefik.io/) reverse proxy with automatic HTTPS (Let's Encrypt).
 
-> **Note**: The file is pre-configured for the domain `cv-generator.andreafalcon.dev` and pulls the image from GHCR (`ghcr.io/falconandrea/cv-generator:main`). You'll need to edit it to match your own domain and image registry before using it.
+> **Note**: The file is pre-configured for the domain `craftcv.online` and pulls the image from GHCR (`ghcr.io/falconandrea/craftcv.online:main`). You'll need to edit it to match your own domain and image registry before using it.
 
 ---
 

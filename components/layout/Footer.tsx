@@ -12,7 +12,7 @@ export function Footer() {
                 </div>
                 <div className="flex items-center gap-6">
                     <a
-                        href="https://github.com/falconandrea/cv-generator"
+                        href="https://github.com/falconandrea/craftcv.online"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"

@@ -269,7 +269,7 @@ Automate the deployment process to production server using GitHub Actions and Do
   - Configure Traefik labels for routing
   - Set up HTTPS with Let's Encrypt
   - Configure HTTP to HTTPS redirect
-  - Set up DNS for `cv-generator.andreafalcon.dev`
+  - Set up DNS for `craftcv.online`
   - Use port 3001 to avoid conflicts with existing containers
 
 - Create `server/deploy.sh` script for server-side deployment:
@@ -295,11 +295,11 @@ Configure in repository settings:
 ### Output
 
 - Automated CI/CD pipeline
-- Application deployed at https://cv-generator.andreafalcon.dev on port 3001
+- Application deployed at https://craftcv.online on port 3001
 - HTTPS with Let's Encrypt certificates
 - Zero-downtime deployments
 - Deployment files organized in `server/` directory
-- GitHub Actions automatically copies files to `/home/ubuntu/apps/cv-generator`
+- GitHub Actions automatically copies files to `/home/ubuntu/apps/craftcv.online`
 
 ### Constraints
 

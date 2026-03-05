@@ -3,7 +3,7 @@ version: "3.9"
 services:
   cv-generator:
     container_name: cv-generator
-    image: ghcr.io/falconandrea/cv-generator:main
+    image: ghcr.io/falconandrea/craftcv.online:main
     restart: unless-stopped
     env_file:
       - .env          # file sul server con le variabili sensibili (non committato)
