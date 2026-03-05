@@ -96,7 +96,7 @@ export default function Home() {
         {/* Features Section */}
         <section id="features" className="py-20 bg-zinc-50 dark:bg-zinc-900/50">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">Why use this CV Generator?</h2>
+            <h2 className="text-3xl font-bold text-center mb-12">Why use Craft CV?</h2>
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {/* Feature 1 */}
               <div className="bg-white dark:bg-zinc-900 p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">

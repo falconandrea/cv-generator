@@ -1,4 +1,4 @@
-# ATS-Friendly CV Generator
+# Craft CV: ATS-Friendly CV Generator
 
 A modern, fast, and privacy-focused web application to generate **ATS-optimized CVs**. Built with Next.js, optimized for speed and simplicity.
 

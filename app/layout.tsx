@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CV Generator",
+  title: "Craft CV",
   description: "ATS-Ready CV Generator",
 };
 

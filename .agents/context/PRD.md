@@ -1,6 +1,6 @@
 # 📋 Product Requirements Document (PRD)
 
-> **Project**: CV Generator (ATS Ready)
+> **Project**: Craft CV (CV generator ATS Ready)
 > **Version**: 1.0.0
 > **Status**: In Progress
 
