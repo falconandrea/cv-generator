@@ -26,17 +26,25 @@ services:
       - "traefik.http.middlewares.cv-generator-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.cv-generator-https-redirect.redirectscheme.permanent=true"
 
+      # ======================
+      # WWW → non-WWW redirect
+      # ======================
+      - "traefik.http.middlewares.cv-generator-www-redirect.redirectregex.regex=^https?://www\\.(.*)"
+      - "traefik.http.middlewares.cv-generator-www-redirect.redirectregex.replacement=https://$${1}"
+      - "traefik.http.middlewares.cv-generator-www-redirect.redirectregex.permanent=true"
+
       - "traefik.http.routers.cv-generator-http.entrypoints=http"
-      - "traefik.http.routers.cv-generator-http.rule=Host(`cv-generator.andreafalcon.dev`)"
+      - "traefik.http.routers.cv-generator-http.rule=Host(`craftcv.online`, `www.craftcv.online`)"
       - "traefik.http.routers.cv-generator-http.middlewares=cv-generator-https-redirect"
 
       # ======================
       # HTTPS router
       # ======================
       - "traefik.http.routers.cv-generator-secure.entrypoints=https"
-      - "traefik.http.routers.cv-generator-secure.rule=Host(`cv-generator.andreafalcon.dev`)"
+      - "traefik.http.routers.cv-generator-secure.rule=Host(`craftcv.online`, `www.craftcv.online`)"
       - "traefik.http.routers.cv-generator-secure.tls=true"
       - "traefik.http.routers.cv-generator-secure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.cv-generator-secure.middlewares=cv-generator-www-redirect"
       - "traefik.http.routers.cv-generator-secure.service=cv-generator"
 
       # ======================
