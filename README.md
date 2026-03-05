@@ -15,7 +15,7 @@ A modern, fast, and privacy-focused web application to generate **ATS-optimized 
 - **Export/Import**: Save your progress as a JSON file and resume anytime.
 - **PDF Generation**: High-quality, selectable text PDF output.
 - **Mobile Friendly**: Responsive design for editing on the go.
-- **AI-Powered (Coming Soon)**:
+- **AI-Powered**:
   - Optimize your CV based on a Job Description (using LLMs like DeepSeek).
   - Get actionable advice to improve your content.
 
@@ -53,12 +53,18 @@ A modern, fast, and privacy-focused web application to generate **ATS-optimized 
    npm install
    ```
 
-3. Run the development server:
+3. Configure environment variables:
+   Copy `.env.example` to `.env.local` and fill in your AI provider details:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+4. Run the development server:
    ```bash
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser.
 
 ---
 
