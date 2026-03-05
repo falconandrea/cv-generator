@@ -1,7 +1,7 @@
 # 📊 Progress Logic
 
-> **Current Status**: ✅ AI Optimize Feature Implemented
-> **Last Update**: 2026-02-22
+> **Current Status**: ✅ Project MVP Completed, AI Feature Live. Preparing for Launch & Feedback.
+> **Last Update**: 2026-03-05
 
 ## Recent Achievements
 - [x] **Project Setup**: Documentation generated (PRD, Tech Stack, Flows).
@@ -14,18 +14,20 @@
 - [x] **Layout Redesign**: Replaced 3-column layout with sticky horizontal tab bar (`EditorTopNav`) + 2-column split (form 55% left, PDF preview 45% right). Action buttons moved into the tab bar row. Mobile: horizontal scrollable tabs + form/preview toggle.
 - [x] **AI Optimize (Phase 4)**: Full feature implemented — chat UI, API route, PII masking, Zustand applyAiPatch, editor toggle, and AI Diff View Modal for reviewing proposed changes before applying.
 - [x] **Bug Fixes**: Fixed inconsistent PDF section spacing caused by array item margins.
+- [x] **Polish & Deploy (Phase 5)**: App deployed to production domain `craftcv.online`.
 
 ## Current Context
-- **Goal**: AI Diff View completed.
-- **Active Feature**: `ai-diff-view` — ✅ Implemented.
+- **Goal**: Launch the project, gather feedback from the community (Reddit, ProductHunt, etc.), and integrate tracking/analytics tools.
+- **Active Feature**: Launch & Analytics.
 
 ## Features In Progress
 | Feature | Status | Files |
 |---|---|---|
-| AI Optimize | ✅ Implemented | `.agents/features/ai-optimize/` |
-| AI Diff View | ✅ Implemented | `components/ai/AiDiffModal.tsx`, `components/ai/ChatMessage.tsx` |
+| Launch & Analytics | ⏳ Pending | `.agents/context/LAUNCH_STRATEGY.md` |
 
 ## Backlog
-- Configure `.env.local` with real AI provider credentials to test end-to-end. ✅ Done (Nous Research Hermes-4-70B)
-- Optional: add streaming support to the AI chat for better UX.
-- Optional: allow the AI to respond in the user's chat language (currently always English).
+- Add Google Tag Manager (GTM).
+- Add Google Analytics 4 (GA4).
+- Add CookieYes (for GDPR/cookie consent).
+- Add Google Search Console (GSC) verification.
+- Post on Reddit (`r/resumes`, `r/SideProject`, `r/webdev`) to gather initial user feedback.
