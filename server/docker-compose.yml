@@ -34,14 +34,14 @@ services:
       - "traefik.http.middlewares.cv-generator-www-redirect.redirectregex.permanent=true"
 
       - "traefik.http.routers.cv-generator-http.entrypoints=http"
-      - "traefik.http.routers.cv-generator-http.rule=Host(`craftcv.online`, `www.craftcv.online`)"
+      - "traefik.http.routers.cv-generator-http.rule=Host(`craftcv.online`) || Host(`www.craftcv.online`)"
       - "traefik.http.routers.cv-generator-http.middlewares=cv-generator-https-redirect"
 
       # ======================
       # HTTPS router
       # ======================
       - "traefik.http.routers.cv-generator-secure.entrypoints=https"
-      - "traefik.http.routers.cv-generator-secure.rule=Host(`craftcv.online`, `www.craftcv.online`)"
+      - "traefik.http.routers.cv-generator-secure.rule=Host(`craftcv.online`) || Host(`www.craftcv.online`)"
       - "traefik.http.routers.cv-generator-secure.tls=true"
       - "traefik.http.routers.cv-generator-secure.tls.certresolver=letsencrypt"
       - "traefik.http.routers.cv-generator-secure.middlewares=cv-generator-www-redirect"
