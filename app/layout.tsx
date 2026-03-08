@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   const GTM_ID =
     process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_GTM_ID
+      ? process.env.GTM_ID
       : undefined;
 
   return (
