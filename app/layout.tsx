@@ -25,10 +25,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const GTM_ID =
-    process.env.NODE_ENV === "production"
-      ? process.env.GTM_ID
-      : undefined;
+  const GTM_ID = process.env.GTM_ID;
 
   return (
     <html lang="en">
