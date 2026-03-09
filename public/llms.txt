@@ -1,0 +1,32 @@
+# Craft CV
+
+ATS-Ready CV Generator. Free, Private, and AI-Powered.
+
+## Tech Stack
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **State Management**: Zustand (local-first)
+- **PDF Generation**: @react-pdf/renderer
+- **Deployment**: Docker, Traefik, VPS (Ubuntu)
+
+## Core Philosophy
+- **Privacy First**: All CV data is stored in the user's browser (localStorage). No database.
+- **ATS Optimization**: Clean, single-column layouts designed to pass Applicant Tracking Systems.
+- **AI-Powered**: Built-in AI coach for CV tailoring with automatic PII masking.
+
+## Key Features
+- **Live PDF Preview**: Real-time, paginated PDF preview matching the export.
+- **AI Optimize**: Chat-based CV improvements based on job descriptions.
+- **AI Diff View**: Interactive modal to review and apply AI-suggested changes.
+- **Local Import/Export**: Save and load CV data as JSON files.
+
+## Project Structure
+The project follows a standard Next.js App Router organization:
+- **Routing & Pages**: Main entry points for Home, Editor, and Preview functionality.
+- **AI Integration**: Server-side logic for CV optimization and AI interaction.
+- **UI Components**: Reusable interface elements and specialized editor forms.
+- **State & Logic**: Global state management and utility functions for data handling.
+
+## Data Structure
+The CV is managed as a unified JSON object following a standardized schema for Personal Info, Experience, Education, Skills, and Projects.

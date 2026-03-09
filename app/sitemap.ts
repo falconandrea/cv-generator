@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/preview',
         '/privacy',
         '/cookies',
+        '/llms.txt',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified,
