@@ -14,6 +14,7 @@
 - [x] **Layout Redesign**: Replaced 3-column layout with sticky horizontal tab bar (`EditorTopNav`) + 2-column split (form 55% left, PDF preview 45% right). Action buttons moved into the tab bar row. Mobile: horizontal scrollable tabs + form/preview toggle.
 - [x] **AI Optimize (Phase 4)**: Full feature implemented — chat UI, API route, PII masking, Zustand applyAiPatch, editor toggle, and AI Diff View Modal for reviewing proposed changes before applying.
 - [x] **Bug Fixes**: Fixed inconsistent PDF section spacing caused by array item margins.
+- [x] **Analytics Integration**: GA4, Microsoft Clarity, and CookieYes integrated via GTM.
 - [x] **Polish & Deploy (Phase 5)**: App deployed to production domain `craftcv.online`.
 
 ## Current Context
@@ -23,11 +24,14 @@
 ## Features In Progress
 | Feature | Status | Files |
 |---|---|---|
-| Launch & Analytics | ⏳ Pending | `.agents/context/LAUNCH_STRATEGY.md` |
+| Launch & Analytics | ⏳ Pending | `.agents/context/LAUNCH_STRATEGY.md`, `app/privacy`, `app/cookies` |
 
 ## Backlog
-- Add Google Tag Manager (GTM).
-- Add Google Analytics 4 (GA4).
-- Add CookieYes (for GDPR/cookie consent).
-- Add Google Search Console (GSC) verification.
+- [x] Add Google Tag Manager (GTM).
+- [x] Add Google Analytics 4 (GA4) (via GTM).
+- [x] Add Microsoft Clarity (via GTM).
+- [x] Add CookieYes (via GTM).
+- [x] Add Privacy & Cookie Policy pages.
+- [x] Add Sitemap & robots.txt.
+- [ ] Add Google Search Console (GSC) verification.
 - Post on Reddit (`r/resumes`, `r/SideProject`, `r/webdev`) to gather initial user feedback.

@@ -11,6 +11,18 @@ export function Footer() {
                     </p>
                 </div>
                 <div className="flex items-center gap-6">
+                    <Link
+                        href="/privacy"
+                        className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+                    >
+                        Privacy Policy
+                    </Link>
+                    <Link
+                        href="/cookies"
+                        className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+                    >
+                        Cookie Policy
+                    </Link>
                     <a
                         href="https://github.com/falconandrea/craftcv.online"
                         target="_blank"
