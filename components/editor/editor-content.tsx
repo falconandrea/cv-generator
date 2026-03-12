@@ -37,20 +37,20 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
   return (
     <div className="flex flex-col gap-4 pb-6">
       {/* Sticky nav: tabs + reset button */}
-      <div className="sticky top-0 z-10 -mx-6 px-6 py-3 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2">
+      <div className="sticky top-0 z-10 -mx-6 px-6 py-3 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex flex-col gap-2">
         <EditorTopNav activeTab={activeTab} onTabChange={onTabChange} className="flex-1" />
 
         {/* Reset button */}
-        <div className="flex shrink-0">
+        <div className="flex shrink-0 justify-end">
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-7 px-2"
               >
-                <RotateCcw className="h-4 w-4 mr-2" />
+                <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
                 Reset All Data
               </Button>
             </AlertDialogTrigger>

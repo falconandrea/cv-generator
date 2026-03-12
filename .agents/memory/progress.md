@@ -26,6 +26,7 @@
 | Feature | Status | Files |
 |---|---|---|
 | PDF Import | ✅ Done | `app/api/ai/import-pdf/route.ts`, `components/editor/pdf-import-banner.tsx` |
+| Editor Layout Optimization | ✅ Done | `components/editor/EditorTopNav.tsx`, `components/editor/editor-content.tsx`, `app/globals.css` |
 | Launch & Analytics | ⏳ Pending | `.agents/context/LAUNCH_STRATEGY.md`, `app/privacy`, `app/cookies` |
 
 ## Backlog
