@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { EditorContent } from "@/components/editor/editor-content";
+import { PdfImportBanner } from "@/components/editor/pdf-import-banner";
 import { PreviewContent } from "@/components/editor/preview-content";
 import { AiOptimizePanel, INITIAL_AI_MESSAGE } from "@/components/ai/AiOptimizePanel";
 import type { AiMessage } from "@/state/types";
@@ -198,6 +199,9 @@ export default function EditorPage() {
             showPreview ? "hidden lg:block" : "block"
           )}
         >
+          <div className="mb-3">
+            <PdfImportBanner />
+          </div>
           <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 pt-0 min-h-[500px] h-[calc(100vh-140px)] flex flex-col overflow-y-auto">
             {isAiMode ? (
               <AiOptimizePanel messages={chatMessages} onMessagesChange={setChatMessages} onLoadingChange={setIsAiLoading} />

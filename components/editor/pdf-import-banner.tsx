@@ -11,7 +11,7 @@ import type { CVState } from "@/state/types";
 export function PdfImportBanner() {
   const [isLoading, setIsLoading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cv = useCVStore();
 
