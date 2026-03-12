@@ -10,6 +10,7 @@ A modern, fast, and privacy-focused web application to generate **ATS-optimized 
 ## 🚀 Features
 
 - **ATS-Ready**: Single-column layout optimized for Applicant Tracking Systems.
+- **PDF Import**: Kickstart your CV by uploading an existing PDF. AI extracts the data and fills the form for you.
 - **Real-time Preview**: See changes as you type.
 - **Privacy First**: No database. Data is stored in your browser or exported as JSON.
 - **Export/Import**: Save your progress as a JSON file and resume anytime.

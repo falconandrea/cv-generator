@@ -11,6 +11,7 @@ import { ProjectsForm } from "@/components/editor/projects-form";
 import { EducationForm } from "@/components/editor/education-form";
 import { LanguagesForm } from "@/components/editor/languages-form";
 import { EditorTopNav } from "@/components/editor/EditorTopNav";
+import { PdfImportBanner } from "@/components/editor/pdf-import-banner";
 import { useCVStore } from "@/state/store";
 import { RotateCcw } from "lucide-react";
 import {
@@ -74,6 +75,9 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
           </AlertDialog>
         </div>
       </div>
+
+      {/* PDF Import Banner — shown only when form is empty */}
+      <PdfImportBanner />
 
       {/* Form tabs — driven by activeTab from parent */}
       <Tabs value={activeTab} onValueChange={onTabChange} className="space-y-6">

@@ -16,7 +16,7 @@ export default function Home() {
             {/* AI badge */}
             <div className="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 rounded-full px-4 py-1.5 text-sm font-medium mb-8">
               <Sparkles className="w-4 h-4" />
-              New — AI Optimize your CV for any job description
+              New — AI PDF Import: Auto-fill your CV from an existing file
             </div>
 
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
@@ -125,9 +125,9 @@ export default function Home() {
                 <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg flex items-center justify-center mb-6">
                   <Zap className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">Fast &amp; Free</h3>
+                <h3 className="text-xl font-bold mb-3">PDF to CV Import</h3>
                 <p className="text-zinc-600 dark:text-zinc-400">
-                  No paywalls, no &quot;premium&quot; templates. Just a fast tool to get the job done. Use AI features to speed up writing.
+                  Already have a CV? Upload it and our AI will extract the content to pre-fill the editor in seconds.
                 </p>
               </div>
             </div>
