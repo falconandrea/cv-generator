@@ -17,6 +17,7 @@
 - [x] **Analytics Integration**: GA4, Microsoft Clarity, and CookieYes integrated via GTM.
 - [x] **Polish & Deploy (Phase 5)**: App deployed to production domain `craftcv.online`.
 - [x] **PDF Import**: Users can upload an existing PDF CV to auto-fill the form via AI-powered text extraction.
+- [x] **Bug Fixes**: Fixed `DOMMatrix is not defined` error in production occurring when processing PDFs by upgrading Docker Node image from v20 to v22.
 
 ## Current Context
 - **Goal**: Launch the project, gather feedback from the community (Reddit, ProductHunt, etc.), and integrate tracking/analytics tools.

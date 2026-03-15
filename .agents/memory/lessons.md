@@ -22,6 +22,26 @@
 
 ## 📚 Lessons Log
 
+### 2026-03-15 - Deployment / Dependencies - DOMMatrix Reference Error in pdf-parse
+
+**What went wrong**: Users couldn't import PDFs in production, causing a `ReferenceError: DOMMatrix is not defined` crash in the API route. Worked fine locally.
+**Root cause**: The local environment used Node.js v24 which natively supports the `DOMMatrix` browser API required internally by `pdf-parse`, but the production environment used a Docker image with `node:20-slim`, which does not have this globally available.
+**Impact**: The `POST /api/ai/import-pdf` route would consistently crash with a 500 error in production anytime a PDF was uploaded.
+**Solution**:
+```dockerfile
+# ❌ Before
+FROM node:20-slim AS base
+
+# ✅ After
+FROM node:22-slim AS base
+```
+**Prevention**:
+- When adding libraries that parse or manipulate documents (like `pdf-parse` or things bridging browser/server boundaries), ensure their required Global APIs (like `DOMMatrix`, `fetch`, etc.) are natively supported in the lowest environment (the production Docker image version), or explicitly installed as polyfills polyfilled. Node 22+ seems to have better alignment with these required standard web APIs.
+**Files involved**:
+- `Dockerfile`
+
+---
+
 ### 2026-02-26 - AI Integration - False Positive Changes
 
 **What went wrong**: The AI proposed changes that were identical to the current CV data, but the UI showed them as "modifications" and the diff view showed identical before/after states.
