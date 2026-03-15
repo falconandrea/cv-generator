@@ -28,17 +28,17 @@
 **Root cause**: The local environment used Node.js v24 which natively supports the `DOMMatrix` browser API required internally by `pdf-parse`, but the production environment used a Docker image with `node:20-slim`, which does not have this globally available.
 **Impact**: The `POST /api/ai/import-pdf` route would consistently crash with a 500 error in production anytime a PDF was uploaded.
 **Solution**:
-```dockerfile
-# ❌ Before
-FROM node:20-slim AS base
+1. Upgraded the Docker image to Node 22 (`FROM node:22-slim AS base`) for better modern API compatibility.
+2. Installed `@napi-rs/canvas` package.
 
-# ✅ After
-FROM node:22-slim AS base
-```
+`pdf-parse` uses Mozilla's `pdfjs-dist` package internally. `pdfjs-dist` warns when it cannot load `@napi-rs/canvas` and subsequently fails to polyfill `DOMMatrix`, `ImageData`, and `Path2D`. Next.js 15+ Turbopack completely restricts global API poisoning, meaning route-level polyfills (`globalThis.DOMMatrix = class {}`) fail. By explicitly installing the native canvas bindings (`npm install @napi-rs/canvas`), `pdfjs-dist` detects it automatically and safely provides its own polyfills.
+
 **Prevention**:
-- When adding libraries that parse or manipulate documents (like `pdf-parse` or things bridging browser/server boundaries), ensure their required Global APIs (like `DOMMatrix`, `fetch`, etc.) are natively supported in the lowest environment (the production Docker image version), or explicitly installed as polyfills polyfilled. Node 22+ seems to have better alignment with these required standard web APIs.
+- When `pdf-parse` or similar document libraries throw `DOMMatrix` errors or `@napi-rs/canvas` missing warnings in a modern Next.js environments, immediately install `@napi-rs/canvas` to provide the native canvas bindings the library uses to polyfill standard Web DOM APIs.
+
 **Files involved**:
 - `Dockerfile`
+- `package.json`
 
 ---
 
