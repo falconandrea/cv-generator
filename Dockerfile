@@ -47,6 +47,11 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
+# Ensure optional canvas polyfill package and pdfjs-dist are copied since Next.js standalone trace misses conditional/dynamic imports
+COPY --from=builder /app/node_modules/@napi-rs ./node_modules/@napi-rs
+COPY --from=builder /app/node_modules/pdfjs-dist ./node_modules/pdfjs-dist
+COPY --from=builder /app/node_modules/pdf-parse ./node_modules/pdf-parse
+
 # Set correct permissions
 RUN chown -R nextjs:nodejs /app
 

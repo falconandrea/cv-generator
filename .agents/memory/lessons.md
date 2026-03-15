@@ -29,12 +29,14 @@
 **Impact**: The `POST /api/ai/import-pdf` route would consistently crash with a 500 error in production anytime a PDF was uploaded.
 **Solution**:
 1. Upgraded the Docker image to Node 22 (`FROM node:22-slim AS base`) for better modern API compatibility.
-2. Installed `@napi-rs/canvas` package.
+2. Installed `@napi-rs/canvas` package (`npm install @napi-rs/canvas`) to provide native canvas bindings.
+3. Added a step to the `Dockerfile` to explicitly manually copy the `@napi-rs`, `pdf-parse`, and `pdfjs-dist` directories into `/app/node_modules/` alongside the standalone output.
 
-`pdf-parse` uses Mozilla's `pdfjs-dist` package internally. `pdfjs-dist` warns when it cannot load `@napi-rs/canvas` and subsequently fails to polyfill `DOMMatrix`, `ImageData`, and `Path2D`. Next.js 15+ Turbopack completely restricts global API poisoning, meaning route-level polyfills (`globalThis.DOMMatrix = class {}`) fail. By explicitly installing the native canvas bindings (`npm install @napi-rs/canvas`), `pdfjs-dist` detects it automatically and safely provides its own polyfills.
+`pdf-parse` uses Mozilla's `pdfjs-dist` package internally. `pdfjs-dist` requires `@napi-rs/canvas` to natively polyfill `DOMMatrix` and dynamically imports its worker `pdf.worker.mjs`. 
+Next.js 15+ Turbopack completely isolates global scopes, meaning injecting `globalThis.DOMMatrix = class {}` dynamically at runtime fails. Crucially, when building with Next.js `output: 'standalone'` for Docker, Next.js's static tracer (`nft`) ignores dynamically loaded or conditional dependency paths. Since `pdfjs-dist` loads the canvas library and worker dynamically context-aware, Next.js completely omits them from the final `/app/.next/standalone` Docker container output. This resulted in the runtime crash despite the packages being in `package.json`.
 
 **Prevention**:
-- When `pdf-parse` or similar document libraries throw `DOMMatrix` errors or `@napi-rs/canvas` missing warnings in a modern Next.js environments, immediately install `@napi-rs/canvas` to provide the native canvas bindings the library uses to polyfill standard Web DOM APIs.
+- When `pdf-parse` or similar document libraries throw `DOMMatrix` errors or `@napi-rs/canvas` missing warnings in a Next.js production environment, remember that Next.js standalone output ignores optional, dynamically imported dependencies. Always explicitly `COPY --from=builder` the missing `node_modules` folders (like `@napi-rs`, `pdf-parse`, and `pdfjs-dist`) into your production `Dockerfile`.
 
 **Files involved**:
 - `Dockerfile`
