@@ -14,6 +14,34 @@ interface PdfImportDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
+function normalizeLinks(links: string[]): string[] {
+  return links
+    .map((link) => {
+      const trimmed = link.trim();
+      if (!trimmed) return null;
+
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+        return trimmed;
+      }
+
+      if (trimmed.startsWith("/in/")) {
+        return `https://linkedin.com${trimmed}`;
+      }
+
+      if (trimmed.startsWith("/")) {
+        return null;
+      }
+
+      const username = trimmed.replace(/\/$/, "");
+      if (username && !username.includes(".") && !username.includes(" ")) {
+        return `https://github.com/${username}`;
+      }
+
+      return null;
+    })
+    .filter((link): link is string => link !== null);
+}
+
 export function PdfImportDialog({ open, onOpenChange }: PdfImportDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -51,6 +79,11 @@ export function PdfImportDialog({ open, onOpenChange }: PdfImportDialogProps) {
         }
 
         const data = json.data as Partial<CVState>;
+
+        // Normalize links before saving
+        if (data.personalInfo?.links) {
+          data.personalInfo.links = normalizeLinks(data.personalInfo.links);
+        }
 
         // Populate the store
         if (data.personalInfo) cv.setPersonalInfo(data.personalInfo);
