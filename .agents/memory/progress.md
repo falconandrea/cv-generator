@@ -39,5 +39,5 @@
 - [x] Add CookieYes (via GTM).
 - [x] Add Privacy & Cookie Policy pages.
 - [x] Add Sitemap & robots.txt.
-- [ ] Add Google Search Console (GSC) verification.
-- Post on Reddit (`r/resumes`, `r/SideProject`, `r/webdev`) to gather initial user feedback.
+- [x] Add Google Search Console (GSC) verification.
+- [x] Post on Reddit (`r/resumes`, `r/SideProject`, `r/webdev`) to gather initial user feedback.
