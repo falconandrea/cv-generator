@@ -117,14 +117,14 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
     }, [messages, onMessagesChange]);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full px-1">
             {/* Privacy notice */}
             <div className="mb-3">
                 <PrivacyNotice />
             </div>
 
             {/* Message list */}
-            <div className="flex-1 overflow-y-auto space-y-4 pr-1 pb-2 min-h-0">
+            <div className="flex-1 overflow-y-auto space-y-4 pr-1 pb-2 min-h-0 pl-1">
                 {messages.map((msg) => (
                     <ChatMessage
                         key={msg.id}
@@ -146,7 +146,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
             </div>
 
             {/* Input bar */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-3 mt-2">
+            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-3 mt-2 px-1">
                 <div className="flex gap-2 items-end">
                     <Textarea
                         value={input}

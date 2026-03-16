@@ -16,14 +16,19 @@ import {
   FileText,
   Eye,
   EyeOff,
-  Sparkles,
-  ArrowLeft
+  Sparkles
 } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
@@ -33,14 +38,17 @@ import { toast } from "sonner";
 
 export default function EditorPage() {
   const [activeTab, setActiveTab] = useState("personal");
-  const [showPreview, setShowPreview] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isAiMode, setIsAiMode] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [chatMessages, setChatMessages] = useState<AiMessage[]>([INITIAL_AI_MESSAGE]);
   const [importPopoverOpen, setImportPopoverOpen] = useState(false);
   const [pdfImportOpen, setPdfImportOpen] = useState(false);
   const [welcomeOpen, setWelcomeOpen] = useState(false);
+
+  // Panel visibility
+  const [showPreview, setShowPreview] = useState(true);
+  const [previewSheetOpen, setPreviewSheetOpen] = useState(false);
+  const [aiSheetOpen, setAiSheetOpen] = useState(false);
   const cv = useCVStore();
 
   // Check if CV is empty (show welcome dialog)
@@ -115,6 +123,11 @@ export default function EditorPage() {
     e.target.value = "";
   };
 
+  // Handle tab change
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+  };
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
       <Header />
@@ -128,152 +141,167 @@ export default function EditorPage() {
         className="hidden"
       />
 
-      {/* ── Sticky sub-header: action buttons only ── */}
+      {/* ── Sticky sub-header: action buttons + toggles ── */}
       <div className="sticky top-0 z-20 border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-end gap-2 py-2">
+          <div className="flex items-center justify-between gap-2 py-2">
+            <div className="flex items-center gap-2">
+              {/* Preview Toggle (Desktop) */}
+              <Button
+                variant={showPreview ? "default" : "outline"}
+                size="sm"
+                onClick={() => setShowPreview(!showPreview)}
+                className="hidden lg:flex gap-1.5"
+              >
+                {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPreview ? "Hide Preview" : "Show Preview"}
+              </Button>
 
-            {/* Mobile: toggle form/preview */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="lg:hidden gap-1.5"
-              onClick={() => setShowPreview(!showPreview)}
-            >
-              {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              {showPreview ? "Edit" : "Preview"}
-            </Button>
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExportJSON}
-              className="gap-1.5"
-            >
-              <FileDown className="w-4 h-4" />
-              <span className="hidden md:inline">Save your JSON</span>
-            </Button>
-
-            <Popover open={importPopoverOpen} onOpenChange={setImportPopoverOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-1.5"
-                >
-                  <FileUp className="w-4 h-4" />
-                  <span className="hidden md:inline">Import CV</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-48 p-1" align="end">
-                <button
-                  onClick={() => {
-                    setImportPopoverOpen(false);
-                    setPdfImportOpen(true);
-                  }}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
-                >
-                  <FileText className="h-4 w-4" />
-                  Import from PDF
-                </button>
-                <button
-                  onClick={() => {
-                    setImportPopoverOpen(false);
-                    handleImportJSONClick();
-                  }}
-                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
-                >
-                  <FileJson className="h-4 w-4" />
-                  Import from JSON
-                </button>
-              </PopoverContent>
-            </Popover>
-
-            {/* AI Optimize / Back to Editor toggle */}
-            {isAiMode ? (
+              {/* Preview Toggle (Mobile) */}
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsAiMode(false)}
-                disabled={isAiLoading}
-                title={isAiLoading ? "Wait for the AI to finish" : undefined}
+                onClick={() => setPreviewSheetOpen(true)}
+                className="lg:hidden gap-1.5"
+              >
+                <Eye className="w-4 h-4" />
+                <span>Preview</span>
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleExportJSON}
                 className="gap-1.5"
               >
-                <ArrowLeft className="w-4 h-4" />
-                <span className="hidden sm:inline">Back to Editor</span>
+                <FileDown className="w-4 h-4" />
+                <span className="hidden md:inline">Save JSON</span>
               </Button>
-            ) : (
-              <div
-                title={
-                  !isAiEnabled
-                    ? "Fill in your personal info to unlock AI Optimize"
-                    : undefined
-                }
-              >
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsAiMode(true)}
-                  disabled={!isAiEnabled}
-                  className={cn(
-                    "gap-1.5 border-indigo-300 text-indigo-600 dark:border-indigo-700 dark:text-indigo-400",
-                    "hover:bg-indigo-50 dark:hover:bg-indigo-950/40",
-                    "disabled:opacity-50 disabled:cursor-not-allowed"
-                  )}
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span className="hidden sm:inline">AI Optimize</span>
-                </Button>
-              </div>
-            )}
 
-            <Button
-              size="sm"
-              onClick={handleGeneratePDF}
-              disabled={isGenerating}
-              className="gap-1.5"
-            >
-              <Download className="w-4 h-4" />
-              {isGenerating ? "Generating..." : "Download PDF"}
-            </Button>
+              <Popover open={importPopoverOpen} onOpenChange={setImportPopoverOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5"
+                  >
+                    <FileUp className="w-4 h-4" />
+                    <span className="hidden md:inline">Import</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-48 p-1" align="start">
+                  <button
+                    onClick={() => {
+                      setImportPopoverOpen(false);
+                      setPdfImportOpen(true);
+                    }}
+                    className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Import from PDF
+                  </button>
+                  <button
+                    onClick={() => {
+                      setImportPopoverOpen(false);
+                      handleImportJSONClick();
+                    }}
+                    className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent"
+                  >
+                    <FileJson className="h-4 w-4" />
+                    Import from JSON
+                  </button>
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {/* AI Button - Opens Sheet */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setAiSheetOpen(true)}
+                disabled={!isAiEnabled}
+                title={!isAiEnabled ? "Fill personal info first" : undefined}
+                className={cn(
+                  "gap-1.5 border-indigo-300 text-indigo-600 dark:border-indigo-700 dark:text-indigo-400",
+                  "hover:bg-indigo-50 dark:hover:bg-indigo-950/40",
+                  !isAiEnabled && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                <Sparkles className="w-4 h-4" />
+                <span className="hidden sm:inline">AI Optimize</span>
+              </Button>
+
+              <Button
+                size="sm"
+                onClick={handleGeneratePDF}
+                disabled={isGenerating}
+                className="gap-1.5"
+              >
+                <Download className="w-4 h-4" />
+                {isGenerating ? "Generating..." : "Download"}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ── Main 2-column split ── */}
-      <div className="container mx-auto px-4 py-6 flex-1 flex gap-6">
-
-        {/* Left: Form or AI Chat (55%) */}
+      {/* ── Main Layout ── */}
+      <div className="container mx-auto px-4 py-4 flex-1 flex gap-4">
+        {/* Left: Editor (Full width if no preview) */}
         <main
           className={cn(
-            "w-full lg:w-[55%] lg:flex-shrink-0",
-            showPreview ? "hidden lg:block" : "block"
+            "flex-1 min-w-0",
+            showPreview ? "lg:w-[55%]" : "w-full"
           )}
         >
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 pt-0 min-h-[500px] h-[calc(100vh-140px)] flex flex-col overflow-y-auto">
-            {isAiMode ? (
-              <AiOptimizePanel messages={chatMessages} onMessagesChange={setChatMessages} onLoadingChange={setIsAiLoading} />
-            ) : (
-              <EditorContent activeTab={activeTab} onTabChange={setActiveTab} />
-            )}
+          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 min-h-[500px] h-[calc(100vh-180px)] overflow-y-auto">
+            <EditorContent
+              activeTab={activeTab}
+              onTabChange={handleTabChange}
+            />
           </div>
         </main>
 
-        {/* Right: PDF Preview (45%) */}
-        <aside
-          className={cn(
-            "lg:flex-1 lg:block",
-            showPreview ? "block w-full" : "hidden lg:block"
-          )}
-        >
-          <div className="sticky top-[57px]">
-            <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-lg bg-white dark:bg-zinc-900 h-[calc(100vh-120px)]">
-              <PreviewContent />
+        {/* Right: Preview Panel (Desktop) */}
+        {showPreview && (
+          <aside className="hidden lg:block w-[45%]">
+            <div className="sticky top-20">
+              <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-lg bg-white dark:bg-zinc-900 h-[calc(100vh-180px)]">
+                <PreviewContent />
+              </div>
             </div>
-          </div>
-        </aside>
-
+          </aside>
+        )}
       </div>
+
+      {/* ── Preview Sheet (Mobile) ── */}
+      <Sheet open={previewSheetOpen} onOpenChange={setPreviewSheetOpen}>
+        <SheetContent side="bottom" className="h-[85vh] flex flex-col p-4 pt-6 rounded-t-2xl mt-2 mx-1">
+          <div className="flex-1 overflow-hidden bg-zinc-100 dark:bg-zinc-950 rounded-lg">
+            <PreviewContent />
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      {/* ── AI Chat Sheet ── */}
+      <Sheet open={aiSheetOpen} onOpenChange={setAiSheetOpen}>
+        <SheetContent side="right" className="w-full sm:w-[450px] p-0 flex flex-col">
+          <SheetHeader className="px-4 py-3 border-b shrink-0 flex flex-row items-center justify-between">
+            <SheetTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-indigo-600" />
+              AI Optimize
+            </SheetTitle>
+          </SheetHeader>
+          <div className="flex-1 overflow-hidden p-4 pt-0">
+            <AiOptimizePanel
+              messages={chatMessages}
+              onMessagesChange={setChatMessages}
+              onLoadingChange={setIsAiLoading}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
 
       {/* Dialogs */}
       <PdfImportDialog open={pdfImportOpen} onOpenChange={setPdfImportOpen} />
