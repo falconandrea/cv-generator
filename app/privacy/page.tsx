@@ -1,5 +1,11 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import Link from "next/link";
+
+export const metadata = {
+  title: "Privacy Policy - CraftCV",
+  description: "Learn how CraftCV protects your privacy and keeps your data secure.",
+};
 
 export default function PrivacyPolicy() {
     return (
@@ -36,7 +42,7 @@ export default function PrivacyPolicy() {
                     <section className="mb-8">
                         <h2 className="text-xl font-semibold mb-4">4. Cookies</h2>
                         <p className="text-zinc-600 dark:text-zinc-400 mb-4">
-                            We use cookies to manage your preferences and for analytics purposes. We use CookieYes to allow you to manage your cookie consent. For more details, please see our <a href="/cookies" className="text-indigo-600 hover:underline">Cookie Policy</a>.
+                            We use cookies to manage your preferences and for analytics purposes. We use CookieYes to allow you to manage your cookie consent. For more details, please see our <Link href="/cookies" className="text-indigo-600 hover:underline">Cookie Policy</Link>.
                         </p>
                     </section>
 

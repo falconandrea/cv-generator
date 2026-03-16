@@ -17,8 +17,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Craft CV",
-  description: "ATS-Ready CV Generator",
+  title: {
+    default: "CraftCV - ATS-Ready CV Generator",
+    template: "%s | CraftCV",
+  },
+  description: "Create professional, ATS-optimized CVs in minutes. Free CV builder with AI-powered optimization and PDF export.",
 };
 
 export default function RootLayout({
@@ -54,6 +57,7 @@ export default function RootLayout({
         {GTM_ID && (
           <noscript>
             <iframe
+              title="Google Tag Manager"
               src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
               height="0"
               width="0"

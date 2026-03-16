@@ -1,6 +1,11 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
+export const metadata = {
+  title: "Cookie Policy - CraftCV",
+  description: "Learn about the cookies used on CraftCV and how we handle your data.",
+};
+
 export default function CookiePolicy() {
     return (
         <div className="min-h-screen flex flex-col bg-white dark:bg-black text-zinc-900 dark:text-zinc-50">
