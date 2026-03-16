@@ -79,6 +79,12 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* Retro-futuristic accent colors */
+  --retro-cyan: #00f0ff;
+  --retro-magenta: #ff00aa;
+  --retro-lime: #b8ff00;
+  --retro-dark: #0a0a12;
+  --retro-grid: rgba(0, 240, 255, 0.06);
 }
 
 .dark {
@@ -131,4 +137,83 @@
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Retro-futuristic animations */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes grid-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes border-dance {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.retro-grid {
+  background-image: 
+    linear-gradient(var(--retro-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--retro-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.retro-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--retro-cyan),
+    transparent
+  );
+  opacity: 0.3;
+  animation: scanline 4s linear infinite;
+}
+
+.retro-glow {
+  text-shadow: 
+    0 0 10px var(--retro-cyan),
+    0 0 20px var(--retro-cyan),
+    0 0 40px var(--retro-cyan);
+}
+
+.retro-border-glow {
+  border: 1px solid var(--retro-cyan);
+  box-shadow: 
+    0 0 5px var(--retro-cyan),
+    inset 0 0 5px rgba(0, 240, 255, 0.1);
 }

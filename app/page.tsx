@@ -1,156 +1,280 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { FileText, Lock, Zap, Sparkles, MessageSquare, ShieldCheck } from "lucide-react";
+import { FileText, Lock, Zap, Sparkles, ArrowRight, Terminal, Cpu, Database, Eye } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-white dark:bg-black text-zinc-900 dark:text-zinc-50">
-      <Header />
+    <div className="min-h-screen flex flex-col bg-[#050508] text-white overflow-x-hidden">
+      {/* Background Grid */}
+      <div className="fixed inset-0 retro-grid pointer-events-none" />
+      <div className="fixed inset-0 pointer-events-none" style={{
+        background: 'radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.08) 0%, transparent 60%)'
+      }} />
+      
+      {/* Header */}
+      <header className="relative z-10 border-b border-[#00f0ff]/20 px-6 py-4">
+        <div className="container mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Terminal className="w-6 h-6 text-[#00f0ff]" />
+            <span className="text-xl font-bold tracking-tight">CRAFT<span className="text-[#00f0ff]">_CV</span></span>
+          </div>
+          <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-400">
+          </nav>
+          <Link href="/editor">
+            <Button className="bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-semibold">
+              Start Building
+            </Button>
+          </Link>
+        </div>
+      </header>
 
-      <main className="flex-1">
+      <main className="relative z-10 flex-1">
         {/* Hero Section */}
-        <section className="py-20 md:py-32 px-4 text-center">
-          <div className="container mx-auto max-w-4xl">
-            {/* AI badge */}
-            <div className="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 rounded-full px-4 py-1.5 text-sm font-medium mb-8">
+        <section className="py-24 md:py-40 px-4 relative">
+          {/* Decorative elements */}
+          <div className="absolute top-20 left-10 w-32 h-32 border border-[#ff00aa]/20 rotate-45 opacity-50" style={{ animation: 'float 6s ease-in-out infinite' }} />
+          <div className="absolute bottom-20 right-10 w-24 h-24 border border-[#00f0ff]/20 -rotate-12 opacity-30" style={{ animation: 'float 8s ease-in-out infinite 1s' }} />
+          
+          <div className="container mx-auto max-w-5xl relative">
+            {/* Retro badge */}
+            <div 
+              className="inline-flex items-center gap-2 border border-[#00f0ff]/40 bg-[#00f0ff]/5 text-[#00f0ff] px-4 py-2 text-sm font-mono mb-10"
+              style={{ animation: 'fade-in-up 0.6s ease-out forwards', opacity: 0 }}
+            >
               <Sparkles className="w-4 h-4" />
-              New — AI PDF Import: Auto-fill your CV from an existing file
+              <span>{/* // */} NEW: AI PDF Import v2.0</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-gradient-to-r from-zinc-900 to-zinc-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
-              Build your professional CV in minutes. <br />
-              Free, Private, ATS-Ready.
+            <h1 
+              className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]"
+              style={{ animation: 'fade-in-up 0.6s ease-out 0.1s forwards', opacity: 0 }}
+            >
+              <span className="text-zinc-100">Build your</span>
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f0ff] to-[#ff00aa]" style={{ textShadow: '0 0 60px rgba(0,240,255,0.5)' }}>
+                professional CV
+              </span>
+              <br />
+              <span className="text-zinc-400 text-4xl md:text-6xl">in minutes</span>
             </h1>
-            <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 mb-10 max-w-2xl mx-auto">
-              No login required. No hidden fees. Local-first privacy.
-              Designed to pass Applicant Tracking Systems and impress recruiters.
-              Now with built-in AI to tailor your CV to any role.
+            
+            <p 
+              className="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl font-mono text-sm leading-relaxed"
+              style={{ animation: 'fade-in-up 0.6s ease-out 0.2s forwards', opacity: 0 }}
+            >
+              <span className="text-[#00f0ff]">$</span> no login required
+              <br />
+              <span className="text-[#ff00aa]">$</span> local-first privacy
+              <br />
+              <span className="text-[#b8ff00]">$</span> ATS-optimized output
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            
+            <div 
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+              style={{ animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}
+            >
               <Link href="/editor">
-                <Button size="lg" className="h-12 px-8 text-lg">
-                  Create your CV Now
+                <Button size="lg" className="h-14 px-8 text-lg bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-bold border border-[#00f0ff] retro-border-glow group">
+                  <span className="mr-2">▶</span>
+                  Initialize CV Builder
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <a
                 href="https://github.com/falconandrea/craftcv.online"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="text-zinc-500 hover:text-[#00f0ff] transition-colors font-mono text-sm flex items-center gap-2"
               >
-                <Button variant="outline" size="lg" className="h-12 px-8 text-lg">
-                  View on GitHub
-                </Button>
+                <span className="text-[#ff00aa]">&gt;</span> view_source()
               </a>
             </div>
           </div>
         </section>
 
-        {/* AI Optimize Feature Spotlight */}
-        <section className="py-16 px-4 bg-indigo-50 dark:bg-indigo-950/20 border-y border-indigo-100 dark:border-indigo-900">
+        {/* Stats Row */}
+        <section className="py-12 px-4 border-y border-[#00f0ff]/10 bg-[#00f0ff]/3">
           <div className="container mx-auto max-w-5xl">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Sparkles className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              <span className="text-sm font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-                AI Optimize
-              </span>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { label: 'ATS Compatible', value: '100%', icon: FileText },
+                { label: 'Zero Data Stored', value: 'Local', icon: Lock },
+                { label: 'AI Extraction', value: 'PDF', icon: Cpu },
+                { label: 'No Signup', value: 'Free', icon: Database },
+              ].map((stat, i) => (
+                <div 
+                  key={stat.label} 
+                  className="text-center group"
+                  style={{ animation: 'fade-in-up 0.6s ease-out forwards', opacity: 0, animationDelay: `${0.4 + i * 0.1}s` }}
+                >
+                  <stat.icon className="w-6 h-6 mx-auto mb-2 text-[#00f0ff] opacity-70 group-hover:opacity-100 transition-opacity" />
+                  <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-xs font-mono text-zinc-500 uppercase tracking-wider">{stat.label}</div>
+                </div>
+              ))}
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">
-              Tailor your CV to any job description — instantly
-            </h2>
-            <p className="text-center text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto mb-12">
-              Paste a job description and let the AI coach suggest targeted improvements:
-              better keywords, stronger bullet points, relevant skills. You review every
-              change before it&apos;s applied.
-            </p>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-zinc-900 rounded-xl border border-indigo-100 dark:border-indigo-900 p-6 shadow-sm">
-                <MessageSquare className="w-7 h-7 text-indigo-500 mb-4" />
-                <h3 className="font-semibold text-lg mb-2">Chat-based suggestions</h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Describe what you want or paste a job ad. The AI explains every change
-                  before touching your CV.
+          </div>
+        </section>
+
+        {/* AI Optimize Section */}
+        <section id="ai" className="py-24 px-4 relative">
+          <div className="container mx-auto max-w-6xl">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 text-[#ff00aa] font-mono text-sm mb-6">
+                  <Cpu className="w-4 h-4" />
+                  <span>{/* // */} AI_MODULE_ACTIVE</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                  Tailor your CV to
+                  <span className="block text-[#00f0ff]">any job — instantly</span>
+                </h2>
+                <p className="text-zinc-400 mb-8 text-lg">
+                  Paste a job description and let the AI coach suggest targeted improvements: better keywords, stronger bullet points, relevant skills. You review every change.
                 </p>
+                <div className="space-y-4">
+                  {[
+                    'Chat-based suggestions with context',
+                    'Privacy by design — PII masked before AI',
+                    'One-click apply or skip each change',
+              ].map((feature) => (
+                    <div key={feature} className="flex items-center gap-3 font-mono text-sm">
+                      <span className="text-[#b8ff00]">✓</span>
+                      <span className="text-zinc-300">{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="bg-white dark:bg-zinc-900 rounded-xl border border-indigo-100 dark:border-indigo-900 p-6 shadow-sm">
-                <ShieldCheck className="w-7 h-7 text-indigo-500 mb-4" />
-                <h3 className="font-semibold text-lg mb-2">Privacy by design</h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Your name, email, and contact details are masked before being sent to
-                  the AI. Your identity stays yours.
-                </p>
-              </div>
-              <div className="bg-white dark:bg-zinc-900 rounded-xl border border-indigo-100 dark:border-indigo-900 p-6 shadow-sm">
-                <Zap className="w-7 h-7 text-indigo-500 mb-4" />
-                <h3 className="font-semibold text-lg mb-2">One-click apply or skip</h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Accept or reject each suggestion with a single click. The live preview
-                  updates in real time.
-                </p>
+              
+              {/* Code-like visualization */}
+              <div className="bg-[#0a0a12] border border-[#00f0ff]/20 p-6 font-mono text-sm relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-8 bg-[#00f0ff]/5 border-b border-[#00f0ff]/20 flex items-center px-4 gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/50" />
+                  <span className="ml-2 text-zinc-500 text-xs">ai_optimizer.ts</span>
+                </div>
+                <div className="pt-8 space-y-2">
+                  <div className="text-zinc-500">{/* // */} Analyzing job description...</div>
+                  <div><span className="text-[#ff00aa]">const</span> keywords <span className="text-[#00f0ff]">=</span> [</div>
+                  <div className="pl-4 text-[#b8ff00]">&quot;React&quot;, &quot;TypeScript&quot;, &quot;System Design&quot;</div>
+                  <div>];</div>
+                  <div className="text-zinc-500 mt-4">{/* // */} Generating suggestions...</div>
+                  <div><span className="text-[#ff00aa]">const</span> improvements <span className="text-[#00f0ff]">=</span> [</div>
+                  <div className="pl-4 text-[#00f0ff]">&quot;Add &apos;Led team of 5 engineers&apos;&quot;,</div>
+                  <div className="pl-4 text-[#00f0ff]">&quot;Include AWS cert (requested)&quot;,</div>
+                  <div className="pl-4 text-[#00f0ff]">&quot;Quantify impact (+40% efficiency)&quot;</div>
+                  <div>];</div>
+                  <div className="mt-4 text-[#b8ff00]">{/* // */} Ready for review</div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-20 bg-zinc-50 dark:bg-zinc-900/50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">Why use Craft CV?</h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {/* Feature 1 */}
-              <div className="bg-white dark:bg-zinc-900 p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mb-6">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold mb-3">ATS-Optimized</h3>
-                <p className="text-zinc-600 dark:text-zinc-400">
-                  Clean, single-column layout with standard fonts and structure that Applicant Tracking Systems can parse easily.
-                </p>
+        <section id="features" className="py-24 px-4 bg-[#00f0ff]/3 border-y border-[#00f0ff]/10">
+          <div className="container mx-auto max-w-6xl">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 text-[#00f0ff] font-mono text-sm mb-4">
+                <Terminal className="w-4 h-4" />
+                <span>{/* // */} MODULE_MANIFEST</span>
               </div>
-
-              {/* Feature 2 */}
-              <div className="bg-white dark:bg-zinc-900 p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-lg flex items-center justify-center mb-6">
-                  <Lock className="w-6 h-6" />
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">Why Craft CV?</h2>
+              <p className="text-zinc-400 max-w-xl mx-auto">
+                Built for professionals who value privacy and results. No tracking, no storage, just clean CV generation.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                {
+                  icon: FileText,
+                  title: 'ATS-Optimized',
+                  description: 'Clean, single-column layout with standard fonts that Applicant Tracking Systems can parse easily.',
+                  color: '#00f0ff'
+                },
+                {
+                  icon: Lock,
+                  title: 'Privacy First',
+                  description: 'Everything lives in your browser. No data stored. Export as JSON and keep full control.',
+                  color: '#ff00aa'
+                },
+                {
+                  icon: Zap,
+                  title: 'PDF Import',
+                  description: 'Upload an existing PDF and our AI extracts content to pre-fill the editor in seconds.',
+                  color: '#b8ff00'
+                },
+              ].map((feature, i) => (
+                <div 
+                  key={feature.title}
+                  className="group bg-[#0a0a12] border border-zinc-800 hover:border-[var(--color)] p-8 transition-all duration-300 hover:-translate-y-1"
+                  style={{ '--color': feature.color } as React.CSSProperties}
+                >
+                  <div 
+                    className="w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition-all duration-300"
+                    style={{ backgroundColor: `${feature.color}15`, color: feature.color }}
+                  >
+                    <feature.icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 text-white group-hover:text-[var(--color)] transition-colors">
+                    {feature.title}
+                  </h3>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold mb-3">Privacy First</h3>
-                <p className="text-zinc-600 dark:text-zinc-400">
-                  We don&apos;t store your data. Everything lives in your browser or is exported as a JSON file that you control.
-                </p>
-              </div>
-
-              {/* Feature 3 */}
-              <div className="bg-white dark:bg-zinc-900 p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg flex items-center justify-center mb-6">
-                  <Zap className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-bold mb-3">PDF to CV Import</h3>
-                <p className="text-zinc-600 dark:text-zinc-400">
-                  Already have a CV? Upload it and our AI will extract the content to pre-fill the editor in seconds.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4 text-center">
-          <div className="container mx-auto">
-            <h2 className="text-3xl font-bold mb-4">Ready to build your CV?</h2>
-            <p className="text-zinc-500 dark:text-zinc-400 mb-8">
-              Start for free. No account needed. AI-powered.
-            </p>
-            <Link href="/editor">
-              <Button size="lg" className="h-12 px-8 text-lg">
-                Get Started for Free
-              </Button>
-            </Link>
+        <section className="py-24 px-4 text-center relative">
+          <div className="container mx-auto max-w-3xl relative">
+            {/* Decorative glow */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#00f0ff]/10 to-transparent opacity-50" />
+            
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 text-[#b8ff00] font-mono text-sm mb-6">
+                <Eye className="w-4 h-4" />
+                <span>{/* // */} READY_TO_DEPLOY</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                Ready to build your <span className="text-[#00f0ff]">CV?</span>
+              </h2>
+              <p className="text-zinc-400 mb-10 text-lg">
+                Start for free. No account needed. AI-powered.
+              </p>
+              <Link href="/editor">
+                <Button size="lg" className="h-14 px-10 text-lg bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-bold border border-[#00f0ff] retro-border-glow group">
+                  <Terminal className="mr-2 w-5 h-5" />
+                  Launch Editor
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       </main>
 
-      <Footer />
+      {/* Footer */}
+      <footer className="relative z-10 border-t border-[#00f0ff]/20 px-6 py-8">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-zinc-500 font-mono text-sm">
+            <Terminal className="w-4 h-4" />
+            <span>CRAFT_CV v2.0.0</span>
+          </div>
+          <div className="flex items-center gap-6 text-zinc-500 text-sm">
+            <a href="https://github.com/falconandrea/craftcv.online" className="hover:text-[#00f0ff] transition-colors">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
