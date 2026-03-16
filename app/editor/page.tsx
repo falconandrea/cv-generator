@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EditorContent } from "@/components/editor/editor-content";
-import { PdfImportBanner } from "@/components/editor/pdf-import-banner";
+import { PdfImportDialog } from "@/components/editor/pdf-import-dialog";
+import { WelcomeDialog } from "@/components/editor/welcome-dialog";
 import { PreviewContent } from "@/components/editor/preview-content";
 import { AiOptimizePanel, INITIAL_AI_MESSAGE } from "@/components/ai/AiOptimizePanel";
 import type { AiMessage } from "@/state/types";
@@ -11,11 +12,18 @@ import {
   Download,
   FileDown,
   FileUp,
+  FileJson,
+  FileText,
   Eye,
   EyeOff,
   Sparkles,
-  ArrowLeft,
+  ArrowLeft
 } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
@@ -30,7 +38,25 @@ export default function EditorPage() {
   const [isAiMode, setIsAiMode] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [chatMessages, setChatMessages] = useState<AiMessage[]>([INITIAL_AI_MESSAGE]);
+  const [importPopoverOpen, setImportPopoverOpen] = useState(false);
+  const [pdfImportOpen, setPdfImportOpen] = useState(false);
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
   const cv = useCVStore();
+
+  // Check if CV is empty (show welcome dialog)
+  const isCVEmpty =
+    !cv.personalInfo.fullName.trim() &&
+    !cv.personalInfo.email.trim() &&
+    !cv.summary.trim() &&
+    cv.experience.length === 0 &&
+    cv.skills.length === 0 &&
+    cv.education.length === 0;
+
+  useEffect(() => {
+    if (isCVEmpty) {
+      setWelcomeOpen(true);
+    }
+  }, []);
 
   // AI Optimize is enabled when the user has at least some personal info filled in
   const isAiEnabled =
@@ -122,21 +148,46 @@ export default function EditorPage() {
               variant="outline"
               size="sm"
               onClick={handleExportJSON}
-              className="gap-1.5 hidden sm:flex"
+              className="gap-1.5"
             >
               <FileDown className="w-4 h-4" />
-              <span className="hidden md:inline">Export</span>
+              <span className="hidden md:inline">Save your JSON</span>
             </Button>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleImportJSONClick}
-              className="gap-1.5 hidden sm:flex"
-            >
-              <FileUp className="w-4 h-4" />
-              <span className="hidden md:inline">Import</span>
-            </Button>
+            <Popover open={importPopoverOpen} onOpenChange={setImportPopoverOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-1.5"
+                >
+                  <FileUp className="w-4 h-4" />
+                  <span className="hidden md:inline">Import CV</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-48 p-1" align="end">
+                <button
+                  onClick={() => {
+                    setImportPopoverOpen(false);
+                    setPdfImportOpen(true);
+                  }}
+                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
+                >
+                  <FileText className="h-4 w-4" />
+                  Import from PDF
+                </button>
+                <button
+                  onClick={() => {
+                    setImportPopoverOpen(false);
+                    handleImportJSONClick();
+                  }}
+                  className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground"
+                >
+                  <FileJson className="h-4 w-4" />
+                  Import from JSON
+                </button>
+              </PopoverContent>
+            </Popover>
 
             {/* AI Optimize / Back to Editor toggle */}
             {isAiMode ? (
@@ -199,9 +250,6 @@ export default function EditorPage() {
             showPreview ? "hidden lg:block" : "block"
           )}
         >
-          <div className="mb-3">
-            <PdfImportBanner />
-          </div>
           <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 pt-0 min-h-[500px] h-[calc(100vh-140px)] flex flex-col overflow-y-auto">
             {isAiMode ? (
               <AiOptimizePanel messages={chatMessages} onMessagesChange={setChatMessages} onLoadingChange={setIsAiLoading} />
@@ -226,6 +274,22 @@ export default function EditorPage() {
         </aside>
 
       </div>
+
+      {/* Dialogs */}
+      <PdfImportDialog open={pdfImportOpen} onOpenChange={setPdfImportOpen} />
+      <WelcomeDialog
+        isOpen={welcomeOpen}
+        onOpenChange={setWelcomeOpen}
+        onImportPdf={() => {
+          setWelcomeOpen(false);
+          setPdfImportOpen(true);
+        }}
+        onImportJson={() => {
+          setWelcomeOpen(false);
+          handleImportJSONClick();
+        }}
+        onStartFromScratch={() => setWelcomeOpen(false)}
+      />
     </div>
   );
 }
