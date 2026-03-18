@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
+import dynamic from "next/dynamic";
 import { EditorContent } from "@/components/editor/editor-content";
 import { PdfImportDialog } from "@/components/editor/pdf-import-dialog";
 import { WelcomeDialog } from "@/components/editor/welcome-dialog";
-import { PreviewContent } from "@/components/editor/preview-content";
 import { AiOptimizePanel, INITIAL_AI_MESSAGE } from "@/components/ai/AiOptimizePanel";
 import type { AiMessage } from "@/state/types";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,28 @@ import { Header } from "@/components/layout/Header";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
+const PreviewContent = dynamic(
+  () => import("@/components/editor/preview-content").then((mod) => mod.PreviewContent),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-full flex flex-col items-center justify-center text-zinc-400 gap-2">
+        <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-600 rounded-full animate-spin" />
+        <span className="text-sm">Loading preview...</span>
+      </div>
+    )
+  }
+);
+
+function PreviewLoader() {
+  return (
+    <div className="h-full flex flex-col items-center justify-center text-zinc-400 gap-2">
+      <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-600 rounded-full animate-spin" />
+      <span className="text-sm">Loading preview...</span>
+    </div>
+  );
+}
+
 export default function EditorPage() {
   const [activeTab, setActiveTab] = useState("personal");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -44,39 +66,62 @@ export default function EditorPage() {
   const [importPopoverOpen, setImportPopoverOpen] = useState(false);
   const [pdfImportOpen, setPdfImportOpen] = useState(false);
   const [welcomeOpen, setWelcomeOpen] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   // Panel visibility
   const [showPreview, setShowPreview] = useState(true);
   const [previewSheetOpen, setPreviewSheetOpen] = useState(false);
   const [aiSheetOpen, setAiSheetOpen] = useState(false);
-  const cv = useCVStore();
 
-  // Check if CV is empty (show welcome dialog)
-  const isCVEmpty =
-    !cv.personalInfo.fullName.trim() &&
-    !cv.personalInfo.email.trim() &&
-    !cv.summary.trim() &&
-    cv.experience.length === 0 &&
-    cv.skills.length === 0 &&
-    cv.education.length === 0;
+  // Selector slices for optimal re-renders (rerender-defer-reads)
+  const personalInfo = useCVStore((state) => state.personalInfo);
+  const summary = useCVStore((state) => state.summary);
+  const experience = useCVStore((state) => state.experience);
+  const skills = useCVStore((state) => state.skills);
+  const education = useCVStore((state) => state.education);
+
+  // Actions - only these trigger re-renders
+  const setPersonalInfo = useCVStore((state) => state.setPersonalInfo);
+  const setSummary = useCVStore((state) => state.setSummary);
+  const setExperience = useCVStore((state) => state.setExperience);
+  const setSkills = useCVStore((state) => state.setSkills);
+  const setCertifications = useCVStore((state) => state.setCertifications);
+  const setProjects = useCVStore((state) => state.setProjects);
+  const setEducation = useCVStore((state) => state.setEducation);
+  const setLanguages = useCVStore((state) => state.setLanguages);
+
+  // Wait for hydration before checking if CV is empty (fixes welcome dialog bug)
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  // Check if CV is empty (show welcome dialog) - only after hydration
+  const isCVEmpty = isHydrated && (
+    !personalInfo.fullName.trim() &&
+    !personalInfo.email.trim() &&
+    !summary.trim() &&
+    experience.length === 0 &&
+    skills.length === 0 &&
+    education.length === 0
+  );
 
   useEffect(() => {
     if (isCVEmpty) {
       setWelcomeOpen(true);
     }
-  }, []);
+  }, [isCVEmpty]);
 
   // AI Optimize is enabled when the user has at least some personal info filled in
   const isAiEnabled =
-    cv.personalInfo.fullName.trim().length > 0 ||
-    cv.personalInfo.email.trim().length > 0;
+    personalInfo.fullName.trim().length > 0 ||
+    personalInfo.email.trim().length > 0;
 
   const handleGeneratePDF = async () => {
     setIsGenerating(true);
     try {
       const filename =
-        `${cv.personalInfo.fullName.replace(/\s+/g, "-")}-cv.pdf` || "cv.pdf";
-      await generateAndDownloadPDF(cv, filename);
+        `${personalInfo.fullName.replace(/\s+/g, "-")}-cv.pdf` || "cv.pdf";
+      await generateAndDownloadPDF({ personalInfo, summary, experience, skills, certifications: [], projects: [], education, languages: [] }, filename);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
       toast.error("Failed to generate PDF. Please try again.");
@@ -88,9 +133,9 @@ export default function EditorPage() {
   const handleExportJSON = () => {
     try {
       const filename =
-        `${cv.personalInfo.fullName.replace(/\s+/g, "-")}-cv-data.json` ||
+        `${personalInfo.fullName.replace(/\s+/g, "-")}-cv-data.json` ||
         "cv-data.json";
-      exportCVAsJSON(cv, filename);
+      exportCVAsJSON({ personalInfo, summary, experience, skills, certifications: [], projects: [], education, languages: [] }, filename);
     } catch (error) {
       console.error("Failed to export JSON:", error);
       toast.error("Failed to export CV data. Please try again.");
@@ -106,14 +151,14 @@ export default function EditorPage() {
     if (!file) return;
     try {
       await importCVFromJSON(file, (data) => {
-        cv.setPersonalInfo(data.personalInfo);
-        cv.setSummary(data.summary);
-        cv.setExperience(data.experience);
-        cv.setSkills(data.skills);
-        cv.setCertifications(data.certifications);
-        cv.setProjects(data.projects);
-        cv.setEducation(data.education);
-        if (data.languages) cv.setLanguages(data.languages);
+        setPersonalInfo(data.personalInfo);
+        setSummary(data.summary);
+        setExperience(data.experience);
+        setSkills(data.skills);
+        setCertifications(data.certifications);
+        setProjects(data.projects);
+        setEducation(data.education);
+        if (data.languages) setLanguages(data.languages);
       });
       toast.success("CV data imported successfully!");
     } catch (error) {
@@ -239,7 +284,7 @@ export default function EditorPage() {
                 className="gap-1.5"
               >
                 <Download className="w-4 h-4" />
-                {isGenerating ? "Generating..." : "Download"}
+                {isGenerating ? "Generating..." : "Download PDF"}
               </Button>
             </div>
           </div>
@@ -255,11 +300,13 @@ export default function EditorPage() {
             showPreview ? "lg:w-[55%]" : "w-full"
           )}
         >
-          <div className="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm p-6 min-h-[500px] h-[calc(100vh-180px)] overflow-y-auto">
-            <EditorContent
-              activeTab={activeTab}
-              onTabChange={handleTabChange}
-            />
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm min-h-[500px] h-[calc(100vh-180px)] flex flex-col">
+            <div className="flex-1 overflow-y-auto p-6 pt-0">
+              <EditorContent
+                activeTab={activeTab}
+                onTabChange={handleTabChange}
+              />
+            </div>
           </div>
         </main>
 
@@ -267,8 +314,12 @@ export default function EditorPage() {
         {showPreview && (
           <aside className="hidden lg:block w-[45%]">
             <div className="sticky top-20">
-              <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl overflow-hidden shadow-lg bg-white dark:bg-zinc-900 h-[calc(100vh-180px)]">
-                <PreviewContent />
+              <div className="border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-lg bg-white dark:bg-zinc-900 h-[calc(100vh-180px)] flex flex-col">
+                <div className="flex-1 overflow-y-auto">
+                  <Suspense fallback={<PreviewLoader />}>
+                    <PreviewContent />
+                  </Suspense>
+                </div>
               </div>
             </div>
           </aside>
@@ -278,8 +329,10 @@ export default function EditorPage() {
       {/* ── Preview Sheet (Mobile) ── */}
       <Sheet open={previewSheetOpen} onOpenChange={setPreviewSheetOpen}>
         <SheetContent side="bottom" className="h-[85vh] flex flex-col p-4 pt-6 rounded-t-2xl mt-2 mx-1">
-          <div className="flex-1 overflow-hidden bg-zinc-100 dark:bg-zinc-950 rounded-lg">
-            <PreviewContent />
+          <div className="flex-1 overflow-y-auto bg-zinc-100 dark:bg-zinc-950 rounded-lg">
+            <Suspense fallback={<PreviewLoader />}>
+              <PreviewContent />
+            </Suspense>
           </div>
         </SheetContent>
       </Sheet>

@@ -28,7 +28,17 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
-    const cv = useCVStore();
+
+    // Selector slices for optimal re-renders (rerender-defer-reads)
+    const personalInfo = useCVStore((state) => state.personalInfo);
+    const summary = useCVStore((state) => state.summary);
+    const experience = useCVStore((state) => state.experience);
+    const skills = useCVStore((state) => state.skills);
+    const certifications = useCVStore((state) => state.certifications);
+    const projects = useCVStore((state) => state.projects);
+    const education = useCVStore((state) => state.education);
+    const languages = useCVStore((state) => state.languages);
+    const applyAiPatch = useCVStore((state) => state.applyAiPatch);
 
     // Auto-scroll to bottom on new messages
     useEffect(() => {
@@ -60,14 +70,14 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
         try {
             const history = buildApiHistory(updatedMessages);
             const cvSnapshot: CVState = {
-                personalInfo: cv.personalInfo,
-                summary: cv.summary,
-                experience: cv.experience,
-                skills: cv.skills,
-                certifications: cv.certifications,
-                projects: cv.projects,
-                education: cv.education,
-                languages: cv.languages,
+                personalInfo,
+                summary,
+                experience,
+                skills,
+                certifications,
+                projects,
+                education,
+                languages,
             };
 
             const response = await sendAiMessage(history, cvSnapshot);
@@ -94,7 +104,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
             setIsLoading(false);
             onLoadingChange?.(false);
         }
-    }, [input, isLoading, messages, buildApiHistory, cv, onMessagesChange]);
+    }, [input, isLoading, messages, buildApiHistory, personalInfo, summary, experience, skills, certifications, projects, education, languages, onMessagesChange]);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -104,11 +114,11 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
     };
 
     const handleApply = useCallback((changes: CVPatch, messageId: string) => {
-        cv.applyAiPatch(changes);
+        applyAiPatch(changes);
         onMessagesChange(
             messages.map((m) => (m.id === messageId ? { ...m, changeStatus: "applied" } : m))
         );
-    }, [cv, messages, onMessagesChange]);
+    }, [applyAiPatch, messages, onMessagesChange]);
 
     const handleSkip = useCallback((messageId: string) => {
         onMessagesChange(

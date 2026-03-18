@@ -12,27 +12,38 @@ export interface AiOptimizeResponse {
     error?: string;
 }
 
-/**
- * Sends a message to the AI Optimize API route.
- * Applies PII masking to cvData before sending.
- */
+let pendingRequest: Promise<AiOptimizeResponse> | null = null;
+
 export async function sendAiMessage(
     messages: ApiMessage[],
     cvData: CVState
 ): Promise<AiOptimizeResponse> {
-    const maskedCv = maskPii(cvData);
-
-    const res = await fetch("/api/ai/optimize", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages, cvData: maskedCv }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-        return { content: "", error: data.error ?? "Unknown error from AI provider." };
+    if (pendingRequest) {
+        return pendingRequest;
     }
 
-    return data as AiOptimizeResponse;
+    const maskedCv = maskPii(cvData);
+
+    const fetchPromise = (async () => {
+        try {
+            const res = await fetch("/api/ai/optimize", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ messages, cvData: maskedCv }),
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                return { content: "", error: data.error ?? "Unknown error from AI provider." };
+            }
+
+            return data as AiOptimizeResponse;
+        } finally {
+            pendingRequest = null;
+        }
+    })();
+
+    pendingRequest = fetchPromise;
+    return fetchPromise;
 }
