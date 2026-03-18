@@ -146,35 +146,39 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
                             </div>
                         )}
 
-                        {/* Action buttons */}
-                        <div className="flex gap-2 px-3 py-2">
-                            <Button
-                                size="sm"
-                                variant="default"
-                                className="h-7 gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3"
-                                onClick={() => onApply?.(effectivePatch!)}
-                            >
-                                <CheckCheck className="h-3.5 w-3.5" />
-                                Apply
-                            </Button>
+                        {/* Action buttons - stacked: View Details on top, Apply+Skip below */}
+                        <div className="flex flex-col gap-2 px-3 py-2">
+                            {/* View Details - full width */}
                             <Button
                                 size="sm"
                                 variant="outline"
-                                className="h-7 gap-1.5 text-xs px-3"
+                                className="h-7 gap-1.5 text-xs px-3 w-full"
                                 onClick={() => setIsDiffOpen(true)}
                             >
                                 <Eye className="h-3.5 w-3.5" />
                                 View Details
                             </Button>
-                            <Button
-                                size="sm"
-                                variant="outline"
-                                className="h-7 gap-1.5 text-xs px-3 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30"
-                                onClick={() => onSkip?.(message.id)}
-                            >
-                                <X className="h-3.5 w-3.5" />
-                                Skip
-                            </Button>
+                            {/* Apply and Skip - side by side */}
+                            <div className="flex gap-2">
+                                <Button
+                                    size="sm"
+                                    variant="default"
+                                    className="h-7 gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 flex-1"
+                                    onClick={() => onApply?.(effectivePatch!)}
+                                >
+                                    <CheckCheck className="h-3.5 w-3.5" />
+                                    Apply
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="h-7 gap-1.5 text-xs px-3 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30 flex-1"
+                                    onClick={() => onSkip?.(message.id)}
+                                >
+                                    <X className="h-3.5 w-3.5" />
+                                    Skip
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 )}
