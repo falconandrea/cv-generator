@@ -10,6 +10,7 @@ import { CertificationsForm } from "@/components/editor/certifications-form";
 import { ProjectsForm } from "@/components/editor/projects-form";
 import { EducationForm } from "@/components/editor/education-form";
 import { LanguagesForm } from "@/components/editor/languages-form";
+import { CustomSectionForm } from "@/components/editor/custom-section-form";
 import { EditorTopNav } from "@/components/editor/EditorTopNav";
 import { useCVStore } from "@/state/store";
 import { RotateCcw } from "lucide-react";
@@ -106,6 +107,11 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
         <TabsContent value="skills" className="space-y-4">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Skills</h2>
           <SkillsForm />
+        </TabsContent>
+
+        <TabsContent value="custom" className="space-y-4">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Custom Section</h2>
+          <CustomSectionForm />
         </TabsContent>
 
         <TabsContent value="projects" className="space-y-4">

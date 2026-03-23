@@ -83,7 +83,11 @@ Your ONLY task is to read raw text extracted from a PDF resume and return a stru
       "language": "string",
       "proficiency": "string"
     }
-  ]
+  ],
+  "customSection": {
+    "title": "string (default 'Interests', use the actual section title from the PDF if available, e.g. 'Hobbies', 'Volunteering')",
+    "content": "string (free text content of the section)"
+  }
 }`;
 
 // ---------------------------------------------------------------------------

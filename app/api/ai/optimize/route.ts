@@ -79,7 +79,8 @@ You must ALWAYS return a raw JSON object (no markdown, no code fences):
     "education": [...],
     "certifications": [...],
     "projects": [...],
-    "languages": [...]
+    "languages": [...],
+    "customSection": { "title": "...", "content": "..." }
   }
 }
 
@@ -120,6 +121,10 @@ skills: string[]            (flat array, e.g. ["TypeScript", "React"])
 languages: Array of objects:
   - language: string
   - proficiency: string     (e.g. "Native", "Fluent", "B2")
+
+customSection: object (a free-text section with an editable title):
+  - title: string           (default "Interests", editable by user)
+  - content: string         (free text, section hidden in PDF if empty)
 
 ## Guidelines
 - Be specific and actionable. Focus on ATS keyword alignment and quantified achievements.

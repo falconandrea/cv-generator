@@ -57,6 +57,14 @@ export interface Education {
 }
 
 /**
+ * Custom Section Entry (free-text with editable title)
+ */
+export interface CustomSection {
+  title: string;
+  content: string;
+}
+
+/**
  * Language Entry
  */
 export interface Language {
@@ -74,6 +82,7 @@ export interface CVState {
   skills: string[];
   certifications: Certification[];
   projects: Project[];
+  customSection: CustomSection;
   education: Education[];
   languages: Language[];
 }
@@ -95,6 +104,7 @@ export const defaultCVState: CVState = {
   projects: [],
   education: [],
   languages: [],
+  customSection: { title: "Interests", content: "" },
 };
 
 /**

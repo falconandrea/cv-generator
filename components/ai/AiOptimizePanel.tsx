@@ -38,6 +38,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
     const projects = useCVStore((state) => state.projects);
     const education = useCVStore((state) => state.education);
     const languages = useCVStore((state) => state.languages);
+    const customSection = useCVStore((state) => state.customSection);
     const applyAiPatch = useCVStore((state) => state.applyAiPatch);
 
     // Auto-scroll to bottom on new messages
@@ -78,6 +79,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
                 projects,
                 education,
                 languages,
+                customSection,
             };
 
             const response = await sendAiMessage(history, cvSnapshot);
@@ -104,7 +106,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
             setIsLoading(false);
             onLoadingChange?.(false);
         }
-    }, [input, isLoading, messages, buildApiHistory, personalInfo, summary, experience, skills, certifications, projects, education, languages, onMessagesChange]);
+    }, [input, isLoading, messages, buildApiHistory, personalInfo, summary, experience, skills, certifications, projects, education, languages, customSection, onMessagesChange]);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {

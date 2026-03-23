@@ -20,6 +20,7 @@ import type {
   Project,
   Education,
   Language,
+  CustomSection,
   defaultCVState,
 } from "./types";
 
@@ -72,6 +73,9 @@ interface CVStore extends CVState {
   removeLanguage: (index: number) => void;
   reorderLanguages: (fromIndex: number, toIndex: number) => void;
 
+  // Custom Section actions
+  setCustomSection: (customSection: CustomSection) => void;
+
   // Reset action
   resetCV: () => void;
 
@@ -96,6 +100,7 @@ const initialState: CVState = {
   projects: [],
   education: [],
   languages: [],
+  customSection: { title: "Interests", content: "" },
 };
 
 /**
@@ -300,6 +305,9 @@ export const useCVStore = create<CVStore>()(
           return { languages: newLanguages };
         }),
 
+      // Custom Section actions
+      setCustomSection: (customSection) => set({ customSection }),
+
       // Reset action
       resetCV: () => set(initialState),
 
@@ -337,6 +345,7 @@ export const useCVStore = create<CVStore>()(
             projects: mergeArray(state.projects, patch.projects, p => p.name.toLowerCase()),
             education: mergeArray(state.education, patch.education, e => `${e.degree}-${e.institution}`.toLowerCase()),
             languages: mergeArray(state.languages, patch.languages, l => l.language.toLowerCase()),
+            customSection: patch.customSection !== undefined ? patch.customSection : state.customSection,
           };
         }),
     }),
@@ -352,6 +361,7 @@ export const useCVStore = create<CVStore>()(
         projects: state.projects,
         education: state.education,
         languages: state.languages,
+        customSection: state.customSection,
       }),
     },
   ),

@@ -49,6 +49,9 @@ function summarizeChanges(patch: CVPatch): string[] {
         const langs = patch.languages.map((l) => `${l.language} (${l.proficiency})`).join(", ");
         lines.push(`🌐 Languages: ${langs}`);
     }
+    if (patch.customSection !== undefined) {
+        lines.push(`✏️ Custom Section: "${patch.customSection.title}"`);
+    }
 
     return lines;
 }
@@ -77,6 +80,9 @@ function getEffectivePatch(patch: CVPatch, currentCV: CVState): CVPatch {
     }
     if (patch.languages !== undefined && isDifferent(patch.languages, currentCV.languages)) {
         effectivePatch.languages = patch.languages;
+    }
+    if (patch.customSection !== undefined && isDifferent(patch.customSection, currentCV.customSection)) {
+        effectivePatch.customSection = patch.customSection;
     }
 
     return effectivePatch;

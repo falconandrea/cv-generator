@@ -20,10 +20,11 @@
 - [x] **Import UI Consolidation**: Unified PDF and JSON import methods into a new onboarding `WelcomeDialog`, updated `EditorTopNav` with an "Import CV" dropdown, and refactored `PdfImportBanner` into a `PdfImportDialog` modal.
 - [x] **Bug Fixes**: Fixed `DOMMatrix is not defined` error in production occurring when processing PDFs by upgrading Docker Node image from v20 to v22.
 - [x] **UI Polish**: Improved `WelcomeDialog` layout for better mobile and desktop experience (vertical stacking, hover effects, simplified icons, appropriate padding).
+- [x] **Custom Section**: Added a free-text custom section with editable title (default "Interests"). Integrated across the full stack: types, store, editor form, navigation tabs, PDF generation, JSON save/load, AI optimize, AI import-pdf, AI diff view.
 
 ## Current Context
 - **Goal**: Launch the project, gather feedback from the community (Reddit, ProductHunt, etc.), and integrate tracking/analytics tools.
-- **Active Feature**: PDF Import complete. Back to Launch & Analytics.
+- **Active Feature**: Custom Section complete. Back to Launch & Analytics.
 
 ## Features In Progress
 | Feature | Status | Files |

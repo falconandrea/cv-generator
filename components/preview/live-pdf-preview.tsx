@@ -16,6 +16,7 @@ const selectCVData = (s: CVState): CVState => ({
   projects: s.projects,
   education: s.education,
   languages: s.languages,
+  customSection: s.customSection,
 });
 
 // Dynamically import PDFPreviewInner to avoid SSR errors with @react-pdf/renderer

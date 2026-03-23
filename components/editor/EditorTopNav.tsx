@@ -13,6 +13,7 @@ import {
     Languages,
     ChevronLeft,
     ChevronRight,
+    TextCursorInput,
 } from "lucide-react";
 
 interface EditorTopNavProps {
@@ -28,6 +29,7 @@ const SECTIONS = [
     { id: "education", label: "Education", icon: GraduationCap },
     { id: "languages", label: "Languages", icon: Languages },
     { id: "skills", label: "Skills", icon: Wrench },
+    { id: "custom", label: "Custom", icon: TextCursorInput },
     { id: "projects", label: "Projects", icon: FolderGit2 },
     { id: "certifications", label: "Certifications", icon: Award },
 ];

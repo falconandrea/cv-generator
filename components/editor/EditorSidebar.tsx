@@ -8,7 +8,8 @@ import {
     Wrench,
     Award,
     FolderGit2,
-    Languages
+    Languages,
+    TextCursorInput,
 } from "lucide-react";
 
 interface EditorSidebarProps {
@@ -23,6 +24,7 @@ const steps = [
     { id: "education", label: "Education", icon: GraduationCap },
     { id: "languages", label: "Languages", icon: Languages },
     { id: "skills", label: "Skills", icon: Wrench },
+    { id: "custom", label: "Custom", icon: TextCursorInput },
     { id: "projects", label: "Projects", icon: FolderGit2 },
     { id: "certifications", label: "Certifications", icon: Award },
 ];

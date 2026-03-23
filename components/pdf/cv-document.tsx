@@ -456,7 +456,20 @@ export function CVDocument({ cv }: CVDocumentProps) {
         )}
 
         {/* Divider */}
-        {(cv.skills.length > 0 || cv.languages.length > 0) && cv.certifications.length > 0 && (
+        {cv.skills.length > 0 && cv.customSection?.content?.trim() && (
+          <View style={styles.divider} />
+        )}
+
+        {/* Custom Section */}
+        {cv.customSection?.content?.trim() && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>{cv.customSection.title || "Interests"}</Text>
+            <Text style={styles.entryDescription}>{cv.customSection.content}</Text>
+          </View>
+        )}
+
+        {/* Divider */}
+        {(cv.skills.length > 0 || cv.customSection?.content?.trim() || cv.languages.length > 0) && cv.certifications.length > 0 && (
           <View style={styles.divider} />
         )}
 

@@ -82,6 +82,7 @@ export default function EditorPage() {
   const certifications = useCVStore((state) => state.certifications);
   const projects = useCVStore((state) => state.projects);
   const languages = useCVStore((state) => state.languages);
+  const customSection = useCVStore((state) => state.customSection);
 
   // Actions - only these trigger re-renders
   const setPersonalInfo = useCVStore((state) => state.setPersonalInfo);
@@ -92,6 +93,7 @@ export default function EditorPage() {
   const setProjects = useCVStore((state) => state.setProjects);
   const setEducation = useCVStore((state) => state.setEducation);
   const setLanguages = useCVStore((state) => state.setLanguages);
+  const setCustomSection = useCVStore((state) => state.setCustomSection);
 
   // Wait for hydration before checking if CV is empty (fixes welcome dialog bug)
   useEffect(() => {
@@ -124,7 +126,7 @@ export default function EditorPage() {
     try {
       const filename =
         `${personalInfo.fullName.replace(/\s+/g, "-")}-cv.pdf` || "cv.pdf";
-      await generateAndDownloadPDF({ personalInfo, summary, experience, skills, certifications, projects, education, languages }, filename);
+      await generateAndDownloadPDF({ personalInfo, summary, experience, skills, certifications, projects, education, languages, customSection }, filename);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
       toast.error("Failed to generate PDF. Please try again.");
@@ -138,7 +140,7 @@ export default function EditorPage() {
       const filename =
         `${personalInfo.fullName.replace(/\s+/g, "-")}-cv-data.json` ||
         "cv-data.json";
-      exportCVAsJSON({ personalInfo, summary, experience, skills, certifications, projects, education, languages }, filename);
+      exportCVAsJSON({ personalInfo, summary, experience, skills, certifications, projects, education, languages, customSection }, filename);
     } catch (error) {
       console.error("Failed to export JSON:", error);
       toast.error("Failed to export CV data. Please try again.");
@@ -162,6 +164,7 @@ export default function EditorPage() {
         setProjects(data.projects);
         setEducation(data.education);
         if (data.languages) setLanguages(data.languages);
+        if (data.customSection) setCustomSection(data.customSection);
       });
       toast.success("CV data imported successfully!");
     } catch (error) {

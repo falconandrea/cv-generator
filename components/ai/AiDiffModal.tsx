@@ -255,6 +255,21 @@ export function AiDiffModal({ open, onOpenChange, currentCV, patch, onApply }: A
                             </div>
                         </DiffSection>
                     )}
+
+                    {patch.customSection !== undefined && (
+                        <DiffSection title={`Custom Section: ${patch.customSection.title || currentCV.customSection.title || "Interests"}`}>
+                            <div className="space-y-3">
+                                <div>
+                                    <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block mb-1">Title</span>
+                                    <CompareBlock current={currentCV.customSection.title} proposed={patch.customSection.title} />
+                                </div>
+                                <div>
+                                    <span className="text-xs font-semibold text-zinc-500 uppercase tracking-wider block mb-1">Content</span>
+                                    <CompareBlock current={currentCV.customSection.content} proposed={patch.customSection.content} />
+                                </div>
+                            </div>
+                        </DiffSection>
+                    )}
                 </div>
 
                 <DialogFooter className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 flex flex-row justify-end items-center gap-2">
