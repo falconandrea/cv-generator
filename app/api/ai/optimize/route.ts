@@ -46,7 +46,10 @@ You must ALWAYS return a raw JSON object (no markdown, no code fences):
   }
 }
 
-CRITICAL: If the user says "add X to my skills" and you reply "I have added X to your skills", you MUST INCLUDE the \`proposedChanges.skills\` array with the updated skills in your JSON response. Otherwise, the UI will not show the buttons to apply the changes. Only omit \`proposedChanges\` if you are just answering a general question without modifying the CV.
+CRITICAL RULES FOR ARRAYS:
+1. If the user asks you to modify a specific item inside an array (e.g. "add X to my skills" or "translate my first experience"), you MUST return the ENTIRE array including ALL existing items that you did NOT modify.
+2. DO NOT return a partial list of only the changed items! If you return a partial list, the user's other entries will be permanently deleted!
+3. Only omit \`proposedChanges\` entirely if you are just answering a general question without modifying the CV.
 
 ## CV Data Schema
 Use ONLY these exact field names in proposedChanges — never invent new fields.
