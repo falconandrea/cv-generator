@@ -2,45 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import type { CVState } from "@/state/types";
 
-// ---------------------------------------------------------------------------
-// Language detection — word-frequency heuristic, no external deps
-// ---------------------------------------------------------------------------
-const LANG_MARKERS: Record<string, string[]> = {
-    English: ["the", "and", "for", "with", "this", "that", "have", "from", "your", "will"],
-    Italian: ["della", "dello", "degli", "nelle", "questo", "sono", "anche", "come", "con", "per", "una", "del", "nel", "che", "ho", "mi", "al"],
-    French: ["dans", "avec", "pour", "sur", "les", "des", "une", "qui", "est", "ont", "nous", "vous", "leur", "mais"],
-    Spanish: ["para", "con", "por", "que", "este", "una", "del", "las", "los", "son", "también", "como"],
-    Portuguese: ["para", "com", "por", "que", "uma", "das", "dos", "são", "também", "como", "pelo"],
-    German: ["und", "mit", "für", "auf", "eine", "einer", "wird", "haben", "oder", "auch", "aus"],
-};
-
-function detectCvLanguage(cvData: CVState): string {
-    const sampleText = [
-        cvData.summary,
-        cvData.experience[0]?.description ?? "",
-        cvData.experience[1]?.description ?? "",
-    ]
-        .join(" ")
-        .toLowerCase()
-        .slice(0, 500);
-
-    if (!sampleText.trim()) return "English"; // no text yet → assume English
-
-    const words = sampleText.split(/\s+/);
-    let bestLang = "English";
-    let bestScore = 0;
-
-    for (const [lang, markers] of Object.entries(LANG_MARKERS)) {
-        const score = words.filter((w) => markers.includes(w)).length;
-        if (score > bestScore) {
-            bestScore = score;
-            bestLang = lang;
-        }
-    }
-
-    // If no words matched, it defaults to English from the initial state
-    return bestLang;
-}
+// (Language detection heuristic removed in favor of explicit user setting cvLanguage)
 
 // ---------------------------------------------------------------------------
 // System prompt
@@ -126,6 +88,8 @@ customSection: object (a free-text section with an editable title):
   - title: string           (default "Interests", editable by user)
   - content: string         (free text, section hidden in PDF if empty)
 
+CRITICAL: DO NOT UNDER ANY CIRCUMSTANCES INCLUDE A "cvLanguage" FIELD IN YOUR PROPOSED CHANGES.
+
 ## Guidelines
 - Be specific and actionable. Focus on ATS keyword alignment and quantified achievements.
 - Keep the user's original tone and style while improving the content.
@@ -180,8 +144,8 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "Invalid request: messages array required." }, { status: 400 });
         }
 
-        // Detect CV language server-side and inject as a hard constraint at the TOP
-        const cvLanguage = detectCvLanguage(cvData);
+        // Read explicit CV language from state (fallback formatting if missing)
+        const cvLanguage = cvData.cvLanguage === "it" ? "Italian" : "English";
         const languageInstruction =
             `=================================================================\n` +
             `CRITICAL RULE 1: The CV is written in ${cvLanguage.toUpperCase()}.\n` +

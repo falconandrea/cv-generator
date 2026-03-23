@@ -31,6 +31,7 @@
 |---|---|---|
 | PDF Import | ✅ Done | `app/api/ai/import-pdf/route.ts`, `components/editor/pdf-import-banner.tsx` |
 | Editor Layout Optimization | ✅ Done | `components/editor/EditorTopNav.tsx`, `components/editor/editor-content.tsx`, `app/globals.css` |
+| CV Language Settings | ✅ Done | `.agents/features/cv-language/prd-cv-language.md`, `state/types.ts`, `components/pdf/cv-document.tsx` |
 | Launch & Analytics | ⏳ Pending | `.agents/context/LAUNCH_STRATEGY.md`, `app/privacy`, `app/cookies` |
 
 ## Backlog

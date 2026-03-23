@@ -14,6 +14,7 @@ import {
     ChevronLeft,
     ChevronRight,
     TextCursorInput,
+    Settings,
 } from "lucide-react";
 
 interface EditorTopNavProps {
@@ -32,6 +33,7 @@ const SECTIONS = [
     { id: "custom", label: "Custom", icon: TextCursorInput },
     { id: "projects", label: "Projects", icon: FolderGit2 },
     { id: "certifications", label: "Certifications", icon: Award },
+    { id: "settings", label: "Settings", icon: Settings },
 ];
 
 export function EditorTopNav({ activeTab, onTabChange, className }: EditorTopNavProps) {

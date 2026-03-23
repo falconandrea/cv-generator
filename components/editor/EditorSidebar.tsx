@@ -10,6 +10,7 @@ import {
     FolderGit2,
     Languages,
     TextCursorInput,
+    Settings,
 } from "lucide-react";
 
 interface EditorSidebarProps {
@@ -27,6 +28,7 @@ const steps = [
     { id: "custom", label: "Custom", icon: TextCursorInput },
     { id: "projects", label: "Projects", icon: FolderGit2 },
     { id: "certifications", label: "Certifications", icon: Award },
+    { id: "settings", label: "Settings", icon: Settings },
 ];
 
 export function EditorSidebar({ activeTab, onTabChange }: EditorSidebarProps) {

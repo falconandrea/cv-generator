@@ -109,6 +109,7 @@ export function exportCVAsJSON(
         location: cleanTextForJSON(edu.location),
         year: cleanTextForJSON(edu.year),
       })),
+      cvLanguage: cv.cvLanguage || "en",
     };
 
     // Convert CV data to JSON string

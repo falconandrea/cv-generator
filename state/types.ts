@@ -5,6 +5,8 @@
  * Based on DATA_SCHEMA.md and PROJECT.md documentation.
  */
 
+export type CVLanguage = "en" | "it";
+
 /**
  * Personal Information Section
  */
@@ -85,6 +87,7 @@ export interface CVState {
   customSection: CustomSection;
   education: Education[];
   languages: Language[];
+  cvLanguage?: CVLanguage;
 }
 
 /**
@@ -105,6 +108,7 @@ export const defaultCVState: CVState = {
   education: [],
   languages: [],
   customSection: { title: "Interests", content: "" },
+  cvLanguage: "en",
 };
 
 /**

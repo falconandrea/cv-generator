@@ -37,6 +37,7 @@ Your ONLY task is to read raw text extracted from a PDF resume and return a stru
 ## JSON Schema — use EXACTLY these field names
 
 {
+  "cvLanguage": "string (must be exactly 'en' or 'it'. Default to 'en' if unsure, set to 'it' if the text is in Italian)",
   "personalInfo": {
     "fullName": "string",
     "location": "string",

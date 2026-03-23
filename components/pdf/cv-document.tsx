@@ -158,33 +158,56 @@ interface CVDocumentProps {
 }
 
 /**
- * Format date for display
- * Returns "Present" if endDate is null
- * Formats date as "Month Year" (e.g., "February 2020")
+ * Translations for PDF Section Headers and UI elements
  */
-function formatDate(date: string | null): string {
-  if (!date) return "Present";
+const translations = {
+  en: {
+    summary: "Summary",
+    experience: "Experiences",
+    projects: "Projects",
+    education: "Education",
+    languages: "Languages",
+    skills: "Skills",
+    certifications: "Certifications",
+    interests: "Interests",
+    present: "Present",
+    months: [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December",
+    ],
+  },
+  it: {
+    summary: "Profilo",
+    experience: "Esperienze Lavorative",
+    projects: "Progetti",
+    education: "Istruzione",
+    languages: "Lingue",
+    skills: "Competenze",
+    certifications: "Certificazioni",
+    interests: "Interessi",
+    present: "Presente",
+    months: [
+      "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
+      "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre",
+    ],
+  },
+};
+
+/**
+ * Format date for display based on selected language
+ * Returns localized "Present" if endDate is null
+ * Formats date as localized "Month Year" (e.g., "Febbraio 2020")
+ */
+function formatDate(date: string | null, lang: "en" | "it" = "en"): string {
+  const t = translations[lang];
+  if (!date) return t.present;
 
   // Parse date in format YYYY-MM or YYYY-MM-DD
   const [year, month] = date.split("-");
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
 
   // Remove leading zero from month
   const monthIndex = parseInt(month, 10) - 1;
-  const monthName = months[monthIndex] || month;
+  const monthName = t.months[monthIndex] || month;
 
   return `${monthName} ${year}`;
 }
@@ -266,6 +289,9 @@ function getLinkDisplay(url: string): { icon: React.ReactElement | null; text: s
  * Enhanced layout with improved typography and spacing (Phase 10).
  */
 export function CVDocument({ cv }: CVDocumentProps) {
+  const lang = cv.cvLanguage || "en";
+  const t = translations[lang];
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -309,7 +335,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Summary Section */}
         {cv.summary && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Summary</Text>
+            <Text style={styles.sectionTitle}>{t.summary}</Text>
             <Text style={styles.entryDescription}>{cv.summary}</Text>
           </View>
         )}
@@ -322,7 +348,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Experience Section */}
         {cv.experience.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Experience</Text>
+            <Text style={styles.sectionTitle}>{t.experience}</Text>
             {cv.experience.map((entry, index) => (
               <View
                 key={index}
@@ -337,8 +363,8 @@ export function CVDocument({ cv }: CVDocumentProps) {
                     style={{ flexDirection: "row", alignItems: "baseline" }}
                   >
                     <Text style={styles.entryDate}>
-                      {formatDate(entry.startDate)} –{" "}
-                      {formatDate(entry.endDate)}
+                      {formatDate(entry.startDate, lang)} –{" "}
+                      {formatDate(entry.endDate, lang)}
                     </Text>
                     {entry.location && (
                       <Text style={styles.entryLocation}>
@@ -371,7 +397,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Projects Section */}
         {cv.projects.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Projects</Text>
+            <Text style={styles.sectionTitle}>{t.projects}</Text>
             {cv.projects.map((project, index) => (
               <View
                 key={index}
@@ -407,7 +433,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Education Section */}
         {cv.education.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Education</Text>
+            <Text style={styles.sectionTitle}>{t.education}</Text>
             {cv.education.map((edu, index) => (
               <View
                 key={index}
@@ -433,7 +459,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Languages Section */}
         {cv.languages.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Languages</Text>
+            <Text style={styles.sectionTitle}>{t.languages}</Text>
             <Text style={styles.entryDescription}>
               {cv.languages
                 .map((lang) => `${lang.language} (${lang.proficiency})`)
@@ -450,7 +476,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Skills Section */}
         {cv.skills.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Skills</Text>
+            <Text style={styles.sectionTitle}>{t.skills}</Text>
             <Text style={styles.skillsList}>{cv.skills.join(", ")}</Text>
           </View>
         )}
@@ -463,7 +489,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Custom Section */}
         {cv.customSection?.content?.trim() && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{cv.customSection.title || "Interests"}</Text>
+            <Text style={styles.sectionTitle}>{cv.customSection.title || t.interests}</Text>
             <Text style={styles.entryDescription}>{cv.customSection.content}</Text>
           </View>
         )}
@@ -476,7 +502,7 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Certifications Section */}
         {cv.certifications.length > 0 && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Certifications</Text>
+            <Text style={styles.sectionTitle}>{t.certifications}</Text>
             {cv.certifications.map((cert, index) => (
               <View
                 key={index}
