@@ -43,7 +43,7 @@ cd my-test-project
 
 # Copy the template
 cp -r ~/templates/ai-agent-template/.agents .
-cp ~/templates/ai-agent-template/agents.md .
+cp ~/templates/ai-agent-template/AGENTS.md .
 
 # Choose your stack
 cp .agents/templates/TECH_STACK_nextjs.md .agents/context/TECH_STACK.md
@@ -93,7 +93,7 @@ git commit -m "Initial commit with AI agent template"
 **Every morning**:
 ```
 Open new chat with AI
-Paste: "Read agents.md and follow Session Initialization Protocol"
+Paste: "Read AGENTS.md and follow Session Initialization Protocol"
 ```
 
 AI will:
@@ -222,7 +222,7 @@ Then AI implements properly
 
 ### LOW Priority (rarely)
 7. **BEST_PRACTICES.md** - When establishing new patterns
-8. **agents.md** - Almost never (core rules)
+8. **AGENTS.md** - Almost never (core rules)
 
 ---
 
@@ -267,7 +267,7 @@ You should notice:
 If not:
 - Are you updating progress.md?
 - Are you using the prompts?
-- Are you telling AI to read agents.md?
+- Are you telling AI to read AGENTS.md?
 
 ### After 1 Month
 
@@ -289,7 +289,7 @@ If not:
 **Solution**:
 ```
 Every time you open new chat:
-"Read agents.md and follow Session Initialization Protocol"
+"Read AGENTS.md and follow Session Initialization Protocol"
 ```
 
 ### "AI uses wrong versions"
@@ -326,15 +326,15 @@ Use the same template for multiple projects:
 ```bash
 ~/projects/
   project-a/.agents/  # same rules
-  project-a/agents.md # same index
+  project-a/AGENTS.md # same index
   project-b/.agents/  # same rules
-  project-b/agents.md # same index
+  project-b/AGENTS.md # same index
 ```
 
 ### Team Collaboration
-Commit `.agents/` and `agents.md` to Git:
+Commit `.agents/` and `AGENTS.md` to Git:
 ```bash
-git add .agents/ agents.md
+git add .agents/ AGENTS.md
 git commit -m "Add AI agent system"
 ```
 
@@ -361,18 +361,18 @@ Create a `.cursorrules` file in your project root:
 # Cursor AI Rules
 
 ## AI Behavior
-Always read agents.md before starting any work.
+Always read AGENTS.md before starting any work.
 Follow the Operating Modes strictly (PLANNING → ACTING → REVIEW).
 Update .agents/memory/progress.md after completing tasks.
 
 ## Session Start
-1. Read agents.md
+1. Read AGENTS.md
 2. Read .agents/memory/progress.md
 3. Read .agents/memory/lessons.md
 4. Ask: "Ready to continue with [current task]?"
 
 ## File Priority
-1. agents.md - Main instructions
+1. AGENTS.md - Main instructions
 2. .agents/memory/progress.md - Current state
 3. .agents/context/TECH_STACK.md - Stack versions
 4. .agents/context/BEST_PRACTICES.md - Patterns
@@ -400,7 +400,7 @@ Most AI-powered IDEs support a rules file. Check your IDE documentation and crea
 ### Read Now
 1. **QUICK_START.md** - 5 minutes
 2. **README.md** - 15 minutes
-3. **agents.md** - 10 minutes
+3. **AGENTS.md** - 10 minutes
 
 ### Read This Week
 4. **.agents/context/BEST_PRACTICES.md** - 20 minutes

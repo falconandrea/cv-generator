@@ -4,7 +4,7 @@ description: New feature workflow - create a PRD from a feature request, get app
 
 ## Steps
 
-1. Read `agents.md` using the `view_file` tool. Confirm you are in **PLANNING MODE** — no code will be written during this phase.
+1. Read `AGENTS.md` using the `view_file` tool. Confirm you are in **PLANNING MODE** — no code will be written during this phase.
 
 2. Read `.agents/context/TECH_STACK.md` and `.agents/context/PRD.md` (if they exist) to understand the current project constraints and existing scope.
 

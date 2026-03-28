@@ -14,7 +14,7 @@ CRITICAL RULES:
 4. At the end, create all documentation files in .agents/context/ folder
 5. Only switch to ACTING MODE after I explicitly approve
 
-Follow the interrogation framework in .agents/agents.md and ask me questions in this order:
+Follow the interrogation framework in .agents/AGENTS.md and ask me questions in this order:
 
 ---
 

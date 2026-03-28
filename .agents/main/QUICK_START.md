@@ -13,7 +13,7 @@ cd my-new-project
 
 # Copy template files
 cp -r /path/to/ai-agent-template/.agents .
-cp /path/to/ai-agent-template/agents.md .
+cp /path/to/ai-agent-template/AGENTS.md .
 ```
 
 ### 2. Choose Your Stack
@@ -48,7 +48,7 @@ Once set up, use these commands in your AI chat:
 
 ### Starting a New Session
 ```
-Read agents.md and follow the Session Initialization Protocol
+Read AGENTS.md and follow the Session Initialization Protocol
 ```
 
 ### Check Progress
@@ -166,7 +166,7 @@ When AI proposes implementation:
 
 ### AI Forgot Context
 ```
-Say: "Read agents.md session initialization"
+Say: "Read AGENTS.md session initialization"
 ```
 
 ### AI Using Wrong Versions
@@ -190,7 +190,7 @@ Say: "Read .agents/memory/progress.md and summarize current state"
 
 | File | Purpose | When to Update |
 |------|---------|----------------|
-| `agents.md` | AI operating instructions | Rarely (core rules) |
+| `AGENTS.md` | AI operating instructions | Rarely (core rules) |
 | `.agents/context/TECH_STACK.md` | Locked versions | When adding packages |
 | `.agents/context/PRD.md` | Product requirements | When scope changes |
 | `.agents/context/BEST_PRACTICES.md` | Coding patterns | When establishing new patterns |
@@ -235,7 +235,7 @@ You know it's working when:
 Paste this into your AI:
 
 "I'm using the AI Agent Development Template. 
-Read agents.md to understand how to work with me.
+Read AGENTS.md to understand how to work with me.
 Then read .agents/memory/progress.md and tell me what we should work on next."
 ```
 

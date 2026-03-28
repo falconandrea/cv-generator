@@ -4,7 +4,7 @@ description: New project setup protocol - interrogate requirements and generate 
 
 ## Steps
 
-1. Read `agents.md` using the `view_file` tool. Internalize all directives, especially the PLANNING MODE rules and the File Reference Map.
+1. Read `AGENTS.md` using the `view_file` tool. Internalize all directives, especially the PLANNING MODE rules and the File Reference Map.
 
 2. Inform the user that you are entering **PLANNING MODE** and that no code will be written during this phase.
 

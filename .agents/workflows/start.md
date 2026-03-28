@@ -4,7 +4,7 @@ description: Session start protocol - read project memory and context, then summ
 
 ## Steps
 
-1. Read the project's main directives file at `agents.md` using the `view_file` tool. Keep all directives in mind for the entire session.
+1. Read the project's main directives file at `AGENTS.md` using the `view_file` tool. Keep all directives in mind for the entire session.
 
 2. Read `.agents/memory/progress.md` to understand the current project state and what has been completed so far.
 
@@ -17,6 +17,6 @@ description: Session start protocol - read project memory and context, then summ
 6. After reading all the files above, present the user with a concise summary **in Italian** covering:
    - The current project status (from `progress.md`)
    - Any open blockers (from `blockers.md`)
-   - The key operational directives you will follow (from `agents.md`)
+   - The key operational directives you will follow (from `AGENTS.md`)
 
 7. Ask the user: **"Ready! What are we working on today?"**

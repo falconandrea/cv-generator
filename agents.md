@@ -57,7 +57,7 @@
 ## 📚 File Reference Map
 
 ### Session Start
-1. `agents.md` (this file)
+1. `AGENTS.md` (this file)
 2. `.agents/memory/progress.md` - what's done
 3. `.agents/memory/lessons.md` - what not to do
 4. `.agents/context/TECH_STACK.md` - which stack
