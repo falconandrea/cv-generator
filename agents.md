@@ -83,7 +83,6 @@ To update: `npx skills update`
 
 ### Writing Code
 
-- `.ai/context/BEST_PRACTICES.md` - Core patterns to follow
 - `.ai/context/FRONTEND_GUIDELINES.md` - Frontend and UI specs
 
 ---
@@ -93,7 +92,6 @@ To update: `npx skills update`
 - Library version different from TECH_STACK.md
 - Making breaking changes to API
 - Repeating a mistake from lessons.md
-- Pattern contradicts BEST_PRACTICES.md
 - **Next.js**: Using Pages Router when App Router is specified
 
 ---
