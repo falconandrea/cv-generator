@@ -21,7 +21,6 @@
 **Actions**:
 - Ask questions using `.agents/prompts/02_create_prd.md` for new features
 - Propose solutions, DON'T implement
-- Use `.agents/memory/scratching_pad.md` for complex reasoning
 - Update `.agents/context/` files with decisions
 - Get explicit "approved to implement" before switching to ACTING MODE
 

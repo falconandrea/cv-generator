@@ -493,4 +493,3 @@ changes
 2. Check `.agents/context/TECH_STACK.md` for version compatibility
 3. Check `.agents/memory/lessons.md` for past mistakes
 4. Ask the user before making architectural decisions
-5. Document the decision in `.agents/context/ARCHITECTURE_DECISIONS.md`
