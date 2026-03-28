@@ -1,7 +1,7 @@
 # 📊 Progress Logic
 
-> **Current Status**: ✅ Project MVP Completed, AI Feature Live. PDF Import Implemented.
-> **Last Update**: 2026-03-12
+> **Current Status**: ✅ Project MVP Completed, AI Feature Live. Dashboard Redesign Implemented.
+> **Last Update**: 2026-03-28
 
 ## Recent Achievements
 - [x] **Project Setup**: Documentation generated (PRD, Tech Stack, Flows).
@@ -21,14 +21,16 @@
 - [x] **Bug Fixes**: Fixed `DOMMatrix is not defined` error in production occurring when processing PDFs by upgrading Docker Node image from v20 to v22.
 - [x] **UI Polish**: Improved `WelcomeDialog` layout for better mobile and desktop experience (vertical stacking, hover effects, simplified icons, appropriate padding).
 - [x] **Custom Section**: Added a free-text custom section with editable title (default "Interests"). Integrated across the full stack: types, store, editor form, navigation tabs, PDF generation, JSON save/load, AI optimize, AI import-pdf, AI diff view.
+- [x] **Dashboard Redesign**: Created new `/dashboard` page as intermediate step between homepage and editor. Introduced shared `AppHeader` component with conditional nav links and CTA. Dashboard supports 3 actions: Start from Scratch, Import PDF (AI-powered), Import JSON. Removed `WelcomeDialog` from editor. Updated all homepage CTAs to route through `/dashboard`. Also migrated `cookies` and `privacy` pages to use `AppHeader`.
 
 ## Current Context
 - **Goal**: Launch the project, gather feedback from the community (Reddit, ProductHunt, etc.), and integrate tracking/analytics tools.
-- **Active Feature**: Custom Section complete. Back to Launch & Analytics.
+- **Active Feature**: Dashboard Redesign complete. Back to Launch & Analytics.
 
 ## Features In Progress
 | Feature | Status | Files |
 |---|---|---|
+| Dashboard Redesign | ✅ Done | `app/dashboard/page.tsx`, `components/layout/AppHeader.tsx` |
 | PDF Import | ✅ Done | `app/api/ai/import-pdf/route.ts`, `components/editor/pdf-import-banner.tsx` |
 | Editor Layout Optimization | ✅ Done | `components/editor/EditorTopNav.tsx`, `components/editor/editor-content.tsx`, `app/globals.css` |
 | CV Language Settings | ✅ Done | `.ai/features/cv-language/prd-cv-language.md`, `state/types.ts`, `components/pdf/cv-document.tsx` |

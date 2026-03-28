@@ -1,4 +1,4 @@
-import { Header } from "@/components/layout/Header";
+import { AppHeader } from "@/components/layout/AppHeader";
 import { Footer } from "@/components/layout/Footer";
 import Link from "next/link";
 
@@ -10,7 +10,7 @@ export const metadata = {
 export default function PrivacyPolicy() {
     return (
         <div className="min-h-screen flex flex-col bg-white dark:bg-black text-zinc-900 dark:text-zinc-50">
-            <Header />
+            <AppHeader />
             <main className="flex-1 py-16 px-4">
                 <div className="container mx-auto max-w-3xl">
                     <h1 className="text-3xl font-bold mb-8">Privacy Policy</h1>

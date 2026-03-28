@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import dynamic from "next/dynamic";
 import { EditorContent } from "@/components/editor/editor-content";
 import { PdfImportDialog } from "@/components/editor/pdf-import-dialog";
-import { WelcomeDialog } from "@/components/editor/welcome-dialog";
 import { AiOptimizePanel, INITIAL_AI_MESSAGE } from "@/components/ai/AiOptimizePanel";
 import type { AiMessage } from "@/state/types";
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,7 @@ import {
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
-import { Header } from "@/components/layout/Header";
+import { AppHeader } from "@/components/layout/AppHeader";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -65,8 +64,6 @@ export default function EditorPage() {
   const [chatMessages, setChatMessages] = useState<AiMessage[]>([INITIAL_AI_MESSAGE]);
   const [importPopoverOpen, setImportPopoverOpen] = useState(false);
   const [pdfImportOpen, setPdfImportOpen] = useState(false);
-  const [welcomeOpen, setWelcomeOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
 
   // Panel visibility
   const [showPreview, setShowPreview] = useState(true);
@@ -95,26 +92,7 @@ export default function EditorPage() {
   const setLanguages = useCVStore((state) => state.setLanguages);
   const setCustomSection = useCVStore((state) => state.setCustomSection);
 
-  // Wait for hydration before checking if CV is empty (fixes welcome dialog bug)
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
 
-  // Check if CV is empty (show welcome dialog) - only after hydration
-  const isCVEmpty = isHydrated && (
-    !personalInfo.fullName.trim() &&
-    !personalInfo.email.trim() &&
-    !summary.trim() &&
-    experience.length === 0 &&
-    skills.length === 0 &&
-    education.length === 0
-  );
-
-  useEffect(() => {
-    if (isCVEmpty) {
-      setWelcomeOpen(true);
-    }
-  }, [isCVEmpty]);
 
   // AI Optimize is enabled when the user has at least some personal info filled in
   const isAiEnabled =
@@ -181,7 +159,13 @@ export default function EditorPage() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
-      <Header />
+      <AppHeader
+        navLinks={[
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "Editor", href: "/editor" },
+          { label: "ATS Score", href: "#", disabled: true, badge: "Soon" },
+        ]}
+      />
 
       {/* Hidden file input */}
       <input
@@ -364,19 +348,6 @@ export default function EditorPage() {
 
       {/* Dialogs */}
       <PdfImportDialog open={pdfImportOpen} onOpenChange={setPdfImportOpen} />
-      <WelcomeDialog
-        isOpen={welcomeOpen}
-        onOpenChange={setWelcomeOpen}
-        onImportPdf={() => {
-          setWelcomeOpen(false);
-          setPdfImportOpen(true);
-        }}
-        onImportJson={() => {
-          setWelcomeOpen(false);
-          handleImportJSONClick();
-        }}
-        onStartFromScratch={() => setWelcomeOpen(false)}
-      />
     </div>
   );
 }
