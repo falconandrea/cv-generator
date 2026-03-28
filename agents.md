@@ -118,7 +118,7 @@ After every task:
 
 ## 🔁 Antigravity Workflows
 
-These slash commands are available when using the **Antigravity AI agent**. Each maps to a workflow file in `.ai/workflows/`.
+These slash commands are available when using the **Antigravity AI agent**. Each maps to a workflow file in `.agents/workflows/`.
 
 | Command | Workflow File | When to Use |
 |---------|--------------|-------------|
