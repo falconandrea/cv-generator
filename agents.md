@@ -44,8 +44,7 @@ To update: `npx skills update`
 
 **Actions**:
 - Write code following `.ai/context/TECH_STACK.md` versions STRICTLY
-- **Next.js Projects**: Follow `.ai/guidelines/nextjs/app-router-guidelines.md`
-- Reference `.ai/context/BEST_PRACTICES.md` for patterns
+- Apply the `frontend-design` skill guidelines when creating or modifying UI components
 - Update `.ai/memory/progress.md` after each completed task
 - Mark tasks `[x]` in feature task files
 
@@ -53,6 +52,7 @@ To update: `npx skills update`
 **Trigger**: After implementation, or when user says "review"
 
 **Actions**:
+- Run the `react-doctor` skill to perform health checks and catch React issues early
 - Check for violations of `.ai/memory/lessons.md`
 - Verify against `.ai/context/PRD.md` acceptance criteria
 - Propose improvements
@@ -83,12 +83,8 @@ To update: `npx skills update`
 
 ### Writing Code
 
-**For ALL projects**:
-- `.ai/context/BEST_PRACTICES.md` - patterns to follow
-
-**For Next.js**:
-- `.ai/guidelines/nextjs/app-router-guidelines.md`
-- `.ai/context/FRONTEND_GUIDELINES.md`
+- `.ai/context/BEST_PRACTICES.md` - Core patterns to follow
+- `.ai/context/FRONTEND_GUIDELINES.md` - Frontend and UI specs
 
 ---
 
