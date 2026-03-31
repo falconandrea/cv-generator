@@ -17,6 +17,7 @@ import {
   Terminal,
   Code2,
   Eye,
+  X,
 } from "lucide-react";
 import {
   Popover,
@@ -28,6 +29,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetClose,
 } from "@/components/ui/sheet";
 import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
@@ -328,6 +330,7 @@ export default function EditorPage() {
       <Sheet open={aiSheetOpen} onOpenChange={setAiSheetOpen}>
         <SheetContent
           side="right"
+          showCloseButton={false}
           className="w-full sm:w-[450px] p-0 flex flex-col bg-[#0a0a12] border-l border-[#00f0ff]/20"
         >
           <SheetHeader className="px-4 py-3 border-b border-zinc-800/60 shrink-0 flex flex-row items-center justify-between bg-[#050508]">
@@ -335,6 +338,10 @@ export default function EditorPage() {
               <Terminal className="w-4 h-4" />
               <span>AI_COACH.EXE</span>
             </SheetTitle>
+            <SheetClose className="rounded-sm p-1 text-zinc-400 hover:text-[#00f0ff] hover:bg-[#00f0ff]/10 transition-colors cursor-pointer">
+              <X className="w-4 h-4" />
+              <span className="sr-only">Close</span>
+            </SheetClose>
           </SheetHeader>
           <div className="flex-1 overflow-hidden p-4 pt-0">
             <AiOptimizePanel
