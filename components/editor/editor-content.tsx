@@ -32,15 +32,66 @@ interface EditorContentProps {
   onTabChange: (tab: string) => void;
 }
 
-/** Cyber-styled section heading */
-function SectionTitle({ children }: { children: React.ReactNode }) {
+/** Cyber-styled section heading with descriptive subtitle */
+function SectionHeader({ title, description }: { title: string; description: string }) {
   return (
-    <h2 className="text-[#00f0ff] font-mono uppercase text-sm tracking-wider flex items-center gap-2">
-      <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] shadow-[0_0_6px_rgba(0,240,255,0.5)]" />
-      {children}
-    </h2>
+    <div className="space-y-2 pb-2">
+      <p className="text-zinc-500 font-mono text-[0.65rem] uppercase tracking-widest">
+        SYSTEM // INPUT
+      </p>
+      <h2 className="text-white font-bold text-xl tracking-tight">
+        {title}
+      </h2>
+      <p className="text-zinc-400 text-sm leading-relaxed max-w-md">
+        {description}
+      </p>
+    </div>
   );
 }
+
+/** Tab descriptive texts */
+const TAB_DESCRIPTIONS: Record<string, { title: string; description: string }> = {
+  personal: {
+    title: "Personal Information",
+    description: "Initialize your profile parameters. These data points serve as the root object for your generated identity document.",
+  },
+  summary: {
+    title: "Professional Summary",
+    description: "Compose a concise overview of your career trajectory, key strengths, and professional identity.",
+  },
+  experience: {
+    title: "Work Experience",
+    description: "Document your professional history. Each entry captures a role, company, and key achievements.",
+  },
+  education: {
+    title: "Education",
+    description: "Add your academic credentials. Include degrees, institutions, and graduation dates.",
+  },
+  languages: {
+    title: "Languages",
+    description: "List the languages you speak and your proficiency level for each.",
+  },
+  skills: {
+    title: "Skills",
+    description: "Define your technical and soft skills. These are parsed by ATS systems for keyword matching.",
+  },
+  custom: {
+    title: "Custom Section",
+    description: "Add a custom section to highlight unique qualifications, volunteering, or other relevant information.",
+  },
+  projects: {
+    title: "Side Projects",
+    description: "Showcase personal or open-source projects that demonstrate your skills and initiative.",
+  },
+  certifications: {
+    title: "Certifications",
+    description: "Add professional certifications and credentials that validate your expertise.",
+  },
+  settings: {
+    title: "Settings",
+    description: "Configure document output preferences, template options, and formatting parameters.",
+  },
+};
 
 export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
   const { resetCV } = useCVStore();
@@ -91,53 +142,53 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
 
       {/* Form tabs — driven by activeTab from parent. forceMount keeps forms in DOM for instant switching */}
       <Tabs value={activeTab} onValueChange={onTabChange} className="space-y-6">
-        <TabsContent value="personal" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Personal Information</SectionTitle>
+        <TabsContent value="personal" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.personal} />
           <PersonalInfoForm />
         </TabsContent>
 
-        <TabsContent value="summary" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Professional Summary</SectionTitle>
+        <TabsContent value="summary" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.summary} />
           <SummaryForm />
         </TabsContent>
 
-        <TabsContent value="experience" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Work Experience</SectionTitle>
+        <TabsContent value="experience" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.experience} />
           <ExperienceForm />
         </TabsContent>
 
-        <TabsContent value="education" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Education</SectionTitle>
+        <TabsContent value="education" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.education} />
           <EducationForm />
         </TabsContent>
 
-        <TabsContent value="languages" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Languages</SectionTitle>
+        <TabsContent value="languages" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.languages} />
           <LanguagesForm />
         </TabsContent>
 
-        <TabsContent value="skills" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Skills</SectionTitle>
+        <TabsContent value="skills" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.skills} />
           <SkillsForm />
         </TabsContent>
 
-        <TabsContent value="custom" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Custom Section</SectionTitle>
+        <TabsContent value="custom" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.custom} />
           <CustomSectionForm />
         </TabsContent>
 
-        <TabsContent value="projects" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Side Projects</SectionTitle>
+        <TabsContent value="projects" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.projects} />
           <ProjectsForm />
         </TabsContent>
 
-        <TabsContent value="certifications" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Certifications</SectionTitle>
+        <TabsContent value="certifications" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.certifications} />
           <CertificationsForm />
         </TabsContent>
 
-        <TabsContent value="settings" forceMount className="space-y-4 data-[state=inactive]:hidden">
-          <SectionTitle>Settings</SectionTitle>
+        <TabsContent value="settings" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.settings} />
           <SettingsForm />
         </TabsContent>
       </Tabs>

@@ -302,20 +302,20 @@ export default function EditorPage() {
         </div>
       </div>
 
-      {/* ── Main Content Area (full-width single pane IDE) ── */}
-      <div className="relative z-10 flex-1 flex flex-col">
-        <div className="container mx-auto px-4 py-4 flex-1 flex flex-col">
-          <main className="flex-1 min-w-0">
-            <div className="bg-[#0a0a12]/80 border border-zinc-800/50 min-h-[500px] h-[calc(100vh-140px)] flex flex-col">
+      {/* ── Main Content Area (narrower centered pane) ── */}
+      <div className="relative z-10 flex-1">
+        <div className="max-w-3xl w-full mx-auto px-4 py-4">
+          <main>
+            <div className="bg-[#0a0a12]/80 border border-zinc-800/50 rounded-lg">
               {activeMode === "editor" ? (
-                <div className="flex-1 overflow-y-auto p-6 pt-0">
+                <div className="p-6 pt-0">
                   <EditorContent
                     activeTab={activeTab}
                     onTabChange={handleTabChange}
                   />
                 </div>
               ) : (
-                <div className="flex-1 overflow-y-auto bg-zinc-100">
+                <div className="bg-zinc-100 rounded-lg">
                   <Suspense fallback={<PreviewLoader />}>
                     <PreviewContent />
                   </Suspense>

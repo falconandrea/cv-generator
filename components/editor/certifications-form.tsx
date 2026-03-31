@@ -39,6 +39,13 @@ export function CertificationsForm() {
 
   const handleAddCertification = () => {
     addCertification({ ...emptyCertification });
+    setTimeout(() => {
+      const element = document.getElementById(`cert-title-${certifications.length}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.focus();
+      }
+    }, 100);
   };
 
   const handleUpdateCertification = (

@@ -41,6 +41,13 @@ export function ProjectsForm() {
 
   const handleAddProject = () => {
     addProject({ ...emptyProject });
+    setTimeout(() => {
+      const element = document.getElementById(`project-name-${projects.length}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.focus();
+      }
+    }, 100);
   };
 
   const handleUpdateProject = (

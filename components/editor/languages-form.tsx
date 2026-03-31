@@ -32,6 +32,13 @@ export function LanguagesForm() {
 
     const handleAddLanguage = () => {
         addLanguage({ language: "", proficiency: "Intermediate" });
+        setTimeout(() => {
+            const element = document.getElementById(`language-${languages.length}`);
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth", block: "center" });
+                element.focus();
+            }
+        }, 100);
     };
 
     const handleUpdateLanguage = (

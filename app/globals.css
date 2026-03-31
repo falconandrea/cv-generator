@@ -221,12 +221,12 @@
 /* ── Editor Cyber Theme ── */
 .editor-cyber [data-slot="input"],
 .editor-cyber [data-slot="textarea"] {
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(161, 161, 170, 0.3);
-  border-radius: 0;
+  background: rgba(10, 10, 18, 0.8);
+  border: 1px solid rgba(63, 63, 70, 0.4);
+  border-radius: 0.5rem;
   color: #e4e4e7;
   font-size: 0.875rem;
+  padding: 0.625rem 0.75rem;
   box-shadow: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -235,24 +235,30 @@
 .editor-cyber [data-slot="textarea"]:focus,
 .editor-cyber [data-slot="input"]:focus-visible,
 .editor-cyber [data-slot="textarea"]:focus-visible {
-  border-bottom-color: var(--retro-cyan);
-  box-shadow: 0 2px 8px rgba(0, 240, 255, 0.15);
+  border-color: var(--retro-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.1), 0 0 12px rgba(0, 240, 255, 0.08);
   outline: none;
   --tw-ring-shadow: none;
 }
 
 .editor-cyber [data-slot="input"]::placeholder,
 .editor-cyber [data-slot="textarea"]::placeholder {
-  color: rgba(161, 161, 170, 0.4);
+  color: rgba(161, 161, 170, 0.35);
   font-family: var(--font-mono), monospace;
 }
 
 .editor-cyber [data-slot="label"] {
-  color: rgba(161, 161, 170, 0.7);
+  color: var(--retro-cyan);
   font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
+}
+
+/* Prefix ">" on labels */
+.editor-cyber [data-slot="label"]::before {
+  content: "> ";
+  opacity: 0.5;
 }
 
 .editor-cyber [data-slot="card"] {
@@ -269,14 +275,17 @@
 
 /* Select trigger overrides for editor cyber */
 .editor-cyber button[data-slot="select-trigger"] {
-  background: transparent;
+  background: rgba(10, 10, 18, 0.8);
   border: 1px solid rgba(63, 63, 70, 0.4);
+  border-radius: 0.5rem;
   color: #e4e4e7;
+  padding: 0.625rem 0.75rem;
+  height: auto;
 }
 
 .editor-cyber button[data-slot="select-trigger"]:focus {
   border-color: var(--retro-cyan);
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.15);
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.1), 0 0 12px rgba(0, 240, 255, 0.08);
 }
 
 /* Checkbox overrides */
