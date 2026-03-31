@@ -333,7 +333,7 @@ export default function EditorPage() {
           <SheetHeader className="px-4 py-3 border-b border-zinc-800/60 shrink-0 flex flex-row items-center justify-between bg-[#050508]">
             <SheetTitle className="flex items-center gap-2 text-[#00f0ff] font-mono text-sm">
               <Terminal className="w-4 h-4" />
-              <span>&gt; AI_COACH.EXE</span>
+              <span>AI_COACH.EXE</span>
             </SheetTitle>
           </SheetHeader>
           <div className="flex-1 overflow-hidden p-4 pt-0">
