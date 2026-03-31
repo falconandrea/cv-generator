@@ -368,7 +368,37 @@
   color: rgba(0, 240, 255, 0.6);
 }
 
+/* ── Select dropdown portal overrides ──
+   Radix portals the dropdown to <body>, outside .editor-cyber.dark,
+   so we target the data-slot globally. These only fire when a select is open. */
+[data-slot="select-content"] {
+  background: #0a0a12 !important;
+  border: 1px solid rgba(0, 240, 255, 0.15) !important;
+  color: #e4e4e7 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 240, 255, 0.05) !important;
+}
+
+[data-slot="select-item"] {
+  color: #a1a1aa !important;
+  border-radius: 4px;
+}
+
+[data-slot="select-item"]:focus,
+[data-slot="select-item"][data-highlighted] {
+  background: rgba(0, 240, 255, 0.1) !important;
+  color: var(--retro-cyan) !important;
+}
+
+[data-slot="select-item"][data-state="checked"] {
+  color: var(--retro-cyan) !important;
+}
+
+[data-slot="select-item-indicator"] {
+  color: var(--retro-cyan) !important;
+}
+
 @keyframes cyber-pulse {
   0%, 100% { box-shadow: 0 0 4px rgba(0, 240, 255, 0.2); }
   50% { box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
 }
+
