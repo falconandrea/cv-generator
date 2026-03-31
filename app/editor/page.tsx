@@ -13,9 +13,10 @@ import {
   FileUp,
   FileJson,
   FileText,
+  Sparkles,
+  Terminal,
+  Code2,
   Eye,
-  EyeOff,
-  Sparkles
 } from "lucide-react";
 import {
   Popover,
@@ -40,9 +41,9 @@ const PreviewContent = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-full flex flex-col items-center justify-center text-zinc-400 gap-2">
-        <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-600 rounded-full animate-spin" />
-        <span className="text-sm">Loading preview...</span>
+      <div className="h-full flex flex-col items-center justify-center text-zinc-500 gap-3">
+        <div className="w-8 h-8 border-2 border-[#00f0ff]/30 border-t-[#00f0ff] rounded-full animate-spin" />
+        <span className="text-xs font-mono">LOADING_PREVIEW...</span>
       </div>
     )
   }
@@ -50,12 +51,14 @@ const PreviewContent = dynamic(
 
 function PreviewLoader() {
   return (
-    <div className="h-full flex flex-col items-center justify-center text-zinc-400 gap-2">
-      <div className="w-8 h-8 border-2 border-zinc-300 border-t-zinc-600 rounded-full animate-spin" />
-      <span className="text-sm">Loading preview...</span>
+    <div className="h-full flex flex-col items-center justify-center text-zinc-500 gap-3">
+      <div className="w-8 h-8 border-2 border-[#00f0ff]/30 border-t-[#00f0ff] rounded-full animate-spin" />
+      <span className="text-xs font-mono">LOADING_PREVIEW...</span>
     </div>
   );
 }
+
+type EditorMode = "editor" | "preview";
 
 export default function EditorPage() {
   const [activeTab, setActiveTab] = useState("personal");
@@ -65,12 +68,11 @@ export default function EditorPage() {
   const [importPopoverOpen, setImportPopoverOpen] = useState(false);
   const [pdfImportOpen, setPdfImportOpen] = useState(false);
 
-  // Panel visibility
-  const [showPreview, setShowPreview] = useState(true);
-  const [previewSheetOpen, setPreviewSheetOpen] = useState(false);
+  // IDE mode toggle: editor or preview
+  const [activeMode, setActiveMode] = useState<EditorMode>("editor");
   const [aiSheetOpen, setAiSheetOpen] = useState(false);
 
-  // Selector slices for optimal re-renders (rerender-defer-reads)
+  // Selector slices for optimal re-renders
   const personalInfo = useCVStore((state) => state.personalInfo);
   const summary = useCVStore((state) => state.summary);
   const experience = useCVStore((state) => state.experience);
@@ -81,7 +83,7 @@ export default function EditorPage() {
   const languages = useCVStore((state) => state.languages);
   const customSection = useCVStore((state) => state.customSection);
 
-  // Actions - only these trigger re-renders
+  // Actions
   const setPersonalInfo = useCVStore((state) => state.setPersonalInfo);
   const setSummary = useCVStore((state) => state.setSummary);
   const setExperience = useCVStore((state) => state.setExperience);
@@ -92,9 +94,7 @@ export default function EditorPage() {
   const setLanguages = useCVStore((state) => state.setLanguages);
   const setCustomSection = useCVStore((state) => state.setCustomSection);
 
-
-
-  // AI Optimize is enabled when the user has at least some personal info filled in
+  // AI Optimize
   const isAiEnabled =
     personalInfo.fullName.trim().length > 0 ||
     personalInfo.email.trim().length > 0;
@@ -152,13 +152,22 @@ export default function EditorPage() {
     e.target.value = "";
   };
 
-  // Handle tab change
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black flex flex-col">
+    <div className="min-h-screen bg-[#050508] text-white flex flex-col editor-cyber dark">
+      {/* Background Grid */}
+      <div className="fixed inset-0 retro-grid pointer-events-none" />
+      <div
+        className="fixed inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 0%, rgba(0, 240, 255, 0.04) 0%, transparent 60%)",
+        }}
+      />
+
       <AppHeader
         navLinks={[
           { label: "Dashboard", href: "/dashboard" },
@@ -176,81 +185,91 @@ export default function EditorPage() {
         className="hidden"
       />
 
-      {/* ── Sticky sub-header: action buttons + toggles ── */}
-      <div className="sticky top-0 z-20 border-b border-zinc-200 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm">
+      {/* ── Sticky sub-header: IDE toggle + action buttons ── */}
+      <div className="sticky top-0 z-20 border-b border-zinc-800/60 bg-[#0a0a12]/90 backdrop-blur-md">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between gap-2 py-2">
-            <div className="flex items-center gap-2">
-              {/* Preview Toggle (Desktop) */}
-              <Button
-                variant={showPreview ? "default" : "outline"}
-                size="sm"
-                onClick={() => setShowPreview(!showPreview)}
-                className="hidden lg:flex gap-1.5"
-              >
-                {showPreview ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                {showPreview ? "Hide Preview" : "Show Preview"}
-              </Button>
+            {/* Left: IDE Mode Toggle + Import */}
+            <div className="flex items-center gap-3">
+              {/* IDE Mode Toggle */}
+              <div className="flex items-center rounded-md border border-zinc-700/50 bg-[#050508] p-0.5">
+                <button
+                  onClick={() => setActiveMode("editor")}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-mono transition-all",
+                    activeMode === "editor"
+                      ? "bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff]/30 shadow-[0_0_8px_rgba(0,240,255,0.15)]"
+                      : "text-zinc-500 hover:text-zinc-300"
+                  )}
+                >
+                  <Code2 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Editor</span>
+                </button>
+                <button
+                  onClick={() => setActiveMode("preview")}
+                  className={cn(
+                    "flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-mono transition-all",
+                    activeMode === "preview"
+                      ? "bg-[#ff00aa]/10 text-[#ff00aa] border border-[#ff00aa]/30 shadow-[0_0_8px_rgba(255,0,170,0.15)]"
+                      : "text-zinc-500 hover:text-zinc-300"
+                  )}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Preview</span>
+                </button>
+              </div>
 
-              {/* Preview Toggle (Mobile) */}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setPreviewSheetOpen(true)}
-                className="lg:hidden gap-1.5"
-              >
-                <Eye className="w-4 h-4" />
-                <span>Preview</span>
-              </Button>
-
+              {/* Save JSON */}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleExportJSON}
-                className="gap-1.5"
+                className="gap-1.5 border-zinc-700/50 bg-transparent text-zinc-400 hover:text-[#00f0ff] hover:border-[#00f0ff]/30 hover:bg-[#00f0ff]/5 font-mono text-xs"
               >
-                <FileDown className="w-4 h-4" />
-                <span className="hidden md:inline">Save JSON</span>
+                <FileDown className="w-3.5 h-3.5" />
+                <span className="hidden md:inline">SAVE_JSON</span>
               </Button>
 
+              {/* Import */}
               <Popover open={importPopoverOpen} onOpenChange={setImportPopoverOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="gap-1.5"
+                    className="gap-1.5 border-zinc-700/50 bg-transparent text-zinc-400 hover:text-[#b8ff00] hover:border-[#b8ff00]/30 hover:bg-[#b8ff00]/5 font-mono text-xs"
                   >
-                    <FileUp className="w-4 h-4" />
-                    <span className="hidden md:inline">Import</span>
+                    <FileUp className="w-3.5 h-3.5" />
+                    <span className="hidden md:inline">IMPORT</span>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-48 p-1" align="start">
+                <PopoverContent className="w-52 p-1.5 bg-[#0a0a12] border-zinc-700/50" align="start">
                   <button
                     onClick={() => {
                       setImportPopoverOpen(false);
                       setPdfImportOpen(true);
                     }}
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent"
+                    className="flex w-full items-center gap-2.5 rounded px-3 py-2 text-xs font-mono text-zinc-300 hover:bg-[#ff00aa]/10 hover:text-[#ff00aa] transition-colors"
                   >
-                    <FileText className="h-4 w-4" />
-                    Import from PDF
+                    <FileText className="h-3.5 w-3.5" />
+                    IMPORT_PDF
                   </button>
                   <button
                     onClick={() => {
                       setImportPopoverOpen(false);
                       handleImportJSONClick();
                     }}
-                    className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-accent"
+                    className="flex w-full items-center gap-2.5 rounded px-3 py-2 text-xs font-mono text-zinc-300 hover:bg-[#b8ff00]/10 hover:text-[#b8ff00] transition-colors"
                   >
-                    <FileJson className="h-4 w-4" />
-                    Import from JSON
+                    <FileJson className="h-3.5 w-3.5" />
+                    IMPORT_JSON
                   </button>
                 </PopoverContent>
               </Popover>
             </div>
 
+            {/* Right: AI + Download */}
             <div className="flex items-center gap-2">
-              {/* AI Button - Opens Sheet */}
+              {/* AI Co-Pilot Button */}
               <Button
                 variant="outline"
                 size="sm"
@@ -258,82 +277,63 @@ export default function EditorPage() {
                 disabled={!isAiEnabled}
                 title={!isAiEnabled ? "Fill personal info first" : undefined}
                 className={cn(
-                  "gap-1.5 border-indigo-300 text-indigo-600 dark:border-indigo-700 dark:text-indigo-400",
-                  "hover:bg-indigo-50 dark:hover:bg-indigo-950/40",
-                  !isAiEnabled && "opacity-50 cursor-not-allowed"
+                  "gap-1.5 font-mono text-xs border-[#ff00aa]/30 text-[#ff00aa] hover:bg-[#ff00aa]/10 hover:border-[#ff00aa]/50 bg-transparent",
+                  !isAiEnabled && "opacity-40 cursor-not-allowed"
                 )}
               >
-                <Sparkles className="w-4 h-4" />
-                <span className="hidden sm:inline">AI Optimize</span>
+                <Sparkles className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">AI_COACH</span>
               </Button>
 
+              {/* Download PDF */}
               <Button
                 size="sm"
                 onClick={handleGeneratePDF}
                 disabled={isGenerating}
-                className="gap-1.5"
+                className="gap-1.5 bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff]/30 hover:bg-[#00f0ff]/20 hover:shadow-[0_0_12px_rgba(0,240,255,0.2)] font-mono text-xs"
               >
-                <Download className="w-4 h-4" />
-                {isGenerating ? "Generating..." : "Download PDF"}
+                <Download className="w-3.5 h-3.5" />
+                {isGenerating ? "GENERATING..." : "DOWNLOAD_PDF"}
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ── Main Layout ── */}
-      <div className="container mx-auto px-4 py-4 flex-1 flex gap-4">
-        {/* Left: Editor (Full width if no preview) */}
-        <main
-          className={cn(
-            "flex-1 min-w-0",
-            showPreview ? "lg:w-[55%]" : "w-full"
-          )}
-        >
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm min-h-[500px] h-[calc(100vh-180px)] flex flex-col">
-            <div className="flex-1 overflow-y-auto p-6 pt-0">
-              <EditorContent
-                activeTab={activeTab}
-                onTabChange={handleTabChange}
-              />
-            </div>
-          </div>
-        </main>
-
-        {/* Right: Preview Panel (Desktop) */}
-        {showPreview && (
-          <aside className="hidden lg:block w-[45%]">
-            <div className="sticky top-20">
-              <div className="border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-lg bg-white dark:bg-zinc-900 h-[calc(100vh-180px)] flex flex-col">
-                <div className="flex-1 overflow-y-auto">
+      {/* ── Main Content Area (full-width single pane IDE) ── */}
+      <div className="relative z-10 flex-1 flex flex-col">
+        <div className="container mx-auto px-4 py-4 flex-1 flex flex-col">
+          <main className="flex-1 min-w-0">
+            <div className="bg-[#0a0a12]/80 border border-zinc-800/50 min-h-[500px] h-[calc(100vh-140px)] flex flex-col">
+              {activeMode === "editor" ? (
+                <div className="flex-1 overflow-y-auto p-6 pt-0">
+                  <EditorContent
+                    activeTab={activeTab}
+                    onTabChange={handleTabChange}
+                  />
+                </div>
+              ) : (
+                <div className="flex-1 overflow-y-auto bg-zinc-100">
                   <Suspense fallback={<PreviewLoader />}>
                     <PreviewContent />
                   </Suspense>
                 </div>
-              </div>
+              )}
             </div>
-          </aside>
-        )}
+          </main>
+        </div>
       </div>
 
-      {/* ── Preview Sheet (Mobile) ── */}
-      <Sheet open={previewSheetOpen} onOpenChange={setPreviewSheetOpen}>
-        <SheetContent side="bottom" className="h-[85vh] flex flex-col p-4 pt-6 rounded-t-2xl mt-2 mx-1">
-          <div className="flex-1 overflow-y-auto bg-zinc-100 dark:bg-zinc-950 rounded-lg">
-            <Suspense fallback={<PreviewLoader />}>
-              <PreviewContent />
-            </Suspense>
-          </div>
-        </SheetContent>
-      </Sheet>
-
-      {/* ── AI Chat Sheet ── */}
+      {/* ── AI Chat Sheet (Terminal Overlay) ── */}
       <Sheet open={aiSheetOpen} onOpenChange={setAiSheetOpen}>
-        <SheetContent side="right" className="w-full sm:w-[450px] p-0 flex flex-col">
-          <SheetHeader className="px-4 py-3 border-b shrink-0 flex flex-row items-center justify-between">
-            <SheetTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-indigo-600" />
-              AI Optimize
+        <SheetContent
+          side="right"
+          className="w-full sm:w-[450px] p-0 flex flex-col bg-[#0a0a12] border-l border-[#00f0ff]/20"
+        >
+          <SheetHeader className="px-4 py-3 border-b border-zinc-800/60 shrink-0 flex flex-row items-center justify-between bg-[#050508]">
+            <SheetTitle className="flex items-center gap-2 text-[#00f0ff] font-mono text-sm">
+              <Terminal className="w-4 h-4" />
+              <span>&gt; AI_COACH.EXE</span>
             </SheetTitle>
           </SheetHeader>
           <div className="flex-1 overflow-hidden p-4 pt-0">
