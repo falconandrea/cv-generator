@@ -4,9 +4,9 @@ description: New feature workflow - create a PRD from a feature request, get app
 
 ## Steps
 
-1. Read `agents.md` using the `view_file` tool. Confirm you are in **PLANNING MODE** — no code will be written during this phase.
+1. Read `AGENTS.md` using the `view_file` tool. Confirm you are in **PLANNING MODE** — no code will be written during this phase.
 
-2. Read `.agents/context/TECH_STACK.md` and `.agents/context/PRD.md` (if they exist) to understand the current project constraints and existing scope.
+2. Read `.ai/context/TECH_STACK.md` and `.ai/context/PRD.md` (if they exist) to understand the current project constraints and existing scope.
 
 3. Ask the user to briefly describe the new feature they want to add.
 
@@ -28,16 +28,16 @@ description: New feature workflow - create a PRD from a feature request, get app
    8. **Success Metrics** – How success will be measured
    9. **Open Questions** – Any remaining unknowns
 
-6. Save the PRD to `.agents/features/[feature-name]/prd-[feature-name].md` and show it to the user.
+6. Save the PRD to `.ai/features/[feature-name]/prd-[feature-name].md` and show it to the user.
 
 7. Ask: **"Do you approve this PRD? Should I generate the implementation tasks?"**
 
    - If the user requests changes, update the PRD and ask again.
    - Do NOT proceed until you receive explicit approval.
 
-8. Once approved, use `.agents/prompts/03_generate_tasks.md` to generate the task list and save it to `.agents/features/[feature-name]/tasks-[feature-name].md`.
+8. Once approved, use `.ai/prompts/generate_tasks.md` to generate the task list and save it to `.ai/features/[feature-name]/tasks-[feature-name].md`.
 
-9. Update `.agents/memory/progress.md` with the new feature and its status.
+9. Update `.ai/memory/progress.md` with the new feature and its status.
 
 10. Confirm with:
     > ✅ PRD and task list created. Type **"Start implementing"** to switch to ACTING MODE and begin development.

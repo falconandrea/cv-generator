@@ -49,6 +49,13 @@ export function ExperienceForm() {
 
   const handleAddEntry = () => {
     addExperience({ ...emptyEntry });
+    setTimeout(() => {
+      const element = document.getElementById(`company-${experience.length}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.focus();
+      }
+    }, 100);
   };
 
   const handleUpdateEntry = (

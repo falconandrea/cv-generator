@@ -489,7 +489,9 @@ export function CVDocument({ cv }: CVDocumentProps) {
         {/* Custom Section */}
         {cv.customSection?.content?.trim() && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{cv.customSection.title || t.interests}</Text>
+            <Text style={styles.sectionTitle}>
+              {(!cv.customSection.title || cv.customSection.title === "Interests") ? t.interests : cv.customSection.title}
+            </Text>
             <Text style={styles.entryDescription}>{cv.customSection.content}</Text>
           </View>
         )}

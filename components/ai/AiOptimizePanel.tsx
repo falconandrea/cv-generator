@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { PrivacyNotice } from "./PrivacyNotice";
@@ -29,7 +29,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
     const [isLoading, setIsLoading] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
 
-    // Selector slices for optimal re-renders (rerender-defer-reads)
+    // Selector slices for optimal re-renders
     const personalInfo = useCVStore((state) => state.personalInfo);
     const summary = useCVStore((state) => state.summary);
     const experience = useCVStore((state) => state.experience);
@@ -148,9 +148,9 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
 
                 {/* Loading indicator */}
                 {isLoading && (
-                    <div className="flex items-center gap-2 text-sm text-zinc-400">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span>AI is thinking…</span>
+                    <div className="flex items-center gap-2 text-xs text-[#00f0ff] font-mono">
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        <span>PROCESSING_REQUEST...</span>
                     </div>
                 )}
 
@@ -158,21 +158,21 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
             </div>
 
             {/* Input bar */}
-            <div className="border-t border-zinc-200 dark:border-zinc-800 pt-3 mt-2 px-1">
+            <div className="border-t border-zinc-800/60 pt-3 mt-2 px-1">
                 <div className="flex gap-2 items-end">
                     <Textarea
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
                         placeholder="Ask the AI or paste a job description…"
-                        className="min-h-[60px] max-h-[160px] resize-none text-sm"
+                        className="min-h-[60px] max-h-[160px] resize-none text-sm bg-[#050508] border-zinc-700/50 text-zinc-200 placeholder:text-zinc-600 focus:border-[#00f0ff] focus:ring-0 font-mono"
                         disabled={isLoading}
                     />
                     <Button
                         size="icon"
                         onClick={handleSend}
                         disabled={!input.trim() || isLoading}
-                        className="shrink-0 h-10 w-10"
+                        className="shrink-0 h-10 w-10 bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff]/30 hover:bg-[#00f0ff]/20"
                     >
                         {isLoading ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -181,8 +181,8 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
                         )}
                     </Button>
                 </div>
-                <p className="mt-1.5 text-xs text-zinc-400">
-                    Press <kbd className="px-1 py-0.5 rounded border border-zinc-300 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 font-mono">Enter</kbd> to send · <kbd className="px-1 py-0.5 rounded border border-zinc-300 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 font-mono">Shift+Enter</kbd> for new line
+                <p className="mt-1.5 text-[10px] text-zinc-600 font-mono">
+                    <kbd className="px-1 py-0.5 rounded border border-zinc-800 text-zinc-500 font-mono">Enter</kbd> send · <kbd className="px-1 py-0.5 rounded border border-zinc-800 text-zinc-500 font-mono">Shift+Enter</kbd> new line
                 </p>
             </div>
         </div>

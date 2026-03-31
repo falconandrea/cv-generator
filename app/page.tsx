@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FileText, Lock, Zap, Sparkles, ArrowRight, Terminal, Cpu, Database, Eye } from "lucide-react";
+import { AppHeader } from "@/components/layout/AppHeader";
 
 export default function Home() {
   return (
@@ -14,21 +15,7 @@ export default function Home() {
       }} />
       
       {/* Header */}
-      <header className="relative z-10 border-b border-[#00f0ff]/20 px-6 py-4">
-        <div className="container mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Terminal className="w-6 h-6 text-[#00f0ff]" />
-            <span className="text-xl font-bold tracking-tight">CRAFT<span className="text-[#00f0ff]">_CV</span></span>
-          </div>
-          <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-400">
-          </nav>
-          <Link href="/editor">
-            <Button className="bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-semibold">
-              Start Building
-            </Button>
-          </Link>
-        </div>
-      </header>
+      <AppHeader showStartBuilding={true} />
 
       <main className="relative z-10 flex-1">
         {/* Hero Section */}
@@ -75,7 +62,7 @@ export default function Home() {
               className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
               style={{ animation: 'fade-in-up 0.6s ease-out 0.3s forwards', opacity: 0 }}
             >
-              <Link href="/editor">
+              <Link href="/dashboard">
                 <Button size="lg" className="h-14 px-8 text-lg bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-bold border border-[#00f0ff] retro-border-glow group">
                   <span className="mr-2">▶</span>
                   Initialize CV Builder
@@ -249,7 +236,7 @@ export default function Home() {
               <p className="text-zinc-400 mb-10 text-lg">
                 Start for free. No account needed. AI-powered.
               </p>
-              <Link href="/editor">
+              <Link href="/dashboard">
                 <Button size="lg" className="h-14 px-10 text-lg bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-bold border border-[#00f0ff] retro-border-glow group">
                   <Terminal className="mr-2 w-5 h-5" />
                   Launch Editor

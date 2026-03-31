@@ -217,3 +217,197 @@
     0 0 5px var(--retro-cyan),
     inset 0 0 5px rgba(0, 240, 255, 0.1);
 }
+
+/* ── Editor Cyber Theme ── */
+.editor-cyber [data-slot="input"],
+.editor-cyber [data-slot="textarea"] {
+  background: rgba(10, 10, 18, 0.8);
+  border: 1px solid rgba(63, 63, 70, 0.4);
+  border-radius: 0.5rem;
+  color: #e4e4e7;
+  font-size: 0.875rem;
+  padding: 0.625rem 0.75rem;
+  box-shadow: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.editor-cyber [data-slot="input"]:focus,
+.editor-cyber [data-slot="textarea"]:focus,
+.editor-cyber [data-slot="input"]:focus-visible,
+.editor-cyber [data-slot="textarea"]:focus-visible {
+  border-color: var(--retro-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.1), 0 0 12px rgba(0, 240, 255, 0.08);
+  outline: none;
+  --tw-ring-shadow: none;
+}
+
+.editor-cyber [data-slot="input"]::placeholder,
+.editor-cyber [data-slot="textarea"]::placeholder {
+  color: rgba(161, 161, 170, 0.35);
+  font-family: var(--font-mono), monospace;
+}
+
+.editor-cyber [data-slot="label"] {
+  color: var(--retro-cyan);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Prefix ">" on labels */
+.editor-cyber [data-slot="label"]::before {
+  content: "> ";
+  opacity: 0.5;
+}
+
+.editor-cyber [data-slot="card"] {
+  background: rgba(10, 10, 18, 0.6);
+  border-color: rgba(63, 63, 70, 0.4);
+  box-shadow: none;
+}
+
+.editor-cyber .cyber-badge {
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  color: var(--retro-cyan);
+}
+
+/* Select trigger overrides for editor cyber */
+.editor-cyber button[data-slot="select-trigger"] {
+  background: rgba(10, 10, 18, 0.8);
+  border: 1px solid rgba(63, 63, 70, 0.4);
+  border-radius: 0.5rem;
+  color: #e4e4e7;
+  padding: 0.625rem 0.75rem;
+  height: auto;
+}
+
+.editor-cyber button[data-slot="select-trigger"]:focus {
+  border-color: var(--retro-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.1), 0 0 12px rgba(0, 240, 255, 0.08);
+}
+
+/* Checkbox overrides */
+.editor-cyber button[data-slot="checkbox"] {
+  border-color: rgba(63, 63, 70, 0.5);
+}
+
+.editor-cyber button[data-slot="checkbox"][data-state="checked"] {
+  background: var(--retro-cyan);
+  border-color: var(--retro-cyan);
+  color: #050508;
+}
+
+/* ── Button overrides for editor cyber ── */
+
+/* Outline buttons: transparent dark bg, zinc border, cyan glow on hover */
+.editor-cyber [data-slot="button"][data-variant="outline"] {
+  background: transparent;
+  border: 1px solid rgba(63, 63, 70, 0.5);
+  color: #a1a1aa;
+  box-shadow: none;
+}
+
+.editor-cyber [data-slot="button"][data-variant="outline"]:hover {
+  background: rgba(0, 240, 255, 0.06);
+  border-color: rgba(0, 240, 255, 0.3);
+  color: var(--retro-cyan);
+}
+
+/* Full-width outline buttons (Add Experience, Add Education, etc.) — dashed cyber style */
+.editor-cyber [data-slot="button"][data-variant="outline"].w-full {
+  border-style: dashed;
+  border-color: rgba(0, 240, 255, 0.2);
+  color: rgba(0, 240, 255, 0.6);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.editor-cyber [data-slot="button"][data-variant="outline"].w-full:hover {
+  background: rgba(0, 240, 255, 0.08);
+  border-color: rgba(0, 240, 255, 0.4);
+  color: var(--retro-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.1);
+}
+
+/* Ghost buttons (Remove, Delete) — transparent with magenta destructive hover */
+.editor-cyber [data-slot="button"][data-variant="ghost"] {
+  background: transparent;
+  color: #a1a1aa;
+}
+
+.editor-cyber [data-slot="button"][data-variant="ghost"]:hover {
+  background: rgba(255, 0, 170, 0.08);
+  color: var(--retro-magenta);
+}
+
+/* Default variant buttons in editor context */
+.editor-cyber [data-slot="button"][data-variant="default"] {
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  color: var(--retro-cyan);
+}
+
+.editor-cyber [data-slot="button"][data-variant="default"]:hover {
+  background: rgba(0, 240, 255, 0.18);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
+}
+
+/* Separator */
+.editor-cyber [data-slot="separator"] {
+  background: rgba(63, 63, 70, 0.3);
+}
+
+/* Badge secondary — for skills chips */
+.editor-cyber [data-slot="badge"] {
+  background: rgba(0, 240, 255, 0.08);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  color: var(--retro-cyan);
+}
+
+/* Grip handle (drag) */
+.editor-cyber .cursor-grab {
+  color: rgba(0, 240, 255, 0.3);
+}
+
+.editor-cyber .cursor-grab:hover {
+  color: rgba(0, 240, 255, 0.6);
+}
+
+/* ── Select dropdown portal overrides ──
+   Radix portals the dropdown to <body>, outside .editor-cyber.dark,
+   so we target the data-slot globally. These only fire when a select is open. */
+[data-slot="select-content"] {
+  background: #0a0a12 !important;
+  border: 1px solid rgba(0, 240, 255, 0.15) !important;
+  color: #e4e4e7 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 240, 255, 0.05) !important;
+}
+
+[data-slot="select-item"] {
+  color: #a1a1aa !important;
+  border-radius: 4px;
+}
+
+[data-slot="select-item"]:focus,
+[data-slot="select-item"][data-highlighted] {
+  background: rgba(0, 240, 255, 0.1) !important;
+  color: var(--retro-cyan) !important;
+}
+
+[data-slot="select-item"][data-state="checked"] {
+  color: var(--retro-cyan) !important;
+}
+
+[data-slot="select-item-indicator"] {
+  color: var(--retro-cyan) !important;
+}
+
+@keyframes cyber-pulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(0, 240, 255, 0.2); }
+  50% { box-shadow: 0 0 12px rgba(0, 240, 255, 0.4); }
+}
+

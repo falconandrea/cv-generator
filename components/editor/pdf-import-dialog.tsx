@@ -136,10 +136,10 @@ export function PdfImportDialog({ open, onOpenChange }: PdfImportDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-sm p-6">
+      <DialogContent className="max-w-sm p-6 bg-[#0a0a12] border-zinc-700/50 text-white">
         <DialogHeader className="mx-0 mb-4">
-          <DialogTitle className="text-xl font-bold">Import from PDF</DialogTitle>
-          <DialogDescription className="mt-2 text-muted-foreground">
+          <DialogTitle className="text-lg font-bold font-mono text-[#00f0ff]">IMPORT_FROM_PDF</DialogTitle>
+          <DialogDescription className="mt-2 text-zinc-400 text-sm">
             Upload your existing CV in PDF format to auto-fill the fields
           </DialogDescription>
         </DialogHeader>
@@ -149,33 +149,33 @@ export function PdfImportDialog({ open, onOpenChange }: PdfImportDialogProps) {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           className={cn(
-            "p-6 rounded-2xl border-2 border-dashed transition-all duration-200",
+            "p-6 rounded-lg border-2 border-dashed transition-all duration-200",
             isDragOver
-              ? "border-indigo-400 bg-indigo-50/80 dark:border-indigo-500 dark:bg-indigo-950/30"
-              : "border-zinc-200 bg-zinc-50/50 dark:border-zinc-800 dark:bg-zinc-900/30",
+              ? "border-[#00f0ff]/50 bg-[#00f0ff]/5"
+              : "border-zinc-700 bg-zinc-900/30",
             isLoading && "pointer-events-none opacity-60"
           )}
         >
           {isLoading ? (
             <div className="flex flex-col items-center gap-3 py-2">
-              <Loader2 className="h-8 w-8 animate-spin text-indigo-500" />
-              <p className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+              <Loader2 className="h-8 w-8 animate-spin text-[#00f0ff]" />
+              <p className="text-sm font-medium text-[#00f0ff] font-mono">
                 Analyzing your CV...
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-500">
                 Extracting data with AI — this may take a few seconds
               </p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-3 py-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/50">
-                <Upload className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/20">
+                <Upload className="h-6 w-6 text-[#00f0ff]" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-200">
+              <div className="text-center">
+                <p className="text-sm font-semibold text-zinc-200">
                   Auto-fill your CV by uploading an existing PDF
                 </p>
-                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                <p className="mt-1 text-xs text-zinc-500">
                   Drag & drop your PDF here, or click the button below
                 </p>
               </div>
@@ -183,10 +183,10 @@ export function PdfImportDialog({ open, onOpenChange }: PdfImportDialogProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
-                className="gap-2 border-indigo-300 text-indigo-600 hover:bg-indigo-50 dark:border-indigo-700 dark:text-indigo-400 dark:hover:bg-indigo-950/40"
+                className="gap-2 border-[#00f0ff]/30 text-[#00f0ff] hover:bg-[#00f0ff]/10 hover:border-[#00f0ff]/50 bg-transparent font-mono text-xs"
               >
                 <FileUp className="h-4 w-4" />
-                Upload PDF
+                UPLOAD_PDF
               </Button>
             </div>
           )}
@@ -201,8 +201,8 @@ export function PdfImportDialog({ open, onOpenChange }: PdfImportDialogProps) {
           id="pdf-import-input"
         />
 
-        <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-700">
-          <p className="text-xs text-muted-foreground text-center">
+        <div className="mt-4 pt-4 border-t border-zinc-800">
+          <p className="text-xs text-zinc-500 text-center font-mono">
             Supports PDF files up to 5MB
           </p>
         </div>

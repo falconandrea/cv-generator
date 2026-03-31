@@ -40,6 +40,13 @@ export function EducationForm() {
 
   const handleAddEducation = () => {
     addEducation({ ...emptyEducation });
+    setTimeout(() => {
+      const element = document.getElementById(`edu-degree-${education.length}`);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        element.focus();
+      }
+    }, 100);
   };
 
   const handleUpdateEducation = (

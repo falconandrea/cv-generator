@@ -99,7 +99,6 @@ This project embraces the **Vibe Coding** philosophy, combined with a **Spec-Dri
 
 -   **Spec-Driven**: We define clear, detailed specifications (PRD, Tech Stack, App Flow) *before* writing code. This ensures the AI agent has perfect context.
 -   **Vibe Coding**: We iterate fast, focusing on the "feel" and user experience, letting the AI handle the heavy lifting of implementation while we direct the flow.
--   **Cursor & Rules**: We use `.cursorrules` (or `.agents` instructions) to enforce coding standards and project structure automatically.
 
 ---
 

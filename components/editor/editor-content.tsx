@@ -32,13 +32,74 @@ interface EditorContentProps {
   onTabChange: (tab: string) => void;
 }
 
+/** Cyber-styled section heading with descriptive subtitle */
+function SectionHeader({ title, description }: { title: string; description: string }) {
+  return (
+    <div className="space-y-2 pb-2">
+      <p className="text-zinc-500 font-mono text-[0.65rem] uppercase tracking-widest">
+        SYSTEM // INPUT
+      </p>
+      <h2 className="text-white font-bold text-xl tracking-tight">
+        {title}
+      </h2>
+      <p className="text-zinc-400 text-sm leading-relaxed max-w-md">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+/** Tab descriptive texts */
+const TAB_DESCRIPTIONS: Record<string, { title: string; description: string }> = {
+  personal: {
+    title: "Personal Information",
+    description: "Initialize your profile parameters. These data points serve as the root object for your generated identity document.",
+  },
+  summary: {
+    title: "Professional Summary",
+    description: "Compose a concise overview of your career trajectory, key strengths, and professional identity.",
+  },
+  experience: {
+    title: "Work Experience",
+    description: "Document your professional history. Each entry captures a role, company, and key achievements.",
+  },
+  education: {
+    title: "Education",
+    description: "Add your academic credentials. Include degrees, institutions, and graduation dates.",
+  },
+  languages: {
+    title: "Languages",
+    description: "List the languages you speak and your proficiency level for each.",
+  },
+  skills: {
+    title: "Skills",
+    description: "Define your technical and soft skills. These are parsed by ATS systems for keyword matching.",
+  },
+  custom: {
+    title: "Custom Section",
+    description: "Add a custom section to highlight unique qualifications, volunteering, or other relevant information.",
+  },
+  projects: {
+    title: "Side Projects",
+    description: "Showcase personal or open-source projects that demonstrate your skills and initiative.",
+  },
+  certifications: {
+    title: "Certifications",
+    description: "Add professional certifications and credentials that validate your expertise.",
+  },
+  settings: {
+    title: "Settings",
+    description: "Configure document output preferences, template options, and formatting parameters.",
+  },
+};
+
 export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
   const { resetCV } = useCVStore();
 
   return (
     <div className="flex flex-col gap-4 pb-6">
       {/* Sticky nav: tabs + reset button */}
-      <div className="sticky top-0 z-10 -mx-6 px-6 py-3 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex flex-col gap-2">
+      <div className="sticky top-0 z-10 -mx-6 px-6 py-3 bg-[#0a0a12]/95 backdrop-blur-sm border-b border-zinc-800/40 flex flex-col gap-2">
         <EditorTopNav activeTab={activeTab} onTabChange={onTabChange} className="flex-1" />
 
         {/* Reset button */}
@@ -49,27 +110,29 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
                 type="button"
                 variant="outline"
                 size="sm"
-                className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-7 px-2"
+                className="text-[#ff00aa] hover:text-[#ff00aa] hover:bg-[#ff00aa]/10 border-[#ff00aa]/20 hover:border-[#ff00aa]/40 font-mono text-xs h-7 px-2 bg-transparent"
               >
                 <RotateCcw className="h-3.5 w-3.5 mr-1.5" />
-                Reset All Data
+                RESET_ALL
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className="bg-[#0a0a12] border-zinc-700/50 text-white">
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
+                <AlertDialogTitle className="text-[#ff00aa] font-mono">⚠ CONFIRM_RESET</AlertDialogTitle>
+                <AlertDialogDescription className="text-zinc-400 font-mono text-xs">
                   This action cannot be undone. This will permanently delete all
                   data you have entered into the CV generator.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel className="bg-transparent border-zinc-700 text-zinc-300 hover:bg-zinc-800 hover:text-white font-mono text-xs">
+                  CANCEL
+                </AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => resetCV()}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-[#ff00aa]/20 hover:bg-[#ff00aa]/30 text-[#ff00aa] border border-[#ff00aa]/30 font-mono text-xs"
                 >
-                  Reset Data
+                  EXECUTE_RESET
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -77,56 +140,55 @@ export function EditorContent({ activeTab, onTabChange }: EditorContentProps) {
         </div>
       </div>
 
-
-      {/* Form tabs — driven by activeTab from parent */}
+      {/* Form tabs — driven by activeTab from parent. forceMount keeps forms in DOM for instant switching */}
       <Tabs value={activeTab} onValueChange={onTabChange} className="space-y-6">
-        <TabsContent value="personal" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Personal Information</h2>
+        <TabsContent value="personal" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.personal} />
           <PersonalInfoForm />
         </TabsContent>
 
-        <TabsContent value="summary" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Professional Summary</h2>
+        <TabsContent value="summary" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.summary} />
           <SummaryForm />
         </TabsContent>
 
-        <TabsContent value="experience" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Work Experience</h2>
+        <TabsContent value="experience" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.experience} />
           <ExperienceForm />
         </TabsContent>
 
-        <TabsContent value="education" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Education</h2>
+        <TabsContent value="education" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.education} />
           <EducationForm />
         </TabsContent>
 
-        <TabsContent value="languages" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Languages</h2>
+        <TabsContent value="languages" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.languages} />
           <LanguagesForm />
         </TabsContent>
 
-        <TabsContent value="skills" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Skills</h2>
+        <TabsContent value="skills" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.skills} />
           <SkillsForm />
         </TabsContent>
 
-        <TabsContent value="custom" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Custom Section</h2>
+        <TabsContent value="custom" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.custom} />
           <CustomSectionForm />
         </TabsContent>
 
-        <TabsContent value="projects" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Side Projects</h2>
+        <TabsContent value="projects" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.projects} />
           <ProjectsForm />
         </TabsContent>
 
-        <TabsContent value="certifications" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Certifications</h2>
+        <TabsContent value="certifications" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.certifications} />
           <CertificationsForm />
         </TabsContent>
 
-        <TabsContent value="settings" className="space-y-4">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Settings</h2>
+        <TabsContent value="settings" forceMount className="space-y-6 data-[state=inactive]:hidden">
+          <SectionHeader {...TAB_DESCRIPTIONS.settings} />
           <SettingsForm />
         </TabsContent>
       </Tabs>

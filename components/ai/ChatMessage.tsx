@@ -58,7 +58,7 @@ function summarizeChanges(patch: CVPatch): string[] {
 
 function getEffectivePatch(patch: CVPatch, currentCV: CVState): CVPatch {
     const effectivePatch: CVPatch = {};
-    const isDifferent = (a: any, b: any) => JSON.stringify(a) !== JSON.stringify(b);
+    const isDifferent = (a: unknown, b: unknown) => JSON.stringify(a) !== JSON.stringify(b);
 
     if (patch.summary !== undefined && isDifferent(patch.summary, currentCV.summary)) {
         effectivePatch.summary = patch.summary;
@@ -110,10 +110,10 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
             {/* Avatar */}
             <div
                 className={cn(
-                    "mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
+                    "mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded",
                     isUser
-                        ? "bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900"
-                        : "bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300"
+                        ? "bg-[#ff00aa]/15 text-[#ff00aa] border border-[#ff00aa]/20"
+                        : "bg-[#00f0ff]/10 text-[#00f0ff] border border-[#00f0ff]/20"
                 )}
             >
                 {isUser ? <User className="h-3.5 w-3.5" /> : <Bot className="h-3.5 w-3.5" />}
@@ -123,10 +123,10 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
             <div className={cn("flex max-w-[80%] flex-col gap-2", isUser ? "items-end" : "items-start")}>
                 <div
                     className={cn(
-                        "rounded-2xl px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap",
+                        "rounded-lg px-4 py-2.5 text-sm leading-relaxed whitespace-pre-wrap font-mono",
                         isUser
-                            ? "bg-zinc-800 dark:bg-zinc-200 text-white dark:text-zinc-900 rounded-tr-sm"
-                            : "bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-100 rounded-tl-sm"
+                            ? "bg-[#ff00aa]/10 text-zinc-200 border border-[#ff00aa]/20 rounded-tr-sm"
+                            : "bg-[#050508] border border-zinc-800/60 text-zinc-300 rounded-tl-sm"
                     )}
                 >
                     {message.content}
@@ -134,17 +134,17 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
 
                 {/* Proposed changes: summary + actions */}
                 {hasPendingChanges && (
-                    <div className="w-full rounded-xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 overflow-hidden">
+                    <div className="w-full rounded-lg border border-[#b8ff00]/20 bg-[#b8ff00]/5 overflow-hidden">
                         {/* Change summary list */}
                         {changeSummary.length > 0 && (
-                            <div className="px-3 pt-2.5 pb-1.5 border-b border-indigo-200 dark:border-indigo-800">
-                                <p className="flex items-center gap-1.5 text-xs font-semibold text-indigo-700 dark:text-indigo-300 mb-1.5">
+                            <div className="px-3 pt-2.5 pb-1.5 border-b border-[#b8ff00]/15">
+                                <p className="flex items-center gap-1.5 text-xs font-mono text-[#b8ff00] mb-1.5">
                                     <Pencil className="h-3 w-3" />
-                                    Proposed changes
+                                    PROPOSED_CHANGES
                                 </p>
                                 <ul className="space-y-0.5">
                                     {changeSummary.map((line, i) => (
-                                        <li key={i} className="text-xs text-indigo-800 dark:text-indigo-200">
+                                        <li key={i} className="text-xs text-zinc-400 font-mono">
                                             {line}
                                         </li>
                                     ))}
@@ -152,37 +152,37 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
                             </div>
                         )}
 
-                        {/* Action buttons - stacked: View Details on top, Apply+Skip below */}
+                        {/* Action buttons */}
                         <div className="flex flex-col gap-2 px-3 py-2">
-                            {/* View Details - full width */}
+                            {/* View Details */}
                             <Button
                                 size="sm"
                                 variant="outline"
-                                className="h-7 gap-1.5 text-xs px-3 w-full"
+                                className="h-7 gap-1.5 text-xs px-3 w-full font-mono border-zinc-700/50 text-zinc-300 bg-transparent hover:bg-[#00f0ff]/10 hover:text-[#00f0ff] hover:border-[#00f0ff]/30"
                                 onClick={() => setIsDiffOpen(true)}
                             >
                                 <Eye className="h-3.5 w-3.5" />
-                                View Details
+                                VIEW_DIFF
                             </Button>
-                            {/* Apply and Skip - side by side */}
+                            {/* Apply and Skip */}
                             <div className="flex gap-2">
                                 <Button
                                     size="sm"
                                     variant="default"
-                                    className="h-7 gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 flex-1"
+                                    className="h-7 gap-1.5 bg-[#b8ff00]/15 hover:bg-[#b8ff00]/25 text-[#b8ff00] border border-[#b8ff00]/30 text-xs px-3 flex-1 font-mono"
                                     onClick={() => onApply?.(effectivePatch!)}
                                 >
                                     <CheckCheck className="h-3.5 w-3.5" />
-                                    Apply
+                                    APPLY
                                 </Button>
                                 <Button
                                     size="sm"
                                     variant="outline"
-                                    className="h-7 gap-1.5 text-xs px-3 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30 flex-1"
+                                    className="h-7 gap-1.5 text-xs px-3 text-[#ff00aa] hover:text-[#ff00aa] hover:bg-[#ff00aa]/10 border-[#ff00aa]/20 hover:border-[#ff00aa]/30 flex-1 font-mono bg-transparent"
                                     onClick={() => onSkip?.(message.id)}
                                 >
                                     <X className="h-3.5 w-3.5" />
-                                    Skip
+                                    SKIP
                                 </Button>
                             </div>
                         </div>
@@ -191,12 +191,12 @@ export function ChatMessage({ message, onApply, onSkip }: ChatMessageProps) {
 
                 {/* Applied / Skipped badge */}
                 {message.changeStatus === "applied" && (
-                    <span className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
-                        <CheckCheck className="h-3 w-3" /> Changes applied
+                    <span className="flex items-center gap-1 text-[10px] text-[#b8ff00] font-mono">
+                        <CheckCheck className="h-3 w-3" /> CHANGES_APPLIED
                     </span>
                 )}
                 {message.changeStatus === "skipped" && (
-                    <span className="text-xs text-zinc-400">Changes skipped</span>
+                    <span className="text-[10px] text-zinc-600 font-mono">CHANGES_SKIPPED</span>
                 )}
             </div>
 
