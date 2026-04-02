@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Terminal } from "lucide-react";
+import { Terminal, Menu, X } from "lucide-react";
 
 interface NavLink {
   label: string;
@@ -19,9 +20,10 @@ interface AppHeaderProps {
 
 export function AppHeader({ showStartBuilding = false, navLinks }: AppHeaderProps) {
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="relative z-10 border-b border-[#00f0ff]/20 px-6 py-4">
+    <header className="relative z-50 border-b border-[#00f0ff]/20 px-6 py-4 bg-[#050508]/90 backdrop-blur-md">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -71,17 +73,66 @@ export function AppHeader({ showStartBuilding = false, navLinks }: AppHeaderProp
         )}
 
         {/* CTA Button */}
-        {showStartBuilding ? (
-          <Link href="/dashboard">
-            <Button className="bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-semibold">
-              Start Building
-            </Button>
-          </Link>
-        ) : (
-          // Empty div to maintain flex spacing when no CTA
-          <div />
+        <div className="hidden md:block">
+          {showStartBuilding ? (
+            <Link href="/dashboard">
+              <Button className="bg-[#00f0ff] text-black hover:bg-[#00f0ff]/80 font-semibold">
+                Start Building
+              </Button>
+            </Link>
+          ) : (
+            <div />
+          )}
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        {navLinks && navLinks.length > 0 && (
+          <button 
+            className="md:hidden p-2 -mr-2 text-zinc-400 hover:text-[#00f0ff]"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         )}
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && navLinks && navLinks.length > 0 && (
+        <div className="md:hidden absolute top-full left-0 right-0 bg-[#050508] border-b border-[#00f0ff]/20 px-6 py-4 flex flex-col gap-4 shadow-xl shadow-black/50">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+
+            if (link.disabled) {
+              return (
+                <span
+                  key={link.label}
+                  className="text-sm text-zinc-400 opacity-50 flex items-center gap-2 py-2 border-b border-white/5 last:border-0"
+                >
+                  {link.label}
+                  {link.badge && (
+                    <span className="text-[10px] bg-[#00f0ff]/20 text-[#00f0ff] px-1.5 py-0.5 font-mono uppercase rounded">
+                      {link.badge}
+                    </span>
+                  )}
+                </span>
+              );
+            }
+
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`text-sm py-2 border-b border-white/5 last:border-0 transition-colors ${
+                  isActive ? "text-[#00f0ff] font-bold" : "text-zinc-400"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </header>
   );
 }
