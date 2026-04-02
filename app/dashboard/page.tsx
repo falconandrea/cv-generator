@@ -23,7 +23,7 @@ import type { CVState } from "@/state/types";
 const NAV_LINKS = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Editor", href: "/editor" },
-  { label: "ATS Score", href: "#", disabled: true, badge: "Soon" },
+  { label: "ATS Score", href: "/ats-score" },
 ];
 
 /**

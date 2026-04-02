@@ -26,8 +26,9 @@
   - Action: AI rewrites/adjusts summary and bullet points to match JD keywords.
   - **Privacy**: **Sensitive data masking** (Name, Email, Phone, Social Links) BEFORE sending to AI.
   - User Consent: Explicit warning/toggle before sending data.
-- **AI Advice**: General suggestions to improve the CV content via an integrated Chat UI.
-- **AI Diff View**: Users can review and apply/reject the AI's proposed changes line by line.
+- **ATS Score Simulator**:
+  - Upload PDF to get an AI-generated score, readability format check, and targeted feedback.
+- **AI Advice & Diff View**: General suggestions to improve the CV content via an integrated Chat UI allowing to apply/reject line by line.
 
 ### 2.3 UX/UI Redesign (Completed)
 - **Landing Page**: Simple, high-impact landing page (Inspo: makemycv.com).

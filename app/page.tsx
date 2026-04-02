@@ -31,7 +31,7 @@ export default function Home() {
               style={{ animation: 'fade-in-up 0.6s ease-out forwards', opacity: 0 }}
             >
               <Sparkles className="w-4 h-4" />
-              <span>{/* // */} NEW: AI PDF Import v2.0</span>
+              <span>{/* // */} NEW: ATS Score Simulator</span>
             </div>
 
             <h1 
@@ -86,7 +86,7 @@ export default function Home() {
           <div className="container mx-auto max-w-5xl">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
-                { label: 'ATS Compatible', value: '100%', icon: FileText },
+                { label: 'ATS Simulator', value: 'New', icon: FileText },
                 { label: 'Zero Data Stored', value: 'Local', icon: Lock },
                 { label: 'AI Extraction', value: 'PDF', icon: Cpu },
                 { label: 'No Signup', value: 'Free', icon: Database },
@@ -179,8 +179,8 @@ export default function Home() {
               {[
                 {
                   icon: FileText,
-                  title: 'ATS-Optimized',
-                  description: 'Clean, single-column layout with standard fonts that Applicant Tracking Systems can parse easily.',
+                  title: 'Test Your Score',
+                  description: 'Upload your CV to our new ATS Simulator to see how recruiters software parses your data and formatting.',
                   color: '#00f0ff'
                 },
                 {
