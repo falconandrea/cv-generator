@@ -37,6 +37,7 @@
 | Editor Layout Optimization | ✅ Done | `components/editor/EditorTopNav.tsx`, `components/editor/editor-content.tsx`, `app/globals.css` |
 | CV Language Settings | ✅ Done | `.ai/features/cv-language/prd-cv-language.md`, `state/types.ts`, `components/pdf/cv-document.tsx` |
 | Launch & Analytics | ⏳ Pending | `.ai/context/LAUNCH_STRATEGY.md`, `app/privacy`, `app/cookies` |
+| ATS Score Feature | ✅ Done | `.ai/features/ats-score/prd-ats-score.md`, `app/ats-score/page.tsx`, `app/api/ai/analyze-ats/route.ts` |
 
 ## Backlog
 - [x] Add Google Tag Manager (GTM).
