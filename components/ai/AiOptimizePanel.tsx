@@ -39,6 +39,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
     const education = useCVStore((state) => state.education);
     const languages = useCVStore((state) => state.languages);
     const customSection = useCVStore((state) => state.customSection);
+    const cvLanguage = useCVStore((state) => state.cvLanguage);
     const applyAiPatch = useCVStore((state) => state.applyAiPatch);
 
     // Auto-scroll to bottom on new messages
@@ -80,6 +81,7 @@ export function AiOptimizePanel({ messages, onMessagesChange, onLoadingChange }:
                 education,
                 languages,
                 customSection,
+                cvLanguage,
             };
 
             const response = await sendAiMessage(history, cvSnapshot);
