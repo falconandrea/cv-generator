@@ -59,7 +59,7 @@ export default function AtsScorePage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans overflow-x-hidden selection:bg-[#ff00aa] selection:text-white flex flex-col">
+    <div className="min-h-screen bg-black text-white overflow-x-hidden selection:bg-[#ff00aa] selection:text-white flex flex-col">
       <AppHeader navLinks={NAV_LINKS} />
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col items-center">

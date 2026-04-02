@@ -24,7 +24,7 @@ export function AppHeader({ showStartBuilding = false, navLinks }: AppHeaderProp
 
   return (
     <header className="relative z-50 border-b border-[#00f0ff]/20 px-6 py-4 bg-[#050508]/90 backdrop-blur-md">
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between relative">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Terminal className="w-6 h-6 text-[#00f0ff]" />
@@ -35,7 +35,7 @@ export function AppHeader({ showStartBuilding = false, navLinks }: AppHeaderProp
 
         {/* Navigation Links */}
         {navLinks && navLinks.length > 0 && (
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
 
