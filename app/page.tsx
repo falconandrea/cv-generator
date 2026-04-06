@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FileText, Lock, Zap, Sparkles, ArrowRight, Terminal, Cpu, Database, Eye } from "lucide-react";
 import { AppHeader } from "@/components/layout/AppHeader";
+import { Footer } from "@/components/layout/Footer";
 
 export default function Home() {
   return (
@@ -249,19 +250,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-[#00f0ff]/20 px-6 py-8">
-        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-zinc-500 font-mono text-sm">
-            <Terminal className="w-4 h-4" />
-            <span>CRAFT_CV v2.0.0</span>
-          </div>
-          <div className="flex items-center gap-6 text-zinc-500 text-sm">
-            <a href="https://github.com/falconandrea/craftcv.online" className="hover:text-[#00f0ff] transition-colors">
-              GitHub
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

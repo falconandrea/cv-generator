@@ -6,6 +6,7 @@ import { Dropzone } from "@/components/ats/Dropzone";
 import { ResultsDashboard, AtsScoreData } from "@/components/ats/ResultsDashboard";
 import { toast } from "sonner";
 import { AppHeader } from "@/components/layout/AppHeader";
+import { Footer } from "@/components/layout/Footer";
 
 const NAV_LINKS = [
   { label: "Dashboard", href: "/dashboard" },
@@ -117,6 +118,9 @@ export default function AtsScorePage() {
           )}
         </div>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

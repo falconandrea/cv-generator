@@ -35,6 +35,7 @@ import { useCVStore } from "@/state/store";
 import { generateAndDownloadPDF } from "@/lib/pdf-generator";
 import { exportCVAsJSON, importCVFromJSON } from "@/lib/json-handler";
 import { AppHeader } from "@/components/layout/AppHeader";
+import { Footer } from "@/components/layout/Footer";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -356,6 +357,9 @@ export default function EditorPage() {
 
       {/* Dialogs */}
       <PdfImportDialog open={pdfImportOpen} onOpenChange={setPdfImportOpen} />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

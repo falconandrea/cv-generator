@@ -6,8 +6,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     const routes = [
         '',
+        '/dashboard',
         '/editor',
-        '/preview',
+        '/ats-score',
         '/privacy',
         '/cookies',
         '/llms.txt',
