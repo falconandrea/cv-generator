@@ -101,7 +101,6 @@ export async function POST(req: NextRequest) {
     const client = new OpenAI({ apiKey, baseURL });
     const completion = await client.chat.completions.create({
       model,
-      response_format: { type: "json_object" },
       max_tokens: 2000,
       temperature: 0.2, // low temperature for strict, analytical response
       messages: [

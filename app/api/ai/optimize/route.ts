@@ -6,7 +6,7 @@ import type { CVState } from "@/state/types";
 
 // ---------------------------------------------------------------------------
 // System prompt
-// We use response_format: json_object — the model ALWAYS returns:
+// The model ALWAYS returns:
 //   { "message": string, "proposedChanges"?: object }
 // ---------------------------------------------------------------------------
 const SYSTEM_PROMPT = `You are an expert CV coach and ATS optimization specialist.
@@ -157,7 +157,6 @@ export async function POST(req: NextRequest) {
 
     const completion = await client.chat.completions.create({
       model,
-      response_format: { type: "json_object" },
       max_tokens: 4000,
       temperature: 0.3,
       messages: [
