@@ -167,21 +167,27 @@ export async function POST(req: NextRequest) {
 
     const client = new OpenAI({ apiKey, baseURL });
 
+    // Build the message list with a prefill trick:
+    // The last assistant message ends with "{" to force JSON continuation.
+    const llmMessages = [
+      { role: "system" as const, content: languageInstruction + SYSTEM_PROMPT + cvContext },
+      ...messages,
+      { role: "user" as const, content: `REMINDER: You MUST respond with a raw JSON object starting with {. Include "message" and "proposedChanges" keys. Do NOT use markdown or code fences. Output ONLY valid JSON.` },
+      { role: "assistant" as const, content: `{` },
+    ];
+
     const completion = await client.chat.completions.create({
       model,
       max_tokens: 4000,
       temperature: 0.3,
-      messages: [
-        { role: "system", content: languageInstruction + SYSTEM_PROMPT + cvContext },
-        ...messages,
-        { 
-          role: "assistant", 
-          content: `I acknowledge all the rules. I will reply to your conversational messages in your language inside "message". However, I promise to strictly translate and write all data inside "proposedChanges" ONLY in ${cvLanguage.toUpperCase()}, and I will never omit the JSON body.`
-        }
-      ],
+      messages: llmMessages,
     });
 
-    const rawContent = completion.choices[0]?.message?.content ?? "{}";
+    // Reconstruct the full JSON from the prefill trick.
+    // If the model echoed its own "{", use the response as-is; otherwise prepend our prefill "{".
+    const modelOutput = completion.choices[0]?.message?.content ?? "}";
+    const rawContent = modelOutput.trimStart().startsWith("{") ? modelOutput : "{" + modelOutput;
+
     const parsed = parseModelResponse(rawContent);
 
     await incrementCounter("ai_messages");
