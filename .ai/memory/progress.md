@@ -23,6 +23,7 @@
 - [x] **Custom Section**: Added a free-text custom section with editable title (default "Interests"). Integrated across the full stack: types, store, editor form, navigation tabs, PDF generation, JSON save/load, AI optimize, AI import-pdf, AI diff view.
 - [x] **Dashboard Redesign**: Created new `/dashboard` page as intermediate step between homepage and editor. Introduced shared `AppHeader` component with conditional nav links and CTA. Dashboard supports 3 actions: Start from Scratch, Import PDF (AI-powered), Import JSON. Removed `WelcomeDialog` from editor. Updated all homepage CTAs to route through `/dashboard`. Also migrated `cookies` and `privacy` pages to use `AppHeader`.
 - [x] **Editor Cyber Redesign**: Full cyber/terminal aesthetic applied to the editor page. Replaced side-by-side layout with IDE-style single-pane toggle (Editor/Preview). Cyber-styled forms (`soft-field` inputs with glow focus), neon tabs (#ff00aa active), terminal-styled AI Sheet (`> AI_COACH.EXE`), diff modal with addition/deletion coloring (#b8ff00/#ff00aa). Removed all `dark:` variants in favor of permanent dark theme. Mobile bottom sheet removed, unified across all devices.
+- [x] **Stats Counters**: Implemented anonymous JSON backend tracking for CV generations, AI messages, PDF uploads, and ATS tests with local Docker volume mapping.
 
 ## Current Context
 - **Goal**: Launch the project, gather feedback from the community (Reddit, ProductHunt, etc.), and integrate tracking/analytics tools.

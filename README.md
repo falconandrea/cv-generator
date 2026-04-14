@@ -92,6 +92,13 @@ The `server/docker-compose.yml` file is provided as a reference for self-hosting
 
 > **Note**: The file is pre-configured for the domain `craftcv.online` and pulls the image from GHCR (`ghcr.io/falconandrea/craftcv.online:main`). You'll need to edit it to match your own domain and image registry before using it.
 
+**Persistent Telemetry/Stats**:
+Our docker setup expects a local `./data` volume bind to persist JSON-based telemetry without a database. Use the included `server/deploy.sh` script or manually create it before starting:
+```bash
+mkdir -p data && chmod 777 data
+docker compose up -d
+```
+
 ---
 
 ## 🧘 Vibe Coding & Spec-Driven Development

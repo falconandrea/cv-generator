@@ -109,6 +109,14 @@ export default function EditorPage() {
       const filename =
         `${personalInfo.fullName.replace(/\s+/g, "-")}-cv.pdf` || "cv.pdf";
       await generateAndDownloadPDF({ personalInfo, summary, experience, skills, certifications, projects, education, languages, customSection, cvLanguage }, filename);
+
+      // Track the generation anonymously
+      fetch("/api/stats/increment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ metric: "cv_created" }),
+      }).catch((e) => console.error("Telemetry failed:", e));
+
     } catch (error) {
       console.error("Failed to generate PDF:", error);
       toast.error("Failed to generate PDF. Please try again.");

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import { PDFParse } from "pdf-parse";
+import { incrementCounter } from "@/lib/stats";
 
 export const maxDuration = 60; // Increase max duration for Vercel if needed
 
@@ -111,6 +112,8 @@ export async function POST(req: NextRequest) {
 
     const rawContent = completion.choices[0]?.message?.content ?? "{}";
     const data = parseModelResponse(rawContent);
+
+    await incrementCounter("ats_tests");
 
     return NextResponse.json(data);
   } catch (error) {

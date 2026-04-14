@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 import type { CVState } from "@/state/types";
+import { incrementCounter } from "@/lib/stats";
 
 // (Language detection heuristic removed in favor of explicit user setting cvLanguage)
 
@@ -55,7 +56,7 @@ experience: Array of objects:
   - startDate: string       (e.g. "2022-03")
   - endDate: string | null  (null = "Present")
   - location: string        (optional)
-  - description: string     (responsibilities and achievements)
+  - description: string     (see TEXT FORMATTING rules below)
 
 education: Array of objects:
   - degree: string
@@ -72,7 +73,7 @@ projects: Array of objects:
   - name: string
   - role: string
   - link: string
-  - description: string
+  - description: string     (see TEXT FORMATTING rules below)
 
 skills: string[]            (flat array, e.g. ["TypeScript", "React"])
 
@@ -85,6 +86,17 @@ customSection: object (a free-text section with an editable title):
   - content: string         (free text, section hidden in PDF if empty)
 
 CRITICAL: DO NOT UNDER ANY CIRCUMSTANCES INCLUDE A "cvLanguage" FIELD IN YOUR PROPOSED CHANGES.
+
+## TEXT FORMATTING — CRITICAL
+The "description" fields in experience and projects use bullet points separated by "\\n" (literal newline in JSON).
+1. You MUST PRESERVE the bullet point structure. Each bullet starts with "•" followed by a space.
+2. Separate each bullet with a single "\\n" character in the JSON string value.
+3. Do NOT collapse multiple bullets into a single paragraph or a single bullet.
+4. Do NOT remove bullets — keep the SAME NUMBER of bullets (or more if adding new achievements).
+5. Each bullet should be a single continuous line with no mid-sentence line breaks.
+Example input:  "• Built REST APIs with Node.js serving 10k req/s\\n• Led migration from monolith to microservices\\n• Mentored 3 junior developers"
+Correct output: "• Developed and maintained high-performance REST APIs using Node.js, handling 10,000+ requests per second\\n• Spearheaded architectural migration from monolithic to microservices, improving deployment frequency by 40%\\n• Mentored 3 junior developers through code reviews and pair programming sessions"
+WRONG output:  "Developed and maintained high-performance REST APIs using Node.js. Led migration from monolith to microservices. Mentored 3 junior developers."
 
 ## Guidelines
 - Be specific and actionable. Focus on ATS keyword alignment and quantified achievements.
@@ -171,6 +183,8 @@ export async function POST(req: NextRequest) {
 
     const rawContent = completion.choices[0]?.message?.content ?? "{}";
     const parsed = parseModelResponse(rawContent);
+
+    await incrementCounter("ai_messages");
 
     return NextResponse.json({
       content: parsed.message ?? "I couldn't generate a response. Please try again.",

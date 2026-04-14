@@ -5,6 +5,7 @@ import OpenAI from "openai";
 export const dynamic = "force-dynamic";
 
 import { PDFParse } from "pdf-parse";
+import { incrementCounter } from "@/lib/stats";
 
 // ---------------------------------------------------------------------------
 // System prompt — extracts structured CV data from raw PDF text
@@ -226,6 +227,8 @@ ${truncatedText}
         { status: 422 }
       );
     }
+
+    await incrementCounter("pdf_uploaded");
 
     return NextResponse.json({ data: parsed });
   } catch (error) {
